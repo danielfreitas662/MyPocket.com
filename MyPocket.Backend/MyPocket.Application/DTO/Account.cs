@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-namespace MyPocket.Domain.Models
+namespace MyPocket.Application.DTO
 {
   public class AccountDTO
   {

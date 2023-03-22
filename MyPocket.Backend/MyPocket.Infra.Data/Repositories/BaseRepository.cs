@@ -1,5 +1,5 @@
 using System.Linq.Expressions;
-using ElevarGestao.Infra.Data.Context;
+using MyPocket.Infra.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using MyPocket.Domain.Interfaces;

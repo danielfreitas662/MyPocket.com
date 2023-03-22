@@ -10,6 +10,9 @@ namespace MyPocket.Application.Services
     public IAccountService Account { get; private set; }
     public ICategoryService Category { get; private set; }
     public ITransactionService Transaction { get; private set; }
+
+    public IBudgetService Budget { get; private set; }
+
     public ApplicationService(IRepositories repo)
     {
       _repo = repo;
@@ -17,6 +20,7 @@ namespace MyPocket.Application.Services
       Account = new AccountService(_repo);
       Category = new CategoryService(_repo);
       Transaction = new TransactionService(_repo);
+      Budget = new BugetService(_repo);
     }
 
   }

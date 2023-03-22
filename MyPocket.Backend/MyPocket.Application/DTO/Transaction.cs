@@ -1,6 +1,4 @@
-using System.Collections.Generic;
-using System;
-namespace MyPocket.Domain.Models
+namespace MyPocket.Application.DTO
 {
   public class TransactionDTO
   {

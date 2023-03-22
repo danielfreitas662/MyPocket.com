@@ -1,3 +1,5 @@
+using System.Security.Claims;
+using System.Security.Principal;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
@@ -5,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Design;
 using MyPocket.Domain.Models;
 using MyPocket.Infra.EntityConfiguration;
 
-namespace ElevarGestao.Infra.Data.Context
+namespace MyPocket.Infra.Data.Context
 {
   public class BloggingContextFactory : IDesignTimeDbContextFactory<MyPocketDBContext>
   {
@@ -43,6 +45,24 @@ namespace ElevarGestao.Infra.Data.Context
       modelBuilder.ApplyConfiguration(new CategoryConfiguration());
       modelBuilder.ApplyConfiguration(new TransactionConfiguration());
       modelBuilder.ApplyConfiguration(new UserConfiguration());
+    }
+  }
+  public class UserData
+  {
+    public string UserId { get; set; }
+    public string UserName { get; set; }
+  }
+  public static class IdentityExtensions
+  {
+    public static UserData GetUserData(this IIdentity identity)
+    {
+      var UserId = ((ClaimsIdentity)identity).FindFirst("UserID");
+      var Name = ((ClaimsIdentity)identity).FindFirst("Name");
+      var data = new UserData();
+      data.UserId = UserId != null ? UserId.Value : string.Empty;
+      data.UserName = Name != null ? Name.Value : string.Empty;
+      return data;
+      // Test for null to avoid issues during local testing
     }
   }
 

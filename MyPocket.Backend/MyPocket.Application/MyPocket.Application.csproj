@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
     <ProjectReference Include="..\MyPocket.Domain\MyPocket.Domain.csproj" />
+    <ProjectReference Include="..\MyPocket.Infra.Data\MyPocket.Infra.Data.csproj" />
   </ItemGroup>
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>

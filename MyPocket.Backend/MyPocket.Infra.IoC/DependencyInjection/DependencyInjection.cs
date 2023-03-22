@@ -5,7 +5,7 @@ using MyPocket.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using MyPocket.Infra.Repository;
 using MyPocket.Application.Services;
-using ElevarGestao.Infra.Data.Context;
+using MyPocket.Infra.Data.Context;
 using MyPocket.Application.Interfaces;
 
 namespace MyPocket.Infra.IoC.DependencyInjection
