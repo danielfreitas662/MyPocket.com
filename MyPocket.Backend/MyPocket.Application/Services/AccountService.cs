@@ -13,7 +13,12 @@ namespace MyPocket.Application.Services
       _repo = repo;
     }
 
-    public AccountDTO AddOrUpdate(UserData user)
+    public Task<AccountDTO> AddAsync(UserData User, AccountDTO account)
+    {
+      throw new NotImplementedException();
+    }
+
+    public async Task<AddOrUpdateResult<AccountDTO>> AddOrUpdateAsync(UserData user, AccountDTO account)
     {
       throw new NotImplementedException();
     }
@@ -33,12 +38,17 @@ namespace MyPocket.Application.Services
       throw new NotImplementedException();
     }
 
-    public Task Remove(AccountDTO account)
+    public Task Remove(UserData user, AccountDTO account)
     {
       throw new NotImplementedException();
     }
 
-    public Task RemoveRange(List<AccountDTO> accounts)
+    public Task RemoveRange(UserData user, List<string> ids)
+    {
+      throw new NotImplementedException();
+    }
+
+    public Task<AccountDTO> UpdateAsync(UserData User, AccountDTO account, AccountDTO values)
     {
       throw new NotImplementedException();
     }

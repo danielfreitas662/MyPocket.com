@@ -27,8 +27,8 @@ namespace MyPocket.Infra.IoC.DependencyInjection
     }
     public static IServiceCollection AddServices(this IServiceCollection services)
     {
-      services.AddScoped<IRepositories, Repositories>();
-      services.AddScoped<IApplicationService, ApplicationService>();
+      services.AddTransient<IRepositories, Repositories>();
+      services.AddTransient<IApplicationService, ApplicationService>();
       return services;
     }
   }

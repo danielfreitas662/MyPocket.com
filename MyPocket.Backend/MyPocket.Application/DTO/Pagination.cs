@@ -18,7 +18,7 @@ namespace MyPocket.Application.DTO
   }
   public class Filters<T>
   {
-
+    public Dictionary<string, object> data { get; set; }
   }
   public class PaginationResult<T>
   {

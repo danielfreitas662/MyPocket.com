@@ -7,5 +7,9 @@ namespace MyPocket.Application.DTO
     public string Name { get; set; }
     public List<TransactionDTO> Transactions { get; set; }
   }
+  public class RemoveRangeModel
+  {
+    public List<string> Ids { get; set; }
+  }
 
 }
