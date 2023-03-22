@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using MyPocket.Domain.Interfaces;
 
-namespace MyPocket.Infra.Repositories
+namespace MyPocket.Infra.Repository
 {
   public class BaseRepository<T> : IBaseRepository<T> where T : class
   {

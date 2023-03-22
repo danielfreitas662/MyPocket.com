@@ -2,7 +2,7 @@ using ElevarGestao.Infra.Data.Context;
 using Microsoft.EntityFrameworkCore.Storage;
 using MyPocket.Domain.Interfaces;
 
-namespace MyPocket.Infra.Repositories
+namespace MyPocket.Infra.Repository
 {
   public class Repositories : IRepositories
   {
