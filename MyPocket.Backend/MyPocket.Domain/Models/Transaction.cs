@@ -12,7 +12,7 @@ namespace MyPocket.Domain.Models
     public Account Account { get; set; }
     public Category Category { get; set; }
     public Guid CategoryId { get; set; }
-    public Guid UserId { get; set; }
+    public string UserId { get; set; }
     public User User { get; set; }
   }
 }
