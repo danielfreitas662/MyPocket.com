@@ -7,5 +7,9 @@ namespace MyPocket.Domain.Interfaces
     IBudgetRepository Budget { get; }
     ICategoryRepository Category { get; }
     ITransactionRepository Transaction { get; }
+    IUserRepository User { get; }
+    Task<int> SaveAsync();
+    void BeginTransaction();
+    Task CompleteAsync();
   }
 }

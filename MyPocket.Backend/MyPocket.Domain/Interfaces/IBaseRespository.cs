@@ -1,14 +1,17 @@
 using System.Collections.Generic;
+using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore.Query;
+
 namespace MyPocket.Domain.Interfaces
 {
   public interface IBaseRepository<T> where T : class
   {
-    List<T> GetAll(Guid userID);
-    T GetByID(Guid userID, int ID);
+    List<T> Get(Expression<Func<T, bool>> filter, Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null);
+    Task<T?> GetSingleAsync(Expression<Func<T, bool>> filter, Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null);
     T Add(T entity);
-    List<T> AddRange(List<T> entities);
+    void AddRange(List<T> entities);
     void Remove(T entity);
     void RemoveRange(List<T> entities);
-    T Update(T entity, T values);
+    void Update(T entity, T values);
   }
 }
