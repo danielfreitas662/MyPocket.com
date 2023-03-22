@@ -4,9 +4,9 @@ namespace MyPocket.Domain.Models
   [Table("Budgets")]
   public class Budget
   {
-    public Guid ID { get; set; }
+    public Guid Id { get; set; }
     public decimal Amount { get; set; }
-    public Guid CategoryID { get; set; }
+    public Guid CategoryId { get; set; }
     public Category Category { get; set; }
     public DateTime Month { get; set; }
   }

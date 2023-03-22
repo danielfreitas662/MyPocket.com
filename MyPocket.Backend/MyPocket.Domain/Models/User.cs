@@ -6,5 +6,6 @@ namespace MyPocket.Domain.Models
   public class User : IdentityUser<Guid>
   {
     public string Name { get; set; }
+    public ICollection<Transaction> Transactions { get; set; }
   }
 }
