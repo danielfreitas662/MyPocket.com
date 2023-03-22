@@ -13,7 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MyPocket.Application\MyPocket.Application.csproj" />
-    <ProjectReference Include="..\MyPocket.Infra\MyPocket.Infra.csproj" />
+    <ProjectReference Include="..\MyPocket.Infra.IoC\MyPocket.Infra.IoC.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,9 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <ItemGroup>
-    <ProjectReference Include="..\MyPocket.Infra\MyPocket.Infra.csproj" />
+    <ProjectReference Include="..\MyPocket.Domain\MyPocket.Domain.csproj" />
   </ItemGroup>
-
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
