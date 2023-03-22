@@ -6,6 +6,7 @@ namespace MyPocket.Domain.Models
   {
     public Guid ID { get; set; }
     public string Name { get; set; }
+    public ICollection<Budget> Budgets { get; set; }
   }
 
 }
