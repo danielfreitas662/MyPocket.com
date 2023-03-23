@@ -51,6 +51,7 @@ namespace MyPocket.Infra.Data.Context
   {
     public string UserId { get; set; }
     public string UserName { get; set; }
+    public string Email { get; set; }
   }
   public static class IdentityExtensions
   {
@@ -58,9 +59,11 @@ namespace MyPocket.Infra.Data.Context
     {
       var UserId = ((ClaimsIdentity)identity).FindFirst("UserID");
       var Name = ((ClaimsIdentity)identity).FindFirst("Name");
+      var Email = ((ClaimsIdentity)identity).FindFirst("Email");
       var data = new UserData();
       data.UserId = UserId != null ? UserId.Value : string.Empty;
       data.UserName = Name != null ? Name.Value : string.Empty;
+      data.Email = Email != null ? Email.Value : string.Empty;
       return data;
       // Test for null to avoid issues during local testing
     }

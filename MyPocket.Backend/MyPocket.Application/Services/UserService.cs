@@ -36,6 +36,7 @@ namespace MyPocket.Application.Services
                   {
                     new Claim(ClaimTypes.Name, user.UserName.ToString()),
                      new Claim("UserID", user.Id.ToString()),
+                     new Claim("Email", user.Email.ToString()),
                     new Claim("Name", user.FirstName +" "+ user.LastName,"string")
                   }),
           Expires = DateTime.Now.AddHours(-3).AddDays(10),
