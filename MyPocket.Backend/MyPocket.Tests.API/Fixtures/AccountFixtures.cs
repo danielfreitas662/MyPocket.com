@@ -8,19 +8,19 @@ namespace MyPocket.Tests.API.Fixtures
   {
     private static List<AccountDTO> Accounts = new List<AccountDTO>{
       new AccountDTO{
-        Id = Guid.Parse("3fa4c24b-ca95-49a8-849b-2078f40f3982"),
+        Id = Guid.NewGuid(),
         Name ="Bank Account 1"
       },
       new AccountDTO{
-        Id = Guid.Parse("3fa4c24b-ca95-49a8-849b-2078f40f3982"),
+        Id = Guid.NewGuid(),
         Name ="Crédit Card 1"
       },
       new AccountDTO{
-        Id = Guid.Parse("3fa4c24b-ca95-49a8-849b-2078f40f3982"),
+        Id = Guid.NewGuid(),
         Name ="Bank Account 2"
       },
       new AccountDTO{
-        Id = Guid.Parse("3fa4c24b-ca95-49a8-849b-2078f40f3982"),
+        Id = Guid.NewGuid(),
         Name ="Credit Card 2"
       },
     };

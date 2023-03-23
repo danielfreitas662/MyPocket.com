@@ -17,22 +17,14 @@ public class AccountControllerTests
 {
   private Mock<IApplicationService> applicationServiceMock = new Mock<IApplicationService>();
   private Mock<IAccountService> accountServiceMock = new Mock<IAccountService>();
-  private UserDTO contextUser;
   private UserData userIdentity;
   public AccountControllerTests()
   {
-    contextUser = new UserDTO
-    {
-      FirstName = "Daniel",
-      LastName = "Robson",
-      Email = "",
-      Id = "123"
-    };
     userIdentity = new UserData
     {
-      UserId = contextUser.Id,
-      UserName = contextUser.FirstName + " " + contextUser.LastName,
-      Email = contextUser.Email
+      UserId = "123",
+      UserName = "Daniel Robson",
+      Email = "danielrobson@gmail.com"
     };
   }
 
@@ -43,7 +35,7 @@ public class AccountControllerTests
     var contextMock = new MockHttpContext(userIdentity);
     AccountController sut = new AccountController(applicationServiceMock.Object);
     sut.ControllerContext.HttpContext = contextMock.context;
-    accountServiceMock.Setup(x => x.GetAll(contextUser.Id)).Returns(accountsMock);
+    accountServiceMock.Setup(x => x.GetAll(userIdentity.UserId)).Returns(accountsMock);
     applicationServiceMock.Setup(x => x.Account).Returns(accountServiceMock.Object);
     var result = sut.GetAll();
     var objectResult = Assert.IsType<OkObjectResult>(result);
@@ -57,7 +49,7 @@ public class AccountControllerTests
     var contextMock = new MockHttpContext(userIdentity);
     AccountController sut = new AccountController(applicationServiceMock.Object);
     sut.ControllerContext.HttpContext = contextMock.context;
-    accountServiceMock.Setup(x => x.GetAll(contextUser.Id)).Returns(new List<AccountDTO>());
+    accountServiceMock.Setup(x => x.GetAll(userIdentity.UserId)).Returns(new List<AccountDTO>());
     applicationServiceMock.Setup(x => x.Account).Returns(accountServiceMock.Object);
     var result = sut.GetAll();
     var objectResult = Assert.IsType<OkObjectResult>(result);
@@ -71,7 +63,7 @@ public class AccountControllerTests
     var contextMock = new MockHttpContext(userIdentity);
     AccountController sut = new AccountController(applicationServiceMock.Object);
     sut.ControllerContext.HttpContext = contextMock.context;
-    accountServiceMock.Setup(x => x.GetByIdAsync(contextUser.Id, accountsMock[0].Id.Value)).ReturnsAsync(() => accountsMock[0]);
+    accountServiceMock.Setup(x => x.GetByIdAsync(userIdentity.UserId, accountsMock[0].Id.Value)).ReturnsAsync(() => accountsMock[0]);
     accountServiceMock.Setup(x => x.UpdateAsync(It.IsAny<UserData>(), It.IsAny<AccountDTO>(), It.IsAny<AccountDTO>())).ReturnsAsync(() => accountsMock[0]);
     applicationServiceMock.Setup(x => x.Account).Returns(accountServiceMock.Object);
     var result = await sut.AddOrUpdate(accountsMock[0]);
@@ -87,7 +79,7 @@ public class AccountControllerTests
     var contextMock = new MockHttpContext();
     AccountController sut = new AccountController(applicationServiceMock.Object);
     sut.ControllerContext.HttpContext = contextMock.context;
-    accountServiceMock.Setup(x => x.GetByIdAsync(contextUser.Id, It.IsAny<Guid>())).ReturnsAsync(() => null);
+    accountServiceMock.Setup(x => x.GetByIdAsync(userIdentity.UserId, It.IsAny<Guid>())).ReturnsAsync(() => null);
     applicationServiceMock.Setup(x => x.Account).Returns(accountServiceMock.Object);
 
     var result = await sut.AddOrUpdate(accountsMock[0]);

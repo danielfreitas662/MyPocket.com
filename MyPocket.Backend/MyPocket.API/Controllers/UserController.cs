@@ -27,18 +27,11 @@ namespace MyPocket.API.Controllers
       }
       return BadRequest(result.Message);
     }
-    [HttpGet]
-    public ActionResult CurrentUser()
-    {
-      var user = HttpContext.User.Identity!.GetUserData();
-      if (string.IsNullOrEmpty(user.UserId)) return BadRequest("Notauthenticated");
-      return Ok(user);
-    }
     [HttpPatch]
     public async Task<ActionResult> ChangePassword([FromBody] ChangePasswordRequestModel data)
     {
       var result = await _application.User.ChangePasswordAsync(data);
-      if (result.Sucess)
+      if (result.Success)
       {
         return Ok(result.Message);
       }

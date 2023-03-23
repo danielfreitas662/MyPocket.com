@@ -40,7 +40,7 @@ namespace MyPocket.Application.DTO
   }
   public class ChangePasswordResultModel
   {
-    public bool Sucess { get; set; }
+    public bool Success { get; set; }
     public string Message { get; set; }
   }
   public class ForgotPasswordRequestModel
