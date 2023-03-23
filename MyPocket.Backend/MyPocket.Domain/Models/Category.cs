@@ -11,5 +11,4 @@ namespace MyPocket.Domain.Models
     public ICollection<Budget> Budgets { get; set; }
     public ICollection<Transaction> Transactions { get; set; }
   }
-
 }

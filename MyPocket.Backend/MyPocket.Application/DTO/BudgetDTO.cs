@@ -6,7 +6,7 @@ namespace MyPocket.Application.DTO
     public Guid? Id { get; set; }
     public decimal Amount { get; set; }
     public Guid CategoryId { get; set; }
-    public CategoryDTO? Category { get; set; }
+    public string Category { get; set; }
     public DateTime Month { get; set; }
   }
 }
