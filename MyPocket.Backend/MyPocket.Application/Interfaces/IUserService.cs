@@ -4,8 +4,12 @@ namespace MyPocket.Application.Interfaces
 {
   public interface IUserService
   {
-    Task<string> Authenticate(UserDTO user, string password);
-    UserDTO CheckAuthentication();
-    UserDTO Register(UserDTO user);
+    Task<LoginResultModel> AuthenticateAsync(LoginModel user);
+    Task<UserDTO> GetByIdAsync(string Id);
+    Task<RegisterResultModel> RegisterAsync(UserDTO user);
+    Task<ChangePasswordResultModel> ChangePasswordAsync(ChangePasswordRequestModel data);
+    Task ForgotPasswordAsync(ForgotPasswordRequestModel data);
+    Task<ResetPasswordResultModel> ResetPasswordAsync(ResetPasswordRequestModel data);
+
   }
 }

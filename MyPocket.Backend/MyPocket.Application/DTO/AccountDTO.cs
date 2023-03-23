@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 namespace MyPocket.Application.DTO
 {
   public class AccountDTO

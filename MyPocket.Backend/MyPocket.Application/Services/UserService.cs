@@ -13,17 +13,32 @@ namespace MyPocket.Application.Services
       _repo = repo;
     }
 
-    public Task<string> Authenticate(UserDTO user, string password)
+    public Task<LoginResultModel> AuthenticateAsync(LoginModel user)
     {
       throw new NotImplementedException();
     }
 
-    public UserDTO CheckAuthentication()
+    public Task<ChangePasswordResultModel> ChangePasswordAsync(ChangePasswordRequestModel data)
     {
       throw new NotImplementedException();
     }
 
-    public UserDTO Register(UserDTO user)
+    public Task ForgotPasswordAsync(ForgotPasswordRequestModel data)
+    {
+      throw new NotImplementedException();
+    }
+
+    public Task<UserDTO> GetByIdAsync(string Id)
+    {
+      throw new NotImplementedException();
+    }
+
+    public Task<RegisterResultModel> RegisterAsync(UserDTO user)
+    {
+      throw new NotImplementedException();
+    }
+
+    public Task<ResetPasswordResultModel> ResetPasswordAsync(ResetPasswordRequestModel data)
     {
       throw new NotImplementedException();
     }
