@@ -13,7 +13,12 @@ namespace MyPocket.Application.Services
       _repo = repo;
     }
 
-    public BudgetDTO AddOrUpdate(UserData user)
+    public Task<BudgetDTO> AddAsync(UserData User, BudgetDTO account)
+    {
+      throw new NotImplementedException();
+    }
+
+    public Task<AddOrUpdateResult<BudgetDTO>> AddOrUpdateAsync(UserData user, BudgetDTO account)
     {
       throw new NotImplementedException();
     }
@@ -28,17 +33,22 @@ namespace MyPocket.Application.Services
       throw new NotImplementedException();
     }
 
-    public Task<AccountDTO> GetByIdAsync(string UserId, string Id)
+    public Task<BudgetDTO> GetByIdAsync(string UserId, string Id)
     {
       throw new NotImplementedException();
     }
 
-    public Task Remove(BudgetDTO account)
+    public Task Remove(UserData user, BudgetDTO account)
     {
       throw new NotImplementedException();
     }
 
-    public Task RemoveRange(List<BudgetDTO> accounts)
+    public Task RemoveRange(UserData user, List<Guid> ids)
+    {
+      throw new NotImplementedException();
+    }
+
+    public Task<BudgetDTO> UpdateAsync(UserData User, BudgetDTO account, BudgetDTO values)
     {
       throw new NotImplementedException();
     }

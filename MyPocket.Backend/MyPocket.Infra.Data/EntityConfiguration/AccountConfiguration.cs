@@ -12,6 +12,10 @@ namespace MyPocket.Infra.EntityConfiguration
       b.HasMany(e => e.Transactions)
           .WithOne(e => e.Account)
           .HasForeignKey(e => e.AccountId);
+      b.HasOne(e => e.User)
+      .WithMany(e => e.Accounts)
+      .HasForeignKey(e => e.UserId)
+      .IsRequired();
     }
   }
 }

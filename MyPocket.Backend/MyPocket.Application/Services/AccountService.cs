@@ -1,6 +1,7 @@
 using MyPocket.Application.DTO;
 using MyPocket.Application.Interfaces;
 using MyPocket.Domain.Interfaces;
+using MyPocket.Domain.Models;
 using MyPocket.Infra.Data.Context;
 
 namespace MyPocket.Application.Services
@@ -13,14 +14,26 @@ namespace MyPocket.Application.Services
       _repo = repo;
     }
 
-    public Task<AccountDTO> AddAsync(UserData User, AccountDTO account)
+    public async Task<AccountDTO> AddAsync(UserData User, AccountDTO account)
     {
-      throw new NotImplementedException();
-    }
-
-    public async Task<AddOrUpdateResult<AccountDTO>> AddOrUpdateAsync(UserData user, AccountDTO account)
-    {
-      throw new NotImplementedException();
+      try
+      {
+        var newAccount = _repo.Account.Add(new Account
+        {
+          Name = account.Name,
+          UserId = User.UserId
+        });
+        await _repo.SaveAsync();
+        return new AccountDTO
+        {
+          Name = newAccount.Name,
+          Id = newAccount.Id,
+        };
+      }
+      catch (Exception ex)
+      {
+        throw new Exception(ex.Message, ex);
+      }
     }
 
     public PaginationResult<AccountDTO> Filter(PaginationRequest<AccountDTO> data, UserData user)
@@ -30,27 +43,82 @@ namespace MyPocket.Application.Services
 
     public List<AccountDTO> GetAll(string UserId)
     {
-      throw new NotImplementedException();
+      try
+      {
+        var result = _repo.Account.Get(c => c.UserId == UserId).Select(c => new AccountDTO
+        {
+          Name = c.Name,
+          Id = c.Id
+        });
+        return result.ToList();
+      }
+      catch (Exception ex)
+      {
+        throw new Exception(ex.Message, ex);
+      }
     }
 
-    public Task<AccountDTO> GetByIdAsync(string UserId, string Id)
+    public async Task<AccountDTO?> GetByIdAsync(string UserId, Guid Id)
     {
-      throw new NotImplementedException();
+      try
+      {
+        var result = await _repo.Account.GetSingleAsync(c => c.Id == Id && c.UserId == UserId);
+        if (result == null) return null;
+        return new AccountDTO
+        {
+          Name = result.Name,
+          Id = result.Id
+        };
+      }
+      catch (Exception ex)
+      {
+        throw new Exception(ex.Message, ex);
+      }
     }
 
-    public Task Remove(UserData user, AccountDTO account)
+    public async Task Remove(UserData user, AccountDTO account)
     {
-      throw new NotImplementedException();
+      try
+      {
+        var entity = await _repo.Account.GetSingleAsync(c => c.Id == account.Id && c.UserId == user.UserId);
+        _repo.Account.Remove(entity);
+        await _repo.SaveAsync();
+      }
+      catch (Exception ex)
+      {
+        throw new Exception(ex.Message, ex);
+      }
     }
 
-    public Task RemoveRange(UserData user, List<string> ids)
+    public async Task RemoveRange(UserData user, List<Guid> ids)
     {
-      throw new NotImplementedException();
+      try
+      {
+        var accounts = _repo.Account.Get(c => c.UserId == user.UserId && ids.Contains(c.Id));
+        _repo.Account.RemoveRange(accounts);
+        await _repo.SaveAsync();
+      }
+      catch (Exception ex)
+      {
+        throw new Exception(ex.Message, ex);
+      }
     }
 
-    public Task<AccountDTO> UpdateAsync(UserData User, AccountDTO account, AccountDTO values)
+    public async Task<AccountDTO> UpdateAsync(UserData User, AccountDTO account, AccountDTO values)
     {
-      throw new NotImplementedException();
+      try
+      {
+        account.UserId = User.UserId;
+        values.UserId = User.UserId;
+        var entity = await _repo.Account.GetSingleAsync(c => c.Id == account.Id);
+        _repo.Account.Update(entity, values);
+        await _repo.SaveAsync();
+        return values;
+      }
+      catch (Exception ex)
+      {
+        throw new Exception(ex.Message, ex);
+      }
     }
   }
 }

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyPocket.Infra.Data.Context;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MyPocket.Infra.Migrations
 {
     [DbContext(typeof(MyPocketDBContext))]
-    partial class MyPocketDBContextModelSnapshot : ModelSnapshot
+    [Migration("20230323015742_fixes")]
+    partial class fixes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -164,13 +166,7 @@ namespace MyPocket.Infra.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Accounts");
                 });
@@ -207,13 +203,7 @@ namespace MyPocket.Infra.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Categories");
                 });
@@ -378,17 +368,6 @@ namespace MyPocket.Infra.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("MyPocket.Domain.Models.Account", b =>
-                {
-                    b.HasOne("MyPocket.Domain.Models.User", "User")
-                        .WithMany("Accounts")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("MyPocket.Domain.Models.Budget", b =>
                 {
                     b.HasOne("MyPocket.Domain.Models.Category", "Category")
@@ -398,17 +377,6 @@ namespace MyPocket.Infra.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
-                });
-
-            modelBuilder.Entity("MyPocket.Domain.Models.Category", b =>
-                {
-                    b.HasOne("MyPocket.Domain.Models.User", "User")
-                        .WithMany("Categories")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("MyPocket.Domain.Models.Transaction", b =>
@@ -452,10 +420,6 @@ namespace MyPocket.Infra.Migrations
 
             modelBuilder.Entity("MyPocket.Domain.Models.User", b =>
                 {
-                    b.Navigation("Accounts");
-
-                    b.Navigation("Categories");
-
                     b.Navigation("Transactions");
                 });
 #pragma warning restore 612, 618

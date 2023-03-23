@@ -24,18 +24,18 @@ namespace MyPocket.API.Controllers
       return Ok(accounts);
     }
     [HttpGet("{Id}")]
-    public async Task<ActionResult<AccountDTO>> GetById([FromRoute] string Id)
+    public async Task<ActionResult<AccountDTO>> GetById([FromRoute] Guid Id)
     {
       var user = HttpContext.User.Identity!.GetUserData();
       var account = await _application.Account.GetByIdAsync(user.UserId, Id);
       if (account == null) return NotFound($"Account Id: {Id} not found");
       return Ok(account);
     }
-    [HttpPost("Filter")]
+    [HttpPost]
     public async Task<ActionResult<AddOrUpdateResult<AccountDTO>>> AddOrUpdate([FromBody] AccountDTO account)
     {
       var user = HttpContext.User.Identity!.GetUserData();
-      if (string.IsNullOrEmpty(account.Id))
+      if (!account.Id.HasValue)
       {
         var newAccount = await _application.Account.AddAsync(user, account);
         return Ok(new AddOrUpdateResult<AccountDTO>
@@ -46,7 +46,7 @@ namespace MyPocket.API.Controllers
       }
       else
       {
-        var findAccount = await _application.Account.GetByIdAsync(user.UserId, account.Id);
+        var findAccount = await _application.Account.GetByIdAsync(user.UserId, account.Id.Value);
         if (account == null) return NotFound($"Account Id: {account.Id} not found");
         var updatedAccount = await _application.Account.UpdateAsync(user, findAccount, account);
         return Ok(new AddOrUpdateResult<AccountDTO>
@@ -57,7 +57,7 @@ namespace MyPocket.API.Controllers
       }
     }
     [HttpDelete("{Id}")]
-    public async Task<ActionResult<string>> Remove([FromRoute] string Id)
+    public async Task<ActionResult<string>> Remove([FromRoute] Guid Id)
     {
       var user = HttpContext.User.Identity!.GetUserData();
       var account = await _application.Account.GetByIdAsync(user.UserId, Id);
@@ -73,7 +73,7 @@ namespace MyPocket.API.Controllers
       await _application.Account.RemoveRange(user, data.Ids);
       return Ok(data.Ids);
     }
-    [HttpPost]
+    [HttpPost("Filter")]
     public ActionResult Filter([FromBody] PaginationRequest<AccountDTO> data)
     {
       var user = HttpContext.User.Identity!.GetUserData();

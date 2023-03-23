@@ -47,7 +47,7 @@ namespace MyPocket.Infra.Repository
       _context.Set<T>().RemoveRange(entities);
     }
 
-    public void Update(T entity, T values)
+    public void Update(T entity, object values)
     {
       _context.Entry(entity).CurrentValues.SetValues(values);
     }

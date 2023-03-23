@@ -55,14 +55,14 @@ namespace MyPocket.API.Controllers
       }
       return BadRequest(result.Message);
     }
-    [HttpPost]
+    [HttpPost("ForgotPassword")]
     [AllowAnonymous]
     public async Task<ActionResult> ForgotPassword([FromBody] ForgotPasswordRequestModel data)
     {
       await _application.User.ForgotPasswordAsync(data);
       return Ok("Instructions have been sent to the informed e-mail");
     }
-    [HttpPost]
+    [HttpPost("ResetPassword")]
     [AllowAnonymous]
     public async Task<ActionResult> ResetPassword([FromBody] ResetPasswordRequestModel data)
     {

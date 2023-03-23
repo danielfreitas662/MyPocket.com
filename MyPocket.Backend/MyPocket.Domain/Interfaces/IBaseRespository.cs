@@ -11,6 +11,6 @@ namespace MyPocket.Domain.Interfaces
     void AddRange(List<T> entities);
     void Remove(T entity);
     void RemoveRange(List<T> entities);
-    void Update(T entity, T values);
+    void Update(T entity, object values);
   }
 }
