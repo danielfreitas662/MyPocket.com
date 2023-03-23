@@ -10,7 +10,7 @@ namespace MyPocket.Application.Interfaces
     Task<AccountDTO?> GetByIdAsync(string UserId, Guid Id);
     Task<AccountDTO> AddAsync(UserData User, AccountDTO account);
     Task<AccountDTO> UpdateAsync(UserData User, AccountDTO account, AccountDTO values);
-    Task Remove(UserData user, AccountDTO account);
-    Task RemoveRange(UserData user, List<Guid> ids);
+    Task RemoveAsync(UserData user, AccountDTO account);
+    Task RemoveRangeAsync(UserData user, List<Guid> ids);
   }
 }

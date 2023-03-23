@@ -76,11 +76,12 @@ namespace MyPocket.Application.Services
       }
     }
 
-    public async Task Remove(UserData user, AccountDTO account)
+    public async Task RemoveAsync(UserData user, AccountDTO account)
     {
       try
       {
         var entity = await _repo.Account.GetSingleAsync(c => c.Id == account.Id && c.UserId == user.UserId);
+        if (entity == null) throw new NullReferenceException("Invalid account");
         _repo.Account.Remove(entity);
         await _repo.SaveAsync();
       }
@@ -90,7 +91,7 @@ namespace MyPocket.Application.Services
       }
     }
 
-    public async Task RemoveRange(UserData user, List<Guid> ids)
+    public async Task RemoveRangeAsync(UserData user, List<Guid> ids)
     {
       try
       {

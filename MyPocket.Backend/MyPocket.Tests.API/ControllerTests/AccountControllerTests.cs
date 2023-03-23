@@ -119,7 +119,7 @@ public class AccountControllerTests
     AccountController sut = new AccountController(applicationServiceMock.Object);
     sut.ControllerContext.HttpContext = contextMock.context;
     accountServiceMock.Setup(x => x.GetByIdAsync(It.IsAny<string>(), accountMock.Id.Value)).ReturnsAsync(() => accountMock);
-    accountServiceMock.Setup(x => x.Remove(It.IsAny<UserData>(), accountMock));
+    accountServiceMock.Setup(x => x.RemoveAsync(It.IsAny<UserData>(), accountMock));
     applicationServiceMock.Setup(x => x.Account).Returns(accountServiceMock.Object);
 
     var result = await sut.Remove(accountMock.Id.Value);

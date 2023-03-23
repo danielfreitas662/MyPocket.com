@@ -62,7 +62,7 @@ namespace MyPocket.API.Controllers
       var user = HttpContext.User.Identity!.GetUserData();
       var account = await _application.Account.GetByIdAsync(user.UserId, Id);
       if (account == null) return NotFound($"Account Id: {Id} not found");
-      await _application.Account.Remove(user, account);
+      await _application.Account.RemoveAsync(user, account);
       return Ok(Id);
     }
 
@@ -70,7 +70,7 @@ namespace MyPocket.API.Controllers
     public async Task<ActionResult> RemoveRange([FromBody] RemoveRangeModel data)
     {
       var user = HttpContext.User.Identity!.GetUserData();
-      await _application.Account.RemoveRange(user, data.Ids);
+      await _application.Account.RemoveRangeAsync(user, data.Ids);
       return Ok(data.Ids);
     }
     [HttpPost("Filter")]
