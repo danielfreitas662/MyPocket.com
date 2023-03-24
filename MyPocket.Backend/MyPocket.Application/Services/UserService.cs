@@ -24,7 +24,7 @@ namespace MyPocket.Application.Services
       _config = config;
       _userManager = userManager;
     }
-    private string BuildToken(User user)
+    public string BuildToken(User user)
     {
       try
       {
@@ -35,8 +35,8 @@ namespace MyPocket.Application.Services
           Subject = new ClaimsIdentity(new Claim[]
                   {
                     new Claim(ClaimTypes.Name, user.UserName.ToString()),
-                     new Claim("UserID", user.Id.ToString()),
-                     new Claim("Email", user.Email.ToString()),
+                    new Claim("UserID", user.Id.ToString()),
+                    new Claim("Email", user.Email.ToString()),
                     new Claim("Name", user.FirstName +" "+ user.LastName,"string")
                   }),
           Expires = DateTime.Now.AddHours(-3).AddDays(10),
@@ -48,7 +48,6 @@ namespace MyPocket.Application.Services
       catch (Exception ex)
       {
         throw new Exception(ex.Message, ex);
-
       }
     }
 

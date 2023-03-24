@@ -36,24 +36,28 @@ namespace MyPocket.Tests.Application.Fixtures
     private static List<User> Users = new List<User>{
       new User{
         Id = "1",
+        UserName = "robwood@gmail.com",
         FirstName ="Rob",
         LastName ="Wood",
         Email ="robwood@gmail.com"
       },
       new User{
         Id = "2",
+        UserName = "robwood@gmail.com",
         FirstName ="Clayton",
         LastName ="Ford",
         Email ="claytonford@gmail.com"
       },
       new User{
         Id ="3",
+        UserName = "robwood@gmail.com",
         FirstName ="Daniel",
         LastName ="Lord",
         Email ="daniellord@gmail.com"
       },
       new User{
         Id = "4",
+        UserName = "robwood@gmail.com",
         FirstName ="John",
         LastName ="Donald",
         Email ="johndonald@gmail.com"
