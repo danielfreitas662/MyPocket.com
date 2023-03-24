@@ -8,7 +8,7 @@ namespace MyPocket.Application.Interfaces
     Task<UserDTO> GetByIdAsync(string Id);
     Task<RegisterResultModel> RegisterAsync(UserDTO user);
     Task<ChangePasswordResultModel> ChangePasswordAsync(ChangePasswordRequestModel data);
-    Task ForgotPasswordAsync(ForgotPasswordRequestModel data);
+    Task<string> ForgotPasswordAsync(ForgotPasswordRequestModel data);
     Task<ResetPasswordResultModel> ResetPasswordAsync(ResetPasswordRequestModel data);
 
   }

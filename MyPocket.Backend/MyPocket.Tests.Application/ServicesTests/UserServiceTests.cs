@@ -292,4 +292,179 @@ public class UserServiceTests
     // When
     await Assert.ThrowsAsync<Exception>(() => sut.RegisterAsync(userDTO));
   }
+  [Fact]
+  public async void ResetPasswordAsync_Success()
+  {
+    // Given
+    var data = new ResetPasswordRequestModel
+    {
+      NewPassword = "123",
+      Code = "123",
+      Email = "email@email.com"
+    };
+    userRepoMock.Setup(x => x.GetSingleAsync(It.IsAny<Expression<Func<User, bool>>>(), null)).ReturnsAsync(() => usersMock[0]);
+    userManager.Setup(x => x.ResetPasswordAsync(It.IsAny<User>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(() => IdentityResult.Success);
+    repo.Setup(x => x.User).Returns(userRepoMock.Object);
+    UserService sut = new UserService(repo.Object, signInManager.Object, config.Object, userManager.Object);
+    // When
+    var result = await sut.ResetPasswordAsync(data);
+    // Then
+    Assert.Equal(true, result.Success);
+    Assert.Equal("Password reset success", result.Message);
+  }
+  [Fact]
+  public async void ResetPasswordAsync_Throws_When_Invalid_User()
+  {
+    // Given
+    var data = new ResetPasswordRequestModel
+    {
+      NewPassword = "123",
+      Code = "123",
+      Email = "email@email.com"
+    };
+    userRepoMock.Setup(x => x.GetSingleAsync(It.IsAny<Expression<Func<User, bool>>>(), null)).ReturnsAsync(() => null);
+    repo.Setup(x => x.User).Returns(userRepoMock.Object);
+    UserService sut = new UserService(repo.Object, signInManager.Object, config.Object, userManager.Object);
+    // When
+    var exception = await Assert.ThrowsAsync<Exception>(() => sut.ResetPasswordAsync(data));
+    var innerException = Assert.IsAssignableFrom<NullReferenceException>(exception.InnerException);
+    Assert.Equal("User not found", innerException.Message);
+  }
+  [Fact]
+  public async void ResetPasswordAsync_Throws_When_Reset_Fails()
+  {
+    // Given
+    var data = new ResetPasswordRequestModel
+    {
+      NewPassword = "123",
+      Code = "123",
+      Email = "email@email.com"
+    };
+    userRepoMock.Setup(x => x.GetSingleAsync(It.IsAny<Expression<Func<User, bool>>>(), null)).ReturnsAsync(() => usersMock[0]);
+    userManager.Setup(x => x.ResetPasswordAsync(It.IsAny<User>(), It.IsAny<string>(), It.IsAny<string>())).ThrowsAsync(new Exception());
+    repo.Setup(x => x.User).Returns(userRepoMock.Object);
+    UserService sut = new UserService(repo.Object, signInManager.Object, config.Object, userManager.Object);
+    // When
+    await Assert.ThrowsAsync<Exception>(() => sut.ResetPasswordAsync(data));
+  }
+  [Fact]
+  public async void ForgotPassword_Throws_When_Invalid_User()
+  {
+    // Given
+    var data = new ForgotPasswordRequestModel
+    {
+      Email = "email@email.com"
+    };
+    userRepoMock.Setup(x => x.GetSingleAsync(It.IsAny<Expression<Func<User, bool>>>(), null)).ReturnsAsync(() => null);
+    repo.Setup(x => x.User).Returns(userRepoMock.Object);
+    UserService sut = new UserService(repo.Object, signInManager.Object, config.Object, userManager.Object);
+    // When
+    var exception = await Assert.ThrowsAsync<Exception>(() => sut.ForgotPasswordAsync(data));
+    var innerException = Assert.IsAssignableFrom<NullReferenceException>(exception.InnerException);
+    Assert.Equal("Invalid user", innerException.Message);
+  }
+  [Fact]
+  public async void ForgotPassword_Throws_When_Token_Generation_Fails()
+  {
+    // Given
+    var data = new ForgotPasswordRequestModel
+    {
+      Email = "email@email.com"
+    };
+    userRepoMock.Setup(x => x.GetSingleAsync(It.IsAny<Expression<Func<User, bool>>>(), null)).ReturnsAsync(() => usersMock[0]);
+    userManager.Setup(x => x.GeneratePasswordResetTokenAsync(It.IsAny<User>())).ThrowsAsync(new Exception());
+    repo.Setup(x => x.User).Returns(userRepoMock.Object);
+    UserService sut = new UserService(repo.Object, signInManager.Object, config.Object, userManager.Object);
+    // When
+    var exception = await Assert.ThrowsAsync<Exception>(() => sut.ForgotPasswordAsync(data));
+  }
+  [Fact]
+  public async void ForgotPassword_Success_Return_Token()
+  {
+    // Given
+    var data = new ForgotPasswordRequestModel
+    {
+      Email = "email@email.com"
+    };
+    userRepoMock.Setup(x => x.GetSingleAsync(It.IsAny<Expression<Func<User, bool>>>(), null)).ReturnsAsync(() => usersMock[0]);
+    userManager.Setup(x => x.GeneratePasswordResetTokenAsync(It.IsAny<User>())).ReturnsAsync(() => "123");
+    repo.Setup(x => x.User).Returns(userRepoMock.Object);
+    UserService sut = new UserService(repo.Object, signInManager.Object, config.Object, userManager.Object);
+    // When
+    var result = await sut.ForgotPasswordAsync(data);
+    Assert.Equal("123", result);
+  }
+  [Fact]
+  public async void ChangePasswordAsync_Success_Return_Success_With_Message()
+  {
+    // Given
+    var data = new ChangePasswordRequestModel
+    {
+      Email = "email@email.com",
+      OldPassword = "123",
+      NewPassword = "321"
+    };
+    userRepoMock.Setup(x => x.GetSingleAsync(It.IsAny<Expression<Func<User, bool>>>(), null)).ReturnsAsync(() => usersMock[0]);
+    userManager.Setup(x => x.ChangePasswordAsync(It.IsAny<User>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(() => IdentityResult.Success);
+    repo.Setup(x => x.User).Returns(userRepoMock.Object);
+    UserService sut = new UserService(repo.Object, signInManager.Object, config.Object, userManager.Object);
+    // When
+    var result = await sut.ChangePasswordAsync(data);
+    Assert.Equal(true, result.Success);
+    Assert.Equal("Password successfully changed", result.Message);
+  }
+  [Fact]
+  public async void ChangePasswordAsync_Change_Password_Fails_Return_Success_False_With_Message()
+  {
+    // Given
+    var data = new ChangePasswordRequestModel
+    {
+      Email = "email@email.com",
+      OldPassword = "123",
+      NewPassword = "321"
+    };
+    userRepoMock.Setup(x => x.GetSingleAsync(It.IsAny<Expression<Func<User, bool>>>(), null)).ReturnsAsync(() => usersMock[0]);
+    userManager.Setup(x => x.ChangePasswordAsync(It.IsAny<User>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(() => IdentityResult.Failed(new IdentityError { Code = "123", Description = "Error" }));
+    repo.Setup(x => x.User).Returns(userRepoMock.Object);
+    UserService sut = new UserService(repo.Object, signInManager.Object, config.Object, userManager.Object);
+    // When
+    var result = await sut.ChangePasswordAsync(data);
+    Assert.Equal(false, result.Success);
+    Assert.Equal("Error", result.Message);
+  }
+  [Fact]
+  public async void ChangePasswordAsync_Throws_When_Invalid_User()
+  {
+    // Given
+    var data = new ChangePasswordRequestModel
+    {
+      Email = "email@email.com",
+      OldPassword = "123",
+      NewPassword = "321"
+    };
+    userRepoMock.Setup(x => x.GetSingleAsync(It.IsAny<Expression<Func<User, bool>>>(), null)).ReturnsAsync(() => null);
+    repo.Setup(x => x.User).Returns(userRepoMock.Object);
+    UserService sut = new UserService(repo.Object, signInManager.Object, config.Object, userManager.Object);
+    // When
+    var exception = await Assert.ThrowsAsync<Exception>(() => sut.ChangePasswordAsync(data));
+    var innerException = Assert.IsAssignableFrom<NullReferenceException>(exception.InnerException);
+    Assert.Equal("Invalid user", innerException.Message);
+  }
+  [Fact]
+  public async void ChangePasswordAsync_Throws_When_Change_Fails()
+  {
+    // Given
+    var data = new ChangePasswordRequestModel
+    {
+      Email = "email@email.com",
+      OldPassword = "123",
+      NewPassword = "321"
+    };
+    userRepoMock.Setup(x => x.GetSingleAsync(It.IsAny<Expression<Func<User, bool>>>(), null)).ReturnsAsync(() => usersMock[0]);
+    userManager.Setup(x => x.ChangePasswordAsync(It.IsAny<User>(), It.IsAny<string>(), It.IsAny<string>())).ThrowsAsync(new Exception());
+    repo.Setup(x => x.User).Returns(userRepoMock.Object);
+    UserService sut = new UserService(repo.Object, signInManager.Object, config.Object, userManager.Object);
+    // When
+    await Assert.ThrowsAsync<Exception>(() => sut.ChangePasswordAsync(data));
+  }
 }

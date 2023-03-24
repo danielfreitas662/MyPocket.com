@@ -50,6 +50,7 @@ namespace MyPocket.Application.DTO
   public class ResetPasswordRequestModel
   {
     public string Email { get; set; }
+    public string NewPassword { get; set; }
     public string Code { get; set; }
   }
   public class ResetPasswordResultModel

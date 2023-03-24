@@ -96,14 +96,46 @@ namespace MyPocket.Application.Services
       }
     }
 
-    public Task<ChangePasswordResultModel> ChangePasswordAsync(ChangePasswordRequestModel data)
+    public async Task<ChangePasswordResultModel> ChangePasswordAsync(ChangePasswordRequestModel data)
     {
-      throw new NotImplementedException();
+      try
+      {
+        var user = await _repo.User.GetSingleAsync(c => c.Email == data.Email);
+        if (user == null) throw new NullReferenceException("Invalid user");
+        var result = await _userManager.ChangePasswordAsync(user, data.OldPassword, data.NewPassword);
+        if (result.Succeeded)
+        {
+          return new ChangePasswordResultModel
+          {
+            Success = true,
+            Message = "Password successfully changed"
+          };
+        }
+        return new ChangePasswordResultModel
+        {
+          Success = false,
+          Message = result.Errors.First().Description
+        };
+      }
+      catch (Exception ex)
+      {
+        throw new Exception(ex.Message, ex);
+      }
     }
 
-    public Task ForgotPasswordAsync(ForgotPasswordRequestModel data)
+    public async Task<string> ForgotPasswordAsync(ForgotPasswordRequestModel data)
     {
-      throw new NotImplementedException();
+      try
+      {
+        var user = await _repo.User.GetSingleAsync(c => c.Email == data.Email);
+        if (user == null) throw new NullReferenceException("Invalid user");
+        var result = await _userManager.GeneratePasswordResetTokenAsync(user);
+        return result;
+      }
+      catch (Exception ex)
+      {
+        throw new Exception(ex.Message, ex);
+      }
     }
 
     public Task<UserDTO> GetByIdAsync(string Id)
@@ -151,9 +183,31 @@ namespace MyPocket.Application.Services
       }
     }
 
-    public Task<ResetPasswordResultModel> ResetPasswordAsync(ResetPasswordRequestModel data)
+    public async Task<ResetPasswordResultModel> ResetPasswordAsync(ResetPasswordRequestModel data)
     {
-      throw new NotImplementedException();
+      try
+      {
+        var user = await _repo.User.GetSingleAsync(c => c.Email == data.Email);
+        if (user == null) throw new NullReferenceException("User not found");
+        var result = await _userManager.ResetPasswordAsync(user, data.Code, data.NewPassword);
+        if (result.Succeeded)
+        {
+          return new ResetPasswordResultModel
+          {
+            Success = true,
+            Message = "Password reset success"
+          };
+        }
+        return new ResetPasswordResultModel
+        {
+          Success = false,
+          Message = result.Errors.First().Description
+        };
+      }
+      catch (Exception ex)
+      {
+        throw new Exception(ex.Message, ex);
+      }
     }
   }
 }
