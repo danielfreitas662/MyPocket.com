@@ -20,6 +20,7 @@ namespace MyPocket.Application.Services
         var newCategory = _repo.Category.Add(new Category
         {
           Name = category.Name,
+          Type = category.Type,
           UserId = category.UserId,
         });
         await _repo.SaveAsync();
@@ -27,6 +28,7 @@ namespace MyPocket.Application.Services
         {
           Name = newCategory.Name,
           UserId = newCategory.UserId,
+          Type = category.Type,
           Id = newCategory.Id,
         };
       }
@@ -48,6 +50,7 @@ namespace MyPocket.Application.Services
         var result = _repo.Category.Get(c => c.UserId == UserId).Select(c => new CategoryDTO
         {
           Name = c.Name,
+          Type = c.Type,
           UserId = c.UserId,
           Id = c.Id
         });
@@ -68,6 +71,7 @@ namespace MyPocket.Application.Services
         return new CategoryDTO
         {
           Name = result.Name,
+          Type = result.Type,
           UserId = result.UserId,
           Id = result.Id
         };

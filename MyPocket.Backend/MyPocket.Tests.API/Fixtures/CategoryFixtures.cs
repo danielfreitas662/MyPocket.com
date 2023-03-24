@@ -11,27 +11,32 @@ namespace MyPocket.Tests.API.Fixtures
       new CategoryDTO{
         Id = Guid.NewGuid(),
         Name = "Home Expenses",
-        Type = CategoryType.Outcome
+        Type = CategoryType.Outcome,
+        UserId = UserFixtures.GetUsers()[0].Id
       },
       new CategoryDTO{
         Id = Guid.NewGuid(),
         Name = "Car Expenses",
-        Type = CategoryType.Outcome
+        Type = CategoryType.Outcome,
+        UserId = UserFixtures.GetUsers()[0].Id
       },
       new CategoryDTO{
         Id = Guid.NewGuid(),
         Name = "Energy",
-        Type = CategoryType.Outcome
+        Type = CategoryType.Outcome,
+        UserId = UserFixtures.GetUsers()[0].Id
       },
       new CategoryDTO{
         Id = Guid.NewGuid(),
         Name = "Water",
-        Type = CategoryType.Outcome
+        Type = CategoryType.Outcome,
+        UserId = UserFixtures.GetUsers()[0].Id
       },
       new CategoryDTO{
         Id = Guid.NewGuid(),
         Name = "Salary",
-        Type= CategoryType.Income
+        Type= CategoryType.Income,
+        UserId = UserFixtures.GetUsers()[0].Id
       }
     };
 
