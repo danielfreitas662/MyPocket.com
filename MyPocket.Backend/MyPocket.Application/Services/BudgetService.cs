@@ -7,10 +7,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MyPocket.Application.Services
 {
-  public class BugetService : IBudgetService
+  public class BudgetService : IBudgetService
   {
     private readonly IRepositories _repo;
-    public BugetService(IRepositories repo)
+    public BudgetService(IRepositories repo)
     {
       _repo = repo;
     }

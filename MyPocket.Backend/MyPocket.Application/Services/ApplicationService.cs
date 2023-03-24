@@ -27,7 +27,7 @@ namespace MyPocket.Application.Services
       Account = new AccountService(_repo);
       Category = new CategoryService(_repo);
       Transaction = new TransactionService(_repo);
-      Budget = new BugetService(_repo);
+      Budget = new BudgetService(_repo);
     }
   }
 }
