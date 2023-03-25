@@ -1,0 +1,15 @@
+@import './variables.module.scss';
+
+html,
+body {
+  overflow-x: hidden;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  background: linear-gradient(#3c1327, #784358);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}

@@ -1,0 +1,124 @@
+@import 'styles/variables.module.scss';
+.main {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  height: 100vh;
+  max-width: 1200px;
+}
+.logo {
+  margin-top: 20px;
+  color: white;
+  font-weight: bold;
+  font-size: 32px;
+  margin-bottom: 30px;
+}
+
+.presentation {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  color: white;
+  gap: 20px 20px;
+  align-items: center;
+  flex-wrap: wrap;
+  .description {
+    display: flex;
+    flex: 1 1 300px;
+    flex-direction: column;
+    gap: 20px 20px;
+    text-align: left;
+    .title {
+      font-size: x-large;
+      font-weight: bold;
+    }
+    .text {
+      font-size: 10px;
+    }
+  }
+  .image {
+    text-align: center;
+    flex: 1 1 300px;
+  }
+}
+.link {
+  padding: 10px;
+  color: white;
+  text-align: center;
+  background-color: $primary-color;
+  border-radius: 10px;
+}
+.features {
+  margin-bottom: 40px;
+  margin-top: 40px;
+  background-color: white;
+  justify-content: space-around;
+  width: 100%;
+  display: flex;
+  padding: 30px;
+  gap: 20px 20px;
+  flex-wrap: wrap;
+  .feature {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 1 1 300px;
+    text-align: center;
+    .title {
+      font-size: x-large;
+      height: 40px;
+    }
+    .icon {
+      height: 90px;
+    }
+    .text {
+      min-height: 100px;
+      font-size: medium;
+    }
+  }
+}
+.why {
+  margin-bottom: 40px;
+  margin-top: 40px;
+  color: white;
+  width: 100%;
+  background-color: $primary-color;
+  padding: 30px;
+  .title {
+    text-align: center;
+    font-size: x-large;
+    height: 40px;
+  }
+  .body {
+    gap: 20px 20px;
+    padding: 30px;
+    justify-content: space-around;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    min-height: 400px;
+    flex-wrap: wrap;
+    .image {
+      flex: 1 1 250px;
+      text-align: center;
+    }
+    .items {
+      flex: 1 1 250px;
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+      .item {
+        .title {
+          text-align: left;
+          font-size: x-large;
+          margin-bottom: 10px;
+        }
+        .description {
+          font-size: medium;
+          margin-bottom: 40px;
+        }
+      }
+    }
+  }
+}
