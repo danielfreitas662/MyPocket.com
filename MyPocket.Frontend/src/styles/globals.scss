@@ -13,3 +13,25 @@ a {
   color: inherit;
   text-decoration: none;
 }
+.main {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  height: 100vh;
+  margin: auto;
+}
+.logo {
+  margin-top: 20px;
+  color: white;
+  font-weight: bold;
+  font-size: 32px;
+  margin-bottom: 30px;
+  text-align: center;
+}
+@media (min-width: 700px) {
+  body {
+    padding-left: 100px;
+    padding-right: 100px;
+  }
+}

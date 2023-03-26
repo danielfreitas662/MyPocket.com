@@ -1,10 +1,10 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import React from 'react';
+import React, { CSSProperties } from 'react';
 import styles from './navbar.module.scss';
-function Navbar() {
+function Navbar({ style }: { style: CSSProperties }) {
   return (
-    <header className={styles.header}>
+    <header className={styles.header} style={style}>
       <nav className={styles.nav}>
         <Link className={styles.link} href="/about">
           About

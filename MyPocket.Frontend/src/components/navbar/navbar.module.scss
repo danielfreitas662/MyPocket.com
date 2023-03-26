@@ -7,7 +7,7 @@
     flex-direction: row;
     gap: 20px;
     text-align: right;
-    justify-content: end;
+    justify-content: flex-end;
     color: white;
     .link {
       padding: $component-padding;

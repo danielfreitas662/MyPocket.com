@@ -6,6 +6,7 @@ $border-radius: 5px;
 $container-padding: 10px;
 $component-margin: 10px;
 $foreground-color: 0, 0, 0;
+$maxpagewidth: 1200px;
 
 :export {
   light: {
@@ -17,5 +18,6 @@ $foreground-color: 0, 0, 0;
     borderradius: $border-radius;
     componentmargin: $component-margin;
     foregroundcolor: $foreground-color;
+    maxpagewidth: $maxpagewidth;
   }
 }

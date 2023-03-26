@@ -1,30 +1,19 @@
 import Image from 'next/image';
-import { Inter } from 'next/font/google';
 import styles from './page.module.scss';
-import Footer from './footer';
-import home3 from '../../public/home3.png';
-import chart from '../../public/chart.svg';
-import calendar from '../../public/calendar.svg';
-import upload from '../../public/upload.svg';
-import why from '../../public/why.png';
+import home3 from '../images/home/home3.png';
+import chart from '../images/home/chart.svg';
+import calendar from '../images/home/calendar.svg';
+import upload from '../images/home/upload.svg';
+import why from '../images/home/why.png';
 import Link from 'next/link';
-import { Navbar } from 'components';
-
-const inter = Inter({ subsets: ['latin'] });
 
 export default function Home() {
   return (
-    <main className={styles.main} style={{ ...inter.style }}>
-      <div className={styles.logo}>
-        <Link href="/">
-          <span>MyPocket.com</span>
-        </Link>
-      </div>
-      <Navbar />
+    <div className={styles.page}>
       <section className={styles.presentation}>
         <div className={styles.description}>
           <div className={styles.title}>Manage your finances is easier than you think!</div>
-          <div className={inter.className}>
+          <div>
             Welcome to MyPocket.com - the web application that makes managing your personal finances a breeze! With our
             real-time dashboards and custom budgeting tools, you can take control of your finances and achieve your
             financial goals.
@@ -104,6 +93,6 @@ export default function Home() {
           <div className={styles.link}>Sign up for a free account</div>
         </Link>
       </section>
-    </main>
+    </div>
   );
 }
