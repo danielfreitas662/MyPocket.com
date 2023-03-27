@@ -1,12 +1,15 @@
-@import './variables.module.scss';
+@import './variables.scss';
 
 html,
 body {
   overflow-x: hidden;
-  align-items: center;
+  align-items: flex-start;
   display: flex;
   justify-content: center;
-  background: linear-gradient(#3c1327, #784358);
+  min-height: 100vh;
+  width: 100vw;
+  color: $primary-color;
+  background: linear-gradient($primary-color, $secondary-color);
 }
 
 a {
@@ -14,12 +17,12 @@ a {
   text-decoration: none;
 }
 .main {
-  display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
   height: 100vh;
   margin: auto;
+  width: 100%;
 }
 .logo {
   margin-top: 20px;
@@ -29,9 +32,20 @@ a {
   margin-bottom: 30px;
   text-align: center;
 }
-@media (min-width: 700px) {
+@media screen and (min-width: 1024px) {
   body {
+    width: 1000px;
     padding-left: 100px;
     padding-right: 100px;
+  }
+}
+@media screen and (min-width: 700px) and (max-width: 1024px) {
+  body {
+    max-width: 80%;
+  }
+}
+@media screen and (max-width: 700px) {
+  body {
+    width: 100%;
   }
 }

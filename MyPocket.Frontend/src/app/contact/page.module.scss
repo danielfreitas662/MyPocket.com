@@ -1,47 +1,25 @@
-@import '../../styles/variables.module.scss';
+@import '../../styles/variables.scss';
 .body {
   background-color: white;
   padding: 30px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   width: 100%;
   .title {
     font-size: x-large;
     margin-bottom: 30px;
+    text-align: center;
   }
   .text {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    flex-wrap: wrap;
     gap: 20px 20px;
     .form {
-      flex: 1 0 300px;
-      display: flex;
-      flex-direction: row;
-      gap: 10px 10px;
-      .field {
-        display: flex;
-        flex-direction: column;
-        gap: 2px 10px;
-        label {
-          font-size: small;
-          &::after {
-            content: ':';
-          }
-        }
-        input {
-          width: 100%;
-          padding: 5px;
-          border-radius: 5px solid $primary-color;
-        }
-      }
+      flex: 500px;
     }
     .image {
-      flex: 1 0 300px;
+      flex: 400px;
+      text-align: center;
     }
   }
 }

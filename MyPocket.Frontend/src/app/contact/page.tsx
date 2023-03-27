@@ -1,9 +1,21 @@
+'use client';
 import React from 'react';
 import styles from './page.module.scss';
 import contact from '../../images/contact/contact.png';
 import Image from 'next/image';
+import { Button, TextAreaInput, TextInput } from 'components';
+import { FaEnvelope } from 'react-icons/fa';
+import Form from 'components/form/form';
+import { useForm } from 'react-hook-form';
 
+interface FormData {
+  firstName: string;
+  lastName: string;
+  email: string;
+  message: string;
+}
 function Contact() {
+  const form = useForm<FormData>();
   return (
     <div className={styles.body}>
       <div className={styles.title}>Get in touch with us</div>
@@ -12,25 +24,27 @@ function Contact() {
           <Image src={contact} alt="contact" height={300} />
         </div>
         <div className={styles.form}>
-          <form name="contactForm">
-            <div className={styles.field}>
-              <label htmlFor="firstname">First Name</label>
-              <input id="firstname" type="text" placeholder="First name..." required />
-            </div>
-            <div className={styles.field}>
-              <label htmlFor="lastname">Last Name</label>
-              <input id="lastname" type="text" placeholder="Last name..." required />
-            </div>
-            <div className={styles.field}>
-              <label htmlFor="email">Email</label>
-              <input id="email" type="email" placeholder="E-mail..." required />
-            </div>
-            <div className={styles.field}>
-              <label htmlFor="message">Message</label>
-              <textarea id="message" placeholder="Message..." required />
-            </div>
-            <button type="submit">Send</button>
-          </form>
+          <Form
+            form={form}
+            initialValues={{ firstName: 'Daniel' }}
+            onSubmit={form.handleSubmit((data) => console.log(data))}
+          >
+            <Form.Item name="firstName" label="First Name" required>
+              <TextInput />
+            </Form.Item>
+            <Form.Item name="lasName" label="Last Name" required>
+              <TextInput />
+            </Form.Item>
+            <Form.Item name="email" label="E-mail" pattern={/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/i} required>
+              <TextInput />
+            </Form.Item>
+            <Form.Item name="message" label="Message" required>
+              <TextAreaInput rows={8} />
+            </Form.Item>
+            <Button icon={<FaEnvelope />} type="submit">
+              Enviar
+            </Button>
+          </Form>
         </div>
       </div>
     </div>

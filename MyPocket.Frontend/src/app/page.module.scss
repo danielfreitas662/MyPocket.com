@@ -1,4 +1,4 @@
-@import 'styles/variables.module.scss';
+@import '../styles/variables.scss';
 
 .page {
   .presentation {
@@ -40,7 +40,6 @@
     margin-top: 40px;
     background-color: white;
     justify-content: space-around;
-    width: 100%;
     display: flex;
     padding: 30px;
     gap: 20px 20px;
@@ -68,7 +67,6 @@
     margin-bottom: 40px;
     margin-top: 40px;
     color: white;
-    width: 100%;
     background-color: $primary-color;
     padding: 30px;
     .title {

@@ -1,0 +1,17 @@
+@import '../../styles/variables.scss';
+
+.formItem {
+  display: flex;
+  flex-direction: column;
+  gap: 5px 5px;
+  label {
+    &::after {
+      content: ':';
+    }
+  }
+  .errorMessage {
+    color: $error-color;
+    font-size: $font-size-medium;
+    margin-bottom: 4px;
+  }
+}

@@ -14,16 +14,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="pt">
       <body>
-        <main className="main">
+        <main className={inter.className + ' main'} style={{ ...inter.style }}>
           <div className="logo">
             <Link href="/">
               <span>MyPocket.com</span>
             </Link>
           </div>
           <Navbar style={{ ...inter.style }} />
-          <div style={{ ...inter.style }} className={inter.className}>
-            {children}
-          </div>
+          {children}
         </main>
       </body>
     </html>

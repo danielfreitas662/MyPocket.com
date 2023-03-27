@@ -1,4 +1,4 @@
-@import 'styles/variables.module.scss';
+@import '../../styles/variables.scss';
 .header {
   margin-bottom: 30px;
   .nav {
@@ -10,7 +10,7 @@
     justify-content: flex-end;
     color: white;
     .link {
-      padding: $component-padding;
+      padding: $component-general-padding;
       border-radius: $border-radius;
       transition: 0.5s;
       &:hover {
