@@ -41,7 +41,7 @@ function Contact() {
             <Form.Item name="message" label="Message" required>
               <TextAreaInput rows={8} />
             </Form.Item>
-            <Button icon={<FaEnvelope />} type="submit">
+            <Button icon={<FaEnvelope />} type="submit" disabled>
               Enviar
             </Button>
           </Form>
