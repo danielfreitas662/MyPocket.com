@@ -1,20 +1,44 @@
-import React, { DetailedHTMLProps, FormHTMLAttributes, ReactNode } from 'react';
-import { useForm, UseFormReturn, ValidationRule } from 'react-hook-form';
+'use client';
+import React, { DetailedHTMLProps, FormHTMLAttributes, ReactNode, useRef } from 'react';
+import {
+  FieldValues,
+  useForm as originalUserForm,
+  UseFormProps,
+  UseFormReturn,
+  ValidateResult,
+  ValidationRule,
+} from 'react-hook-form';
+import { GetPattern } from 'utils/patterns';
 import styles from './form.module.scss';
 
-const FormContext = React.createContext<UseFormReturn | null>(null);
+export interface FormInstance<TFieldValues, TContex> extends UseFormReturn<any, TContex> {
+  submit: () => void;
+}
+const FormContext = React.createContext<FormInstance<any, any> | null>(null);
 
 export interface FormProps<FormData = any>
-  extends DetailedHTMLProps<FormHTMLAttributes<HTMLFormElement>, HTMLFormElement> {
+  extends Omit<DetailedHTMLProps<FormHTMLAttributes<HTMLFormElement>, HTMLFormElement>, 'onSubmit'> {
   children: ReactNode;
   initialValues?: FormData;
-  form?: UseFormReturn<any, FormData>;
+  form?: FormInstance<any, FormData>;
+  onFinish?: (values: FormData) => void;
 }
-function Form({ children, initialValues, form, ...restProps }: FormProps) {
-  const formInstance = form || useForm<typeof initialValues>({ defaultValues: initialValues });
+function Form({ children, initialValues, onFinish, form, ...restProps }: FormProps) {
+  const formInstance = form || useForm<typeof initialValues, any>({ defaultValues: initialValues });
+  const formRef = useRef<HTMLFormElement>(null);
+
+  const submit = () => {
+    formRef.current?.submit();
+  };
+  formInstance.submit = submit;
   return (
     <FormContext.Provider value={{ ...formInstance }}>
-      <form className="form" {...restProps}>
+      <form
+        ref={formRef}
+        className="form"
+        {...restProps}
+        onSubmit={formInstance.handleSubmit((data) => onFinish && onFinish(data))}
+      >
         {children}
       </form>
     </FormContext.Provider>
@@ -26,9 +50,14 @@ export interface FormItemProps {
   name: string;
   label: string;
   required?: boolean;
-  pattern?: ValidationRule<RegExp>;
+  type?: 'email' | 'usphone';
+  min?: ValidationRule<string | number>;
+  max?: ValidationRule<string | number>;
+  minLength?: ValidationRule<number>;
+  maxLength?: ValidationRule<number>;
+  validate?: (value: any, formValues: any) => ValidateResult | Promise<ValidateResult>;
 }
-function FormItem({ children, label, name, required, pattern }: FormItemProps) {
+function FormItem({ children, label, min, max, minLength, maxLength, name, validate, required, type }: FormItemProps) {
   const form = React.useContext(FormContext);
   if (form == null) throw new Error('FormItem not wrapped by Form provider');
   const {
@@ -44,12 +73,26 @@ function FormItem({ children, label, name, required, pattern }: FormItemProps) {
           ...children.props,
           error: !!errors[name]?.message,
           id: name + 'Field',
-          ...register(name, { required: required && 'Required field', pattern: pattern }),
+          ...register(name, {
+            validate: validate,
+            min: min,
+            max: max,
+            minLength: minLength,
+            maxLength: maxLength,
+            required: required && 'Required field',
+            pattern: { value: GetPattern(type), message: 'Incorrect format' },
+          }),
         })}
       <div className={styles.errorMessage}>{message as string}</div>
     </div>
   );
 }
 Form.Item = FormItem;
+
+export function useForm<TFieldValues extends FieldValues = FieldValues, TContext = any>(
+  props: UseFormProps<TFieldValues, TContext>
+): FormInstance<TFieldValues, TContext> {
+  return { ...originalUserForm(props), submit: () => null };
+}
 
 export default Form;

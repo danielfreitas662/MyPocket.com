@@ -11,7 +11,7 @@ function Navbar({ style }: { style: CSSProperties }) {
         <Link className={styles.link} href="/contact">
           Contact
         </Link>
-        <Link className={styles.link} href="/register">
+        <Link className={styles.link} href="/signup">
           Signup
         </Link>
         <Link className={styles.link} href="/login">

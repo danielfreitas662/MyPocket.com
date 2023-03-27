@@ -33,19 +33,19 @@ a {
   text-align: center;
 }
 @media screen and (min-width: 1024px) {
-  body {
+  main {
     width: 1000px;
     padding-left: 100px;
     padding-right: 100px;
   }
 }
 @media screen and (min-width: 700px) and (max-width: 1024px) {
-  body {
+  main {
     max-width: 80%;
   }
 }
 @media screen and (max-width: 700px) {
-  body {
+  main {
     width: 100%;
   }
 }

@@ -1,9 +1,10 @@
+import { PageTitle } from 'components';
 import React from 'react';
 import styles from './page.module.scss';
 function About() {
   return (
     <div className={styles.body}>
-      <div className={styles.title}>About us</div>
+      <PageTitle>About us</PageTitle>
       <text className={styles.text}>
         Welcome to MyPocket.com, a user-friendly web application designed to help you manage your finances in a
         convenient and efficient way. Our mission is to empower individuals to take control of their finances by
