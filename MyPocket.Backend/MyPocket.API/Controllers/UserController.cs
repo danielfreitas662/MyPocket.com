@@ -66,5 +66,17 @@ namespace MyPocket.API.Controllers
       }
       return BadRequest(result.Message);
     }
+    [HttpGet("GetUser")]
+    public async Task<ActionResult> GetUser()
+    {
+      var userData = HttpContext.User.Identity!.GetUserData();
+      var user = await _application.User.GetByIdAsync(userData.UserId);
+      return Ok(new UserDTO
+      {
+        FirstName = user.FirstName,
+        LastName = user.LastName,
+        Email = user.Email
+      });
+    }
   }
 }

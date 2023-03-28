@@ -1,11 +1,14 @@
 import { PageTitle } from 'components';
 import React from 'react';
 import styles from './page.module.scss';
+export const metadata = {
+  title: 'MyPocket - About',
+};
 function About() {
   return (
     <div className={styles.body}>
       <PageTitle>About us</PageTitle>
-      <text className={styles.text}>
+      <div className={styles.text}>
         Welcome to MyPocket.com, a user-friendly web application designed to help you manage your finances in a
         convenient and efficient way. Our mission is to empower individuals to take control of their finances by
         providing a simple and intuitive platform to manage their income, expenses, and savings. We understand that
@@ -20,7 +23,7 @@ function About() {
         affordable premium plans with advanced functionalities. Thank you for choosing MyPocket.com as your financial
         management tool. We are committed to helping you achieve financial success and look forward to supporting you on
         your journey.
-      </text>
+      </div>
     </div>
   );
 }

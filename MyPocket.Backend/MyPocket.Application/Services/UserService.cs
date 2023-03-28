@@ -138,9 +138,22 @@ namespace MyPocket.Application.Services
       }
     }
 
-    public Task<UserDTO> GetByIdAsync(string Id)
+    public async Task<UserDTO> GetByIdAsync(string Id)
     {
-      throw new NotImplementedException();
+      try
+      {
+        var user = await _repo.User.GetSingleAsync(c => c.Id == Id);
+        return new UserDTO
+        {
+          Email = user.Email,
+          FirstName = user.FirstName,
+          LastName = user.LastName
+        };
+      }
+      catch (Exception ex)
+      {
+        throw new Exception(ex.Message, ex);
+      }
     }
 
     public async Task<RegisterResultModel> RegisterAsync(UserDTO user)
