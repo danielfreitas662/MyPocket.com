@@ -1,12 +1,10 @@
-'use client';
-import { useUser } from 'context/userContext';
 import Link from 'next/link';
 import React, { CSSProperties } from 'react';
-import { IUser } from 'types/user';
+import { getUser } from 'services/api';
 import styles from './navbar.module.scss';
-function Navbar({ style }: { style: CSSProperties }) {
-  const { logout, user, fetching } = useUser();
-  if (fetching) return <div>Loading...</div>;
+async function Navbar({ style }: { style: CSSProperties }) {
+  //const { logout, getUser } = useUser();
+  const user = await getUser(null);
   return (
     <header className={styles.header} style={style}>
       {!user && (
@@ -39,7 +37,7 @@ function Navbar({ style }: { style: CSSProperties }) {
           <Link className={styles.link} href="/category">
             Categories
           </Link>
-          <Link className={styles.link} href="" onClick={() => logout()}>
+          <Link className={styles.link} href="" onClick={() => null}>
             Logout
           </Link>
           <Link className={styles.link} href="/profile">

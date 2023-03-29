@@ -10,15 +10,12 @@ export const metadata = {
 };
 function Contact() {
   return (
-    <div className={styles.body}>
-      <PageTitle>Get in touch with us</PageTitle>
-      <div className={styles.text}>
-        <div className={styles.image}>
-          <Image src={contact} alt="contact" height={300} />
-        </div>
-        <div className={styles.form}>
-          <ContactForm />
-        </div>
+    <div className={styles.text}>
+      <div className={styles.image}>
+        <Image src={contact} alt="contact" height={300} />
+      </div>
+      <div className={styles.form}>
+        <ContactForm />
       </div>
     </div>
   );

@@ -2,7 +2,7 @@ import axios from 'axios';
 import { NextRequest } from 'next/server';
 import { parseCookies } from 'nookies';
 import { toast } from 'react-toastify';
-import { getCookie } from 'utils/cookies';
+import { SignInModel } from 'types/user';
 import apiEndpoints from './apiEndpoints';
 
 export function getApiClient(request: any) {
@@ -29,15 +29,29 @@ export function httpErrorHandler(error: unknown) {
   }
 }
 
-export async function getUser(request: NextRequest) {
+export async function getUser(request: NextRequest | null) {
   try {
-    const token = request.cookies.get('token')?.value;
+    const token = request?.cookies.get('token')?.value;
     if (!token) return null;
     var result = await (
       await fetch(process.env.NEXT_PUBLIC_API_ADDRESS + apiEndpoints.USER.GET_USER, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
+      })
+    ).json();
+    return result;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+}
+export async function signup(data: SignInModel) {
+  try {
+    var result: string = await (
+      await fetch(process.env.NEXT_PUBLIC_API_ADDRESS + apiEndpoints.USER.GET_USER, {
+        method: 'POST',
+        body: JSON.stringify(data),
       })
     ).json();
     return result;

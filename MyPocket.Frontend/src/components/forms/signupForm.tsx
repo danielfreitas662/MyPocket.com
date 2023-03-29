@@ -6,7 +6,7 @@ import styles from './forms.module.scss';
 
 function SignupForm() {
   const form = useForm({});
-  const { sigIn, error } = useUser();
+  const { sigIn, error, loading } = useUser();
   return (
     <Form form={form} onFinish={(values) => sigIn(values)}>
       <Form.Item name="firstName" label="First Name" required>
@@ -34,9 +34,12 @@ function SignupForm() {
       >
         <TextInput type="password" />
       </Form.Item>
-      <Button type="submit">Sign Up</Button>
+      <Button type="submit" disabled={loading}>
+        Sign Up
+      </Button>
       {error && <div className={styles.error}>{error}</div>}
     </Form>
   );
 }
 export default SignupForm;
+//onFinish={(values) => sigIn(values)}

@@ -2,12 +2,16 @@
 .tableWrapper {
   table {
     width: 100%;
-    border: 1px solid;
+    border: 1px solid $light-color;
     border-collapse: collapse;
     thead {
-      border-bottom: 1px solid;
+      border-bottom: 1px solid $light-color;
+      display: 'fixed';
+      top: 0;
       tr {
         th {
+          cursor: pointer;
+          padding: $component-general-padding;
           text-align: left;
           &.alignLeft {
             text-align: left;
@@ -22,15 +26,18 @@
       }
     }
     tbody {
+      max-height: 100px;
+      overflow-y: scroll;
       tr {
         &:nth-child(even) {
-          background-color: lightgrey;
+          background-color: $light-color;
         }
         &:hover {
           background-color: $secondary-color;
           color: white;
         }
         td {
+          padding: $component-general-padding;
           text-align: left;
           &.alignLeft {
             text-align: left;

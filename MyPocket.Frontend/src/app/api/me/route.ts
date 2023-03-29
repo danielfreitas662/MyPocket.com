@@ -3,7 +3,7 @@ import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 import apiEndpoints from 'services/apiEndpoints';
 
-export async function GET(request: Request, response: Response) {
+export async function GET(request: Request) {
   const cookieHandler = cookies();
   const token = cookieHandler.get('token')?.value;
   if (!token) return null;
