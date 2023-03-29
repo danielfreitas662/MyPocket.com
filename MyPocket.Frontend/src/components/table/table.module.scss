@@ -1,0 +1,45 @@
+@import '../../styles/variables.scss';
+.tableWrapper {
+  table {
+    width: 100%;
+    border: 1px solid;
+    border-collapse: collapse;
+    thead {
+      border-bottom: 1px solid;
+      tr {
+        th {
+          text-align: left;
+          &.alignLeft {
+            text-align: left;
+          }
+          &.alignRight {
+            text-align: right;
+          }
+          &.alignCenter {
+            text-align: center;
+          }
+        }
+      }
+    }
+    tbody {
+      tr {
+        &:nth-child(even) {
+          background-color: lightgrey;
+        }
+        &:hover {
+          background-color: $secondary-color;
+          color: white;
+        }
+        td {
+          text-align: left;
+          &.alignLeft {
+            text-align: left;
+          }
+          &.alignRight {
+            text-align: right;
+          }
+        }
+      }
+    }
+  }
+}

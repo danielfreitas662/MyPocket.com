@@ -8,6 +8,7 @@ import apiEndpoints from 'services/apiEndpoints';
 import { cookies } from 'next/headers';
 import { IUser } from 'types/user';
 import { getApiClient } from 'services/api';
+import Footer from './footer';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -43,6 +44,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </div>
             <Navbar style={{ ...inter.style }} />
             {children}
+            <Footer />
           </main>
         </body>
       </html>
