@@ -7,8 +7,8 @@ import styles from './navbar.module.scss';
 export default function LogoutButton() {
   const router = useRouter();
   const logout = () => {
-    destroyCookie(null, 'token');
-    router.prefetch('/');
+    destroyCookie(null, 'session');
+    router.push('/');
     router.refresh();
   };
   return (

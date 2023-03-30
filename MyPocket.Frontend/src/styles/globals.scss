@@ -10,6 +10,11 @@ body {
   color: $primary-color;
   background: linear-gradient($primary-color, $secondary-color);
 }
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
 footer {
   font-size: $font-size-medium;
   background-color: white;

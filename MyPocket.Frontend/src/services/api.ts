@@ -1,7 +1,8 @@
 import { cookies } from 'next/headers';
 
 export async function getSession() {
-  const token = cookies().get('token')?.value;
+  const session = cookies().get('session')?.value;
+  const headers: HeadersInit = session ? { Session: session } : {};
   const res = await fetch('http://localhost:3000/api/auth/me', {
     method: 'GET',
     cache: 'no-store',
@@ -9,7 +10,7 @@ export async function getSession() {
       revalidate: 2,
     },
     headers: {
-      Authorization: `Bearer ${token}`,
+      ...headers,
     },
   });
   const data = await res.json();

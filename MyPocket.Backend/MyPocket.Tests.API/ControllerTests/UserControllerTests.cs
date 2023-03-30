@@ -52,8 +52,8 @@ public class UserControllerTests
     var result = await sut.Authenticate(data);
     // Then
     var objectResult = Assert.IsAssignableFrom<OkObjectResult>(result);
-    var resultData = Assert.IsAssignableFrom<string>(objectResult.Value);
-    Assert.Equal(loginResult.Token, resultData);
+    var resultData = Assert.IsAssignableFrom<LoginResultModel>(objectResult.Value);
+    Assert.Equal(loginResult.Token, resultData.Token);
   }
   [Fact]
   public async void Authenticate_Should_Return_BadRequest_With_Message_When_Invalid_User()
@@ -80,8 +80,8 @@ public class UserControllerTests
     var result = await sut.Authenticate(data);
     // Then
     var objectResult = Assert.IsAssignableFrom<BadRequestObjectResult>(result);
-    var resultData = Assert.IsAssignableFrom<string>(objectResult.Value);
-    Assert.Equal(loginResult.Message, resultData);
+    var resultData = Assert.IsAssignableFrom<LoginResultModel>(objectResult.Value);
+    Assert.Equal(loginResult.Message, resultData.Message);
   }
   [Fact]
   public async void ChangePassword_Should_Return_Ok_When_Success()

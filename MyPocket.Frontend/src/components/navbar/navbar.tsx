@@ -1,10 +1,11 @@
 import { getSession } from '@/services/api';
+import { IUser } from '@/types/user';
 import Link from 'next/link';
 import React, { Suspense } from 'react';
 import Skeleton from '../skeleton/skeleton';
 import LogoutButton from './logoutButton';
 import styles from './navbar.module.scss';
-function Navbar({ user }: { user: any }) {
+function Navbar({ user }: { user: IUser }) {
   return (
     <Suspense fallback={<Skeleton rows={1} />}>
       <header className={styles.header}>
@@ -26,6 +27,9 @@ function Navbar({ user }: { user: any }) {
         )}
         {user && (
           <nav className={styles.nav}>
+            <Link className={styles.link} href="/private/dashboard">
+              Dashboard
+            </Link>
             <Link className={styles.link} href="/private/transaction">
               Transactions
             </Link>
@@ -40,7 +44,7 @@ function Navbar({ user }: { user: any }) {
             </Link>
             <LogoutButton />
             <Link className={styles.link} href="/private/profile">
-              Profile
+              Hello, {user.firstName}
             </Link>
           </nav>
         )}
