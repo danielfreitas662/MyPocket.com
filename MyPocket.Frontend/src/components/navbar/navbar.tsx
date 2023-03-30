@@ -44,7 +44,7 @@ function Navbar({ user }: { user: IUser }) {
             </Link>
             <LogoutButton />
             <Link className={styles.link} href="/private/profile">
-              Hello, {user.firstName}
+              Hello, {user.firstName}!
             </Link>
           </nav>
         )}

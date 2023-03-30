@@ -21,8 +21,7 @@ function LoginForm() {
       method: 'POST',
       body: JSON.stringify(values),
       headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
+        'content-type': 'application/json',
       },
     })
       .then((res) => res.json())

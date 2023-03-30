@@ -1,14 +1,12 @@
-import { PageTitle } from '@/components';
+import { Button, PrivateLayout } from '@/components';
 import { ReactNode } from 'react';
-import styles from './page.module.scss';
 interface AccountLayoutProps {
   children: ReactNode;
 }
 export default function AccountLayout({ children }: AccountLayoutProps) {
   return (
-    <div className={styles.body}>
-      <PageTitle>Accounts</PageTitle>
+    <PrivateLayout title="Accounts" extra={<Button>New Account</Button>}>
       {children}
-    </div>
+    </PrivateLayout>
   );
 }

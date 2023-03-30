@@ -4,15 +4,14 @@ import type { NextRequest } from 'next/server';
 export async function middleware(request: NextRequest) {
   if (request.nextUrl.pathname.startsWith('/private')) {
     const sessionCookie = request.cookies.get('session');
-    console.log(sessionCookie);
     if (!sessionCookie) {
-      console.log('Protected route - user not authenticated');
       return NextResponse.redirect(new URL('/', request.url));
     }
   }
-  return NextResponse.next();
+  if (request.nextUrl.pathname.startsWith('/api') && request.method === 'POST') {
+  }
 }
 
 export const config = {
-  matcher: ['/private/:path*'],
+  matcher: ['/private/:path*', '/api/:path*'],
 };

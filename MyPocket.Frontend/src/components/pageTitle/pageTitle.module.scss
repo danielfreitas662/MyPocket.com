@@ -1,5 +1,10 @@
 .pageTitle {
-  font-size: x-large;
   margin-bottom: 30px;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .title {
+    font-size: x-large;
+    text-align: center;
+  }
 }

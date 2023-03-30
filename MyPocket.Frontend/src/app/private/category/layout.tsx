@@ -1,14 +1,12 @@
-import { PageTitle } from '@/components';
+import { Button, PrivateLayout } from '@/components';
 import { ReactNode } from 'react';
-import styles from './page.module.scss';
 interface CategoryLayoutProps {
   children: ReactNode;
 }
 export default function CategoryLayout({ children }: CategoryLayoutProps) {
   return (
-    <div className={styles.body}>
-      <PageTitle>Categories</PageTitle>
+    <PrivateLayout title="Categories" extra={<Button>New Category</Button>}>
       {children}
-    </div>
+    </PrivateLayout>
   );
 }

@@ -1,0 +1,32 @@
+@import '../../styles/variables.scss';
+.descriptions {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid $light-color;
+  .item {
+    display: flex;
+    flex-direction: row;
+    border-bottom: 1px solid $light-color;
+    &:last-child {
+      border-bottom: none;
+      .labelContainer {
+        border-bottom: none;
+      }
+    }
+    .labelContainer {
+      width: 100px;
+      text-align: right;
+      background-color: $light-color;
+      padding: $component-general-padding;
+      border-bottom: 1px solid white;
+      .label {
+        &::after {
+          content: ':';
+        }
+      }
+    }
+    .value {
+      padding: $component-general-padding;
+    }
+  }
+}

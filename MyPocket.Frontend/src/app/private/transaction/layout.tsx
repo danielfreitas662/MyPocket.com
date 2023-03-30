@@ -1,14 +1,9 @@
-import { PageTitle } from '@/components';
+import { Button } from '@/components';
+import PrivateLayout from '@/components/privateLayout/privateLayout';
 import { ReactNode } from 'react';
-import styles from './page.module.scss';
 interface TransactionLayoutProps {
   children: ReactNode;
 }
 export default function TransactionLayout({ children }: TransactionLayoutProps) {
-  return (
-    <div className={styles.body}>
-      <PageTitle>Transactions</PageTitle>
-      {children}
-    </div>
-  );
+  return <PrivateLayout extra={<Button>New Transaction</Button>}>{children}</PrivateLayout>;
 }

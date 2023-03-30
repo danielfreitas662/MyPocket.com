@@ -11,9 +11,10 @@ export const config = {
 };
 export async function POST(request: Request) {
   try {
+    const body = await request.json();
     const res = await fetch(process.env.NEXT_PUBLIC_API_ADDRESS + apiEndpoints.USER.AUTHENTICATE, {
       method: 'POST',
-      body: JSON.stringify({ email: 'daniel662@gmail.com', password: '*aP48104810' }),
+      body: JSON.stringify(body),
       cache: 'no-cache',
       headers: {
         'Content-Type': 'application/json',
@@ -44,7 +45,6 @@ export const setCookie = (res: Response, name: string, value: unknown, options: 
   if (typeof options.maxAge === 'number') {
     options.expires = new Date(Date.now() + options.maxAge * 1000);
   }
-
   res.headers.set('Set-Cookie', serialize(name, stringValue, options));
   return res;
 };

@@ -1,5 +1,10 @@
+import { IUser } from '@/types/user';
 import { cookies } from 'next/headers';
 
+export interface Session {
+  user: IUser;
+  exp: number;
+}
 export async function getSession() {
   const session = cookies().get('session')?.value;
   const headers: HeadersInit = session ? { Session: session } : {};
@@ -11,8 +16,9 @@ export async function getSession() {
     },
     headers: {
       ...headers,
+      'content-type': 'application/json',
     },
   });
-  const data = await res.json();
+  const data: Session = await res.json();
   return data;
 }

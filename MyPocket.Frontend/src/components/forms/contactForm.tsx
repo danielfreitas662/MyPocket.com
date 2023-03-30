@@ -11,7 +11,6 @@ interface FormData {
 }
 function ContactForm() {
   const form = useForm<FormData>({});
-
   const error = null;
   return (
     <Form form={form} onFinish={(values) => console.log(values)}>
