@@ -1,4 +1,4 @@
-import { Skeleton } from 'components';
+import { Skeleton } from '@/components';
 import styles from './page.module.scss';
 export default function AboutLoading() {
   return (

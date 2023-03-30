@@ -1,4 +1,5 @@
 'use client';
+import { GetPattern } from '@/utils/patterns';
 import React, { DetailedHTMLProps, FormHTMLAttributes, ReactNode, useRef } from 'react';
 import {
   FieldValues,
@@ -8,7 +9,6 @@ import {
   ValidateResult,
   ValidationRule,
 } from 'react-hook-form';
-import { GetPattern } from 'utils/patterns';
 import styles from './form.module.scss';
 
 export interface FormInstance<TFieldValues, TContex> extends UseFormReturn<any, TContex> {

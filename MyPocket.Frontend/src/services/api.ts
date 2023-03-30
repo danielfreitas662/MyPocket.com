@@ -1,62 +1,17 @@
-import axios from 'axios';
-import { NextRequest } from 'next/server';
-import { parseCookies } from 'nookies';
-import { toast } from 'react-toastify';
-import { SignInModel } from 'types/user';
-import apiEndpoints from './apiEndpoints';
+import { cookies } from 'next/headers';
 
-export function getApiClient(request: any) {
-  const { token } = parseCookies(request); //request && request?.cookies.get('token')?.value;
-  const api = axios.create({
-    baseURL: process.env.NEXT_PUBLIC_API_ADDRESS,
+export async function getSession() {
+  const token = cookies().get('token')?.value;
+  const res = await fetch('http://localhost:3000/api/auth/me', {
+    method: 'GET',
+    cache: 'no-store',
+    next: {
+      revalidate: 2,
+    },
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
   });
-  if (token) {
-    api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-  }
-  return api;
-}
-
-export function httpErrorHandler(error: unknown) {
-  if (axios.isAxiosError(error) && error.response) {
-    if (error.response?.data) {
-      toast.error(error.response?.data);
-      return error.response?.data;
-    }
-  } else {
-    const message = 'Something wrong happened. Try again later.';
-    toast.error(message);
-    return message;
-  }
-}
-
-export async function getUser(request: NextRequest | null) {
-  try {
-    const token = request?.cookies.get('token')?.value;
-    if (!token) return null;
-    var result = await (
-      await fetch(process.env.NEXT_PUBLIC_API_ADDRESS + apiEndpoints.USER.GET_USER, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-    ).json();
-    return result;
-  } catch (error) {
-    console.log(error);
-    return null;
-  }
-}
-export async function signup(data: SignInModel) {
-  try {
-    var result: string = await (
-      await fetch(process.env.NEXT_PUBLIC_API_ADDRESS + apiEndpoints.USER.GET_USER, {
-        method: 'POST',
-        body: JSON.stringify(data),
-      })
-    ).json();
-    return result;
-  } catch (error) {
-    console.log(error);
-    return null;
-  }
+  const data = await res.json();
+  return data;
 }

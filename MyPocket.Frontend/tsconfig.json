@@ -19,10 +19,14 @@
         "name": "next"
       }
     ],
-    "baseUrl": "./src",
     "paths": {
-      "@/*": ["src/*"],
-      "@components/": ["src/components/"]
+      "@/*": ["./src/*"],
+      "@/components/*": ["./src/components/*"],
+      "@/services/*": ["./src/services/*"],
+      "@/types/*": ["./src/types/*"],
+      "@/utils/*": ["./src/utils/*"],
+      "@/images/*": ["./src/images/*"],
+      "@/styles/*.scss": ["./src/styles/*.scss"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

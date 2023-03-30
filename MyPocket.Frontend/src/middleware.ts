@@ -1,15 +1,13 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { getUser } from 'services/api';
-import { privateRoutes, publicRoutes } from 'routes/routes';
+import { privateRoutes, publicRoutes } from './routes/routes';
 
 export async function middleware(request: NextRequest) {
   if (privateRoutes.some((c) => request.nextUrl.pathname.startsWith(c))) {
-    const user = await getUser(request);
-    if (!user) return NextResponse.redirect(new URL(`/login?returnURL=${request.nextUrl.pathname}`, request.url));
+    //const user = await getUser(request);
+    //if (!user) return NextResponse.redirect(new URL(`/login?returnURL=${request.nextUrl.pathname}`, request.url));
   }
   if (publicRoutes.some((c) => request.nextUrl.pathname.startsWith(c))) {
-    console.log('public');
   }
 
   return NextResponse.next();

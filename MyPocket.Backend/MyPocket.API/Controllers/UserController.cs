@@ -23,9 +23,9 @@ namespace MyPocket.API.Controllers
       var result = await _application.User.AuthenticateAsync(data);
       if (result.Success)
       {
-        return Ok(result.Token);
+        return Ok(result);
       }
-      return BadRequest(result.Message);
+      return BadRequest(result);
     }
     [HttpPatch]
     public async Task<ActionResult> ChangePassword([FromBody] ChangePasswordRequestModel data)

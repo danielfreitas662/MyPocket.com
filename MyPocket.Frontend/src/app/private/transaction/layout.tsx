@@ -1,13 +1,13 @@
 import { PageTitle } from '@/components';
 import { ReactNode } from 'react';
 import styles from './page.module.scss';
-interface LoginLayoutProps {
+interface TransactionLayoutProps {
   children: ReactNode;
 }
-export default function LoginLayout({ children }: LoginLayoutProps) {
+export default function TransactionLayout({ children }: TransactionLayoutProps) {
   return (
     <div className={styles.body}>
-      <PageTitle>Login</PageTitle>
+      <PageTitle>Transactions</PageTitle>
       {children}
     </div>
   );

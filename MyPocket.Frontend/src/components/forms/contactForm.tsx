@@ -1,6 +1,5 @@
 'use client';
-import { Button, Form, TextAreaInput, TextInput, useForm } from 'components';
-import { useUser } from 'context/userContext';
+import { Button, Form, TextAreaInput, TextInput, useForm } from '@/components';
 import { FaEnvelope } from 'react-icons/fa';
 import styles from './forms.module.scss';
 
@@ -12,9 +11,10 @@ interface FormData {
 }
 function ContactForm() {
   const form = useForm<FormData>({});
-  const { error } = useUser();
+
+  const error = null;
   return (
-    <Form form={form} initialValues={{ firstName: 'Daniel' }} onFinish={(values) => console.log(values)}>
+    <Form form={form} onFinish={(values) => console.log(values)}>
       <Form.Item name="firstName" label="First Name" required>
         <TextInput />
       </Form.Item>

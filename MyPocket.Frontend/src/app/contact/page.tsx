@@ -2,8 +2,7 @@ import React from 'react';
 import styles from './page.module.scss';
 import contact from '../../images/contact/contact.png';
 import Image from 'next/image';
-import { PageTitle } from 'components';
-import { ContactForm } from 'components/forms';
+import { ContactForm } from '@/components/forms';
 
 export const metadata = {
   title: 'MyPocket - Contact',

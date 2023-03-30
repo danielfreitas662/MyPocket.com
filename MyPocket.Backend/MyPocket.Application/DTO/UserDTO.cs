@@ -20,6 +20,7 @@ namespace MyPocket.Application.DTO
     public bool Success { get; set; }
     public string Message { get; set; }
     public string Token { get; set; }
+    public UserDTO User { get; set; }
   }
   public class LoginModel
   {

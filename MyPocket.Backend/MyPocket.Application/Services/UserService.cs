@@ -76,18 +76,27 @@ namespace MyPocket.Application.Services
           var claimsPrincipal = await _signInManager.CreateUserPrincipalAsync(findUser);
           await _signInManager.RefreshSignInAsync(findUser); */
           var token = BuildToken(findUser);
+          Console.WriteLine(token);
           return new LoginResultModel
           {
             Success = true,
             Message = "User successfully signed in",
-            Token = token
+            Token = token,
+            User = new UserDTO
+            {
+              Id = findUser.Id,
+              Email = findUser.Email,
+              FirstName = findUser.FirstName,
+              LastName = findUser.LastName
+            }
           };
         }
         return new LoginResultModel
         {
           Success = false,
           Message = "Invalid e-mail/password",
-          Token = string.Empty
+          Token = string.Empty,
+          User = null
         };
       }
       catch (Exception ex)

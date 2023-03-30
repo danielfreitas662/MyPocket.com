@@ -1,8 +1,0 @@
-{
-  "dependencies": {
-    "clsx": "^1.2.1",
-    "react-hook-form": "^7.43.8",
-    "react-icons": "^4.8.0",
-    "sass": "^1.60.0"
-  }
-}

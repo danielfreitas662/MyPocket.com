@@ -1,13 +1,11 @@
-'use client';
-import { useUser } from 'context/userContext';
+import { getSession } from '@/services/api';
 import UnauthHome from './home';
-import Dashboard from './dashboard/page';
+import Dashboard from './private/dashboard/page';
 
-const Home = () => {
-  const { user, fetching } = useUser();
-  if (fetching) return <div>Loading...</div>;
-  if (user) return <Dashboard />;
-  return <UnauthHome />;
-};
-
-export default Home;
+export default async function Home() {
+  const data = await getSession();
+  const { user } = data;
+  if (user) {
+    return <Dashboard />;
+  } else return <UnauthHome />;
+}

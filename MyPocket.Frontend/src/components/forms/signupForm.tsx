@@ -1,14 +1,14 @@
 'use client';
 
-import { Button, Form, TextInput, useForm } from 'components';
-import { useUser } from 'context/userContext';
+import { Button, Form, TextInput, useForm } from '@/components';
 import styles from './forms.module.scss';
 
 function SignupForm() {
   const form = useForm({});
-  const { sigIn, error, loading } = useUser();
+  const error = null;
+  const loading = false;
   return (
-    <Form form={form} onFinish={(values) => sigIn(values)}>
+    <Form form={form} onFinish={(values) => null}>
       <Form.Item name="firstName" label="First Name" required>
         <TextInput />
       </Form.Item>

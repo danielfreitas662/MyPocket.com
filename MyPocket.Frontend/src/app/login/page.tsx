@@ -1,8 +1,7 @@
-import { PageTitle } from 'components';
 import styles from './page.module.scss';
-import loginPic from 'images/login/login.png';
+import loginPic from '@/images/login/login.png';
 import Image from 'next/image';
-import { LoginForm } from 'components/forms';
+import { LoginForm } from '@/components/forms';
 function Login() {
   return (
     <div className={styles.description}>

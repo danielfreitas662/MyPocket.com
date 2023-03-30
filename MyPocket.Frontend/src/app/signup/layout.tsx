@@ -1,4 +1,4 @@
-import { PageTitle } from 'components';
+import { PageTitle } from '@/components';
 import { ReactNode } from 'react';
 import styles from './page.module.scss';
 interface SignupLayoutProps {

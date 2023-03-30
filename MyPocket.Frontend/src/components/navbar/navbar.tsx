@@ -1,51 +1,51 @@
+import { getSession } from '@/services/api';
 import Link from 'next/link';
-import React, { CSSProperties } from 'react';
-import { getUser } from 'services/api';
+import React, { Suspense } from 'react';
+import Skeleton from '../skeleton/skeleton';
+import LogoutButton from './logoutButton';
 import styles from './navbar.module.scss';
-async function Navbar({ style }: { style: CSSProperties }) {
-  //const { logout, getUser } = useUser();
-  const user = await getUser(null);
+function Navbar({ user }: { user: any }) {
   return (
-    <header className={styles.header} style={style}>
-      {!user && (
-        <nav className={styles.nav}>
-          <Link className={styles.link} href="/about">
-            About
-          </Link>
-          <Link className={styles.link} href="/contact">
-            Contact
-          </Link>
-          <Link className={styles.link} href="/signup">
-            Signup
-          </Link>
-          <Link className={styles.link} href="/login">
-            Login
-          </Link>
-        </nav>
-      )}
-      {user && (
-        <nav className={styles.nav}>
-          <Link className={styles.link} href="/transaction">
-            Transactions
-          </Link>
-          <Link className={styles.link} href="/budget">
-            Budgets
-          </Link>
-          <Link className={styles.link} href="/account">
-            Accounts
-          </Link>
-          <Link className={styles.link} href="/category">
-            Categories
-          </Link>
-          <Link className={styles.link} href="" onClick={() => null}>
-            Logout
-          </Link>
-          <Link className={styles.link} href="/profile">
-            Profile
-          </Link>
-        </nav>
-      )}
-    </header>
+    <Suspense fallback={<Skeleton rows={1} />}>
+      <header className={styles.header}>
+        {!user && (
+          <nav className={styles.nav}>
+            <Link className={styles.link} href="/about">
+              About
+            </Link>
+            <Link className={styles.link} href="/contact">
+              Contact
+            </Link>
+            <Link className={styles.link} href="/signup">
+              Signup
+            </Link>
+            <Link className={styles.link} href="/login">
+              Login
+            </Link>
+          </nav>
+        )}
+        {user && (
+          <nav className={styles.nav}>
+            <Link className={styles.link} href="/private/transaction">
+              Transactions
+            </Link>
+            <Link className={styles.link} href="/private/budget">
+              Budgets
+            </Link>
+            <Link className={styles.link} href="/private/account">
+              Accounts
+            </Link>
+            <Link className={styles.link} href="/private/category">
+              Categories
+            </Link>
+            <LogoutButton />
+            <Link className={styles.link} href="/private/profile">
+              Profile
+            </Link>
+          </nav>
+        )}
+      </header>
+    </Suspense>
   );
 }
 

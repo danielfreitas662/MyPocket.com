@@ -1,7 +1,7 @@
 import styles from './page.module.scss';
-import signup from 'images/signup/signup.png';
+import signup from '@/images/signup/signup.png';
 import Image from 'next/image';
-import { SignupForm } from 'components/forms';
+import { SignupForm } from '@/components/forms';
 function Signup() {
   return (
     <div className={styles.description}>
