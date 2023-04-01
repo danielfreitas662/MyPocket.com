@@ -1,15 +1,7 @@
 'use client';
 import clsx from 'clsx';
-import React, {
-  ChangeEventHandler,
-  InputHTMLAttributes,
-  ReactNode,
-  useEffect,
-  useImperativeHandle,
-  useRef,
-  useState,
-} from 'react';
-import { ChangeHandler, UseFormRegisterReturn } from 'react-hook-form';
+import React, { InputHTMLAttributes, ReactNode, useEffect, useRef, useState } from 'react';
+import { UseFormRegisterReturn } from 'react-hook-form';
 import { FaDatabase, FaPlus } from 'react-icons/fa';
 import styles from './select.module.scss';
 
@@ -41,7 +33,7 @@ const Select = React.forwardRef(
     const [filter, setFilter] = useState<string>('');
     const componentRef = useRef<any>();
     const [visible, setVisible] = useState(false);
-    const [label, setLabel] = useState<string>('');
+    const [label, setLabel] = useState<string>(options?.find((c) => c.value === restProps.value)?.label || '');
     useEffect(() => {
       function handleClickOutside(event: MouseEvent) {
         if (componentRef.current && !componentRef.current.contains(event.target)) {

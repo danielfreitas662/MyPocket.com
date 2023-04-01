@@ -63,7 +63,7 @@ public class AccountControllerTests
     var contextMock = new MockHttpContext(userIdentity);
     AccountController sut = new AccountController(applicationServiceMock.Object);
     sut.ControllerContext.HttpContext = contextMock.context;
-    accountServiceMock.Setup(x => x.GetByIdAsync(userIdentity.UserId, accountsMock[0].Id.Value)).ReturnsAsync(() => accountsMock[0]);
+    accountServiceMock.Setup(x => x.GetByIdAsync(userIdentity.UserId, accountsMock[0].Id)).ReturnsAsync(() => accountsMock[0]);
     accountServiceMock.Setup(x => x.UpdateAsync(It.IsAny<UserData>(), It.IsAny<AccountDTO>(), It.IsAny<AccountDTO>())).ReturnsAsync(() => accountsMock[0]);
     applicationServiceMock.Setup(x => x.Account).Returns(accountServiceMock.Object);
     var result = await sut.AddOrUpdate(accountsMock[0]);
@@ -79,17 +79,17 @@ public class AccountControllerTests
     var contextMock = new MockHttpContext();
     AccountController sut = new AccountController(applicationServiceMock.Object);
     sut.ControllerContext.HttpContext = contextMock.context;
-    accountServiceMock.Setup(x => x.GetByIdAsync(userIdentity.UserId, It.IsAny<Guid>())).ReturnsAsync(() => null);
+    accountServiceMock.Setup(x => x.GetByIdAsync(userIdentity.UserId, It.IsAny<string>())).ReturnsAsync(() => null);
     applicationServiceMock.Setup(x => x.Account).Returns(accountServiceMock.Object);
 
     var result = await sut.AddOrUpdate(accountsMock[0]);
     var objectResult = Assert.IsAssignableFrom<NotFoundObjectResult>(result);
-    Assert.Equal($"Account Id: {accountsMock[0].Id.Value} not found", objectResult.Value);
+    Assert.Equal($"Account Id: {accountsMock[0].Id} not found", objectResult.Value);
   }
   [Fact]
   public async void AddOrUpdate_Should_Return_Ok_With_No_Account_Id()
   {
-    var newAccountId = Guid.NewGuid();
+    var newAccountId = Guid.NewGuid().ToString();
     var newAccount = new AccountDTO
     {
       Name = "new account",
@@ -118,13 +118,13 @@ public class AccountControllerTests
     var contextMock = new MockHttpContext(userIdentity);
     AccountController sut = new AccountController(applicationServiceMock.Object);
     sut.ControllerContext.HttpContext = contextMock.context;
-    accountServiceMock.Setup(x => x.GetByIdAsync(It.IsAny<string>(), accountMock.Id.Value)).ReturnsAsync(() => accountMock);
+    accountServiceMock.Setup(x => x.GetByIdAsync(It.IsAny<string>(), accountMock.Id)).ReturnsAsync(() => accountMock);
     accountServiceMock.Setup(x => x.RemoveAsync(It.IsAny<UserData>(), accountMock));
     applicationServiceMock.Setup(x => x.Account).Returns(accountServiceMock.Object);
 
-    var result = await sut.Remove(accountMock.Id.Value);
+    var result = await sut.Remove(accountMock.Id);
     var objectResult = Assert.IsAssignableFrom<OkObjectResult>(result);
-    var value = Assert.IsAssignableFrom<Guid>(objectResult.Value);
+    var value = Assert.IsAssignableFrom<string>(objectResult.Value);
   }
   [Fact]
   public async void Remove_Should_Return_NotFound_With_Invalid_Account_Id()
@@ -133,10 +133,10 @@ public class AccountControllerTests
     var contextMock = new MockHttpContext(userIdentity);
     AccountController sut = new AccountController(applicationServiceMock.Object);
     sut.ControllerContext.HttpContext = contextMock.context;
-    accountServiceMock.Setup(x => x.GetByIdAsync(It.IsAny<string>(), accountMock.Id.Value)).ReturnsAsync(() => null);
+    accountServiceMock.Setup(x => x.GetByIdAsync(It.IsAny<string>(), accountMock.Id)).ReturnsAsync(() => null);
     applicationServiceMock.Setup(x => x.Account).Returns(accountServiceMock.Object);
 
-    var result = await sut.Remove(accountMock.Id.Value);
+    var result = await sut.Remove(accountMock.Id);
     var objectResult = Assert.IsAssignableFrom<NotFoundObjectResult>(result);
     Assert.Equal($"Account Id: {accountMock.Id} not found", objectResult.Value);
   }

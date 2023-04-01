@@ -44,7 +44,7 @@ public class BudgetServiceTests
       Amount = 1000,
       Month = DateTime.Today,
       CategoryId = categorieMock.Id,
-      Id = Guid.NewGuid()
+      Id = Guid.NewGuid().ToString()
     };
     categoryRepo.Setup(x => x.GetSingleAsync(It.IsAny<Expression<Func<Category, bool>>>(), null)).ReturnsAsync(() => categorieMock);
     budgetRepo.Setup(x => x.Add(It.IsAny<Budget>())).Returns(budget);
@@ -72,7 +72,7 @@ public class BudgetServiceTests
       Amount = 1000,
       Month = DateTime.Today,
       CategoryId = CategoryFixtures.GetCategories()[0].Id,
-      Id = Guid.NewGuid()
+      Id = Guid.NewGuid().ToString()
     };
     budgetRepo.Setup(x => x.Add(It.IsAny<Budget>())).Returns(budget);
     repo.Setup(x => x.Budget).Returns(budgetRepo.Object);
@@ -115,7 +115,7 @@ public class BudgetServiceTests
     repo.Setup(x => x.Budget).Returns(budgetRepo.Object);
     BudgetService sut = new BudgetService(repo.Object);
     //When
-    await Assert.ThrowsAsync<Exception>(() => sut.GetByIdAsync(user.UserId, budgetMock.Id.Value));
+    await Assert.ThrowsAsync<Exception>(() => sut.GetByIdAsync(user.UserId, budgetMock.Id));
   }
   [Fact]
   public async void GetByIdAsync_Should_Return_Budget_When_Success()

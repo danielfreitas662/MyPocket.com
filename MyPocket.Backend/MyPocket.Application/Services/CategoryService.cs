@@ -19,6 +19,7 @@ namespace MyPocket.Application.Services
       {
         var newCategory = _repo.Category.Add(new Category
         {
+          Id = Guid.NewGuid().ToString(),
           Name = category.Name,
           Type = category.Type,
           UserId = user.UserId,
@@ -52,7 +53,7 @@ namespace MyPocket.Application.Services
           Name = c.Name,
           Type = c.Type,
           UserId = c.UserId,
-          Id = c.Id
+          Id = c.Id.ToString()
         });
         return result.ToList();
       }
@@ -62,7 +63,7 @@ namespace MyPocket.Application.Services
       }
     }
 
-    public async Task<CategoryDTO?> GetByIdAsync(string UserId, Guid Id)
+    public async Task<CategoryDTO?> GetByIdAsync(string UserId, string Id)
     {
       try
       {
@@ -73,7 +74,7 @@ namespace MyPocket.Application.Services
           Name = result.Name,
           Type = result.Type,
           UserId = result.UserId,
-          Id = result.Id
+          Id = result.Id.ToString()
         };
       }
       catch (Exception ex)
@@ -97,7 +98,7 @@ namespace MyPocket.Application.Services
       }
     }
 
-    public async Task RemoveRangeAsync(UserData user, List<Guid> ids)
+    public async Task RemoveRangeAsync(UserData user, List<string> ids)
     {
       try
       {

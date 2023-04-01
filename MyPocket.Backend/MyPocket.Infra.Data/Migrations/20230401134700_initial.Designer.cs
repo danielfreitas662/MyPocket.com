@@ -9,11 +9,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace MyPocket.Infra.Migrations
+namespace MyPocket.Infra.Data.Migrations
 {
     [DbContext(typeof(MyPocketDBContext))]
-    [Migration("20230323021634_fixes2")]
-    partial class fixes2
+    [Migration("20230401134700_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -158,9 +158,8 @@ namespace MyPocket.Infra.Migrations
 
             modelBuilder.Entity("MyPocket.Domain.Models.Account", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -179,15 +178,15 @@ namespace MyPocket.Infra.Migrations
 
             modelBuilder.Entity("MyPocket.Domain.Models.Budget", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("numeric");
 
-                    b.Property<Guid>("CategoryId")
-                        .HasColumnType("uuid");
+                    b.Property<string>("CategoryId")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("Month")
                         .HasColumnType("timestamp with time zone");
@@ -201,13 +200,15 @@ namespace MyPocket.Infra.Migrations
 
             modelBuilder.Entity("MyPocket.Domain.Models.Category", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("integer");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -222,18 +223,19 @@ namespace MyPocket.Infra.Migrations
 
             modelBuilder.Entity("MyPocket.Domain.Models.Transaction", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
 
-                    b.Property<Guid>("AccountId")
-                        .HasColumnType("uuid");
+                    b.Property<string>("AccountId")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("numeric");
 
-                    b.Property<Guid>("CategoryId")
-                        .HasColumnType("uuid");
+                    b.Property<string>("CategoryId")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("timestamp with time zone");

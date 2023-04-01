@@ -7,10 +7,10 @@ namespace MyPocket.Application.Interfaces
   {
     List<CategoryDTO> GetAll(string UserId);
     PaginationResult<CategoryDTO> Filter(PaginationRequest<CategoryDTO> data, UserData user);
-    Task<CategoryDTO?> GetByIdAsync(string UserId, Guid Id);
+    Task<CategoryDTO?> GetByIdAsync(string UserId, string Id);
     Task<CategoryDTO> AddAsync(UserData User, CategoryDTO account);
     Task<CategoryDTO> UpdateAsync(UserData User, CategoryDTO account, CategoryDTO values);
     Task RemoveAsync(UserData user, CategoryDTO account);
-    Task RemoveRangeAsync(UserData user, List<Guid> ids);
+    Task RemoveRangeAsync(UserData user, List<string> ids);
   }
 }

@@ -10,7 +10,7 @@ import Descriptions from './descriptions/descriptions';
 import PrivateLayout from './privateLayout/privateLayout';
 import ErrorBoundary from './error/errorBondary';
 import Select from './inputComponents/select/select';
-
+import FormItem from './form/formItem';
 export {
   Button,
   Navbar,
@@ -24,4 +24,5 @@ export {
   PrivateLayout,
   ErrorBoundary,
   Select,
+  FormItem,
 };

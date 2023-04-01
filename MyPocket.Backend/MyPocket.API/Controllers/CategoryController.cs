@@ -24,7 +24,7 @@ namespace MyPocket.API.Controllers
       return Ok(categories);
     }
     [HttpGet("{Id}")]
-    public async Task<ActionResult<CategoryDTO>> GetById([FromRoute] Guid Id)
+    public async Task<ActionResult<CategoryDTO>> GetById([FromRoute] string Id)
     {
       var user = HttpContext.User.Identity!.GetUserData();
       var category = await _application.Category.GetByIdAsync(user.UserId, Id);
@@ -35,9 +35,9 @@ namespace MyPocket.API.Controllers
     public async Task<ActionResult> AddOrUpdate([FromBody] CategoryDTO category)
     {
       var user = HttpContext.User.Identity!.GetUserData();
-      Console.WriteLine(user.Email);
-      if (!category.Id.HasValue)
+      if (string.IsNullOrEmpty(category.Id))
       {
+        Console.WriteLine("Adding");
         var newCategory = await _application.Category.AddAsync(user, category);
         return Ok(new AddOrUpdateResult<CategoryDTO>
         {
@@ -47,7 +47,7 @@ namespace MyPocket.API.Controllers
       }
       else
       {
-        var findCategory = await _application.Category.GetByIdAsync(user.UserId, category.Id.Value);
+        var findCategory = await _application.Category.GetByIdAsync(user.UserId, category.Id);
         if (findCategory == null) return NotFound($"Category Id: {category.Id} not found");
         var updatedCategory = await _application.Category.UpdateAsync(user, findCategory, category);
         return Ok(new AddOrUpdateResult<CategoryDTO>
@@ -58,7 +58,7 @@ namespace MyPocket.API.Controllers
       }
     }
     [HttpDelete("{Id}")]
-    public async Task<ActionResult> Remove([FromRoute] Guid Id)
+    public async Task<ActionResult> Remove([FromRoute] string Id)
     {
       var user = HttpContext.User.Identity!.GetUserData();
       var category = await _application.Category.GetByIdAsync(user.UserId, Id);

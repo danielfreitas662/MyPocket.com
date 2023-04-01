@@ -13,3 +13,8 @@ export interface SignInModel {
   email: string;
   password: string;
 }
+export interface SignInResult {
+  user: IUser;
+  success: boolean;
+  message: string;
+}

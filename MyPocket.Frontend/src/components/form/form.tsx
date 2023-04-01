@@ -7,28 +7,36 @@ import styles from './form.module.scss';
 
 const FormContext = React.createContext<UseFormReturn<any, any> | null>(null);
 
+interface FormProviderProps {
+  children: ReactNode;
+  initialValues?: any;
+}
+
+export const FormProvider = ({ children, initialValues }: FormProviderProps) => {
+  const formInstance = useForm<typeof initialValues>({ defaultValues: initialValues });
+  return <FormContext.Provider value={formInstance}>{children}</FormContext.Provider>;
+};
+
 export interface FormProps<FormData = any>
   extends Omit<DetailedHTMLProps<FormHTMLAttributes<HTMLFormElement>, HTMLFormElement>, 'onSubmit'> {
   children: ReactNode;
   initialValues?: any;
-  //form: UseFormReturn<any, FormData>;
   onFinish?: (values: FormData) => void;
 }
 function Form({ children, initialValues = null, onFinish, ...restProps }: FormProps) {
-  const formInstance = useForm({ defaultValues: initialValues });
+  const formInstance = React.useContext(FormContext);
+  if (formInstance === null) throw new Error('Form is not wrapped by FormProvider');
   const formRef = useRef<HTMLFormElement>(null);
 
   return (
-    <FormContext.Provider value={{ ...formInstance }}>
-      <form
-        ref={formRef}
-        className="form"
-        {...restProps}
-        onSubmit={formInstance.handleSubmit((data) => onFinish && onFinish(data))}
-      >
-        {children}
-      </form>
-    </FormContext.Provider>
+    <form
+      ref={formRef}
+      className="form"
+      {...restProps}
+      onSubmit={formInstance.handleSubmit((data) => onFinish && onFinish(data))}
+    >
+      {children}
+    </form>
   );
 }
 
@@ -75,7 +83,7 @@ function FormItem({
       {React.isValidElement(children) &&
         React.cloneElement(children, {
           ...children.props,
-          value: form.watch(name),
+          value: form.getValues(name),
           error: !!errors[name]?.message,
           id: name + 'Field',
           ...register(name, {

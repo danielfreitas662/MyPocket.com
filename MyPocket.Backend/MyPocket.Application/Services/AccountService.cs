@@ -58,7 +58,7 @@ namespace MyPocket.Application.Services
       }
     }
 
-    public async Task<AccountDTO?> GetByIdAsync(string UserId, Guid Id)
+    public async Task<AccountDTO?> GetByIdAsync(string UserId, string Id)
     {
       try
       {
@@ -91,7 +91,7 @@ namespace MyPocket.Application.Services
       }
     }
 
-    public async Task RemoveRangeAsync(UserData user, List<Guid> ids)
+    public async Task RemoveRangeAsync(UserData user, List<string> ids)
     {
       try
       {

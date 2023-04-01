@@ -25,7 +25,7 @@ export async function POST(request: Request) {
     const response = new Response(JSON.stringify(data, null, 2));
     if (data?.token) {
       const alg = 'HS256';
-      const secret = new TextEncoder().encode(process.env.TOKEN_SECRET as string);
+      const secret = new TextEncoder().encode(process.env.NEXT_PUBLIC_TOKEN_SECRET as string);
       const token = await new jose.SignJWT({ 'urn:example:claim': true })
         .setProtectedHeader({ alg })
         .setIssuedAt()

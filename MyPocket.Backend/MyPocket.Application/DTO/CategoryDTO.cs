@@ -4,7 +4,7 @@ namespace MyPocket.Application.DTO
 {
   public class CategoryDTO
   {
-    public Guid? Id { get; set; }
+    public string? Id { get; set; }
     public string Name { get; set; }
     public string? UserId { get; set; }
     public CategoryType Type { get; set; }

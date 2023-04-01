@@ -2,7 +2,7 @@ namespace MyPocket.Application.DTO
 {
   public class AccountDTO
   {
-    public Guid? Id { get; set; }
+    public string? Id { get; set; }
     public string Name { get; set; }
     public string? UserId { get; set; }
     public UserDTO? User { get; set; }
@@ -10,7 +10,7 @@ namespace MyPocket.Application.DTO
   }
   public class RemoveRangeModel
   {
-    public List<Guid> Ids { get; set; }
+    public List<string> Ids { get; set; }
   }
 
 }

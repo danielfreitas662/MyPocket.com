@@ -2,7 +2,6 @@
 import { CategoryType, ICategory } from '@/types/category';
 import Link from 'next/link';
 import { FaEdit } from 'react-icons/fa';
-import Button from '../button/button';
 import Table from '../table/table';
 
 function CategoriesTable({ data = [] }: { data: ICategory[] }) {
@@ -17,7 +16,7 @@ function CategoriesTable({ data = [] }: { data: ICategory[] }) {
           dataIndex: 'id',
           render: (v) => (
             <Link href={`/private/category/${v}`}>
-              <Button icon={<FaEdit />} />
+              <FaEdit />
             </Link>
           ),
         },

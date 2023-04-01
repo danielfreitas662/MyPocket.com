@@ -63,7 +63,7 @@ public class CategoryControllerTests
     var contextMock = new MockHttpContext(userIdentity);
     CategoryController sut = new CategoryController(applicationServiceMock.Object);
     sut.ControllerContext.HttpContext = contextMock.context;
-    categoryServiceMock.Setup(x => x.GetByIdAsync(userIdentity.UserId, categoriesMock[0].Id.Value)).ReturnsAsync(() => categoriesMock[0]);
+    categoryServiceMock.Setup(x => x.GetByIdAsync(userIdentity.UserId, categoriesMock[0].Id)).ReturnsAsync(() => categoriesMock[0]);
     categoryServiceMock.Setup(x => x.UpdateAsync(It.IsAny<UserData>(), It.IsAny<CategoryDTO>(), It.IsAny<CategoryDTO>())).ReturnsAsync(() => categoriesMock[0]);
     applicationServiceMock.Setup(x => x.Category).Returns(categoryServiceMock.Object);
     var result = await sut.AddOrUpdate(categoriesMock[0]);
@@ -79,17 +79,17 @@ public class CategoryControllerTests
     var contextMock = new MockHttpContext();
     CategoryController sut = new CategoryController(applicationServiceMock.Object);
     sut.ControllerContext.HttpContext = contextMock.context;
-    categoryServiceMock.Setup(x => x.GetByIdAsync(userIdentity.UserId, It.IsAny<Guid>())).ReturnsAsync(() => null);
+    categoryServiceMock.Setup(x => x.GetByIdAsync(userIdentity.UserId, It.IsAny<string>())).ReturnsAsync(() => null);
     applicationServiceMock.Setup(x => x.Category).Returns(categoryServiceMock.Object);
 
     var result = await sut.AddOrUpdate(categoriesMock[0]);
     var objectResult = Assert.IsAssignableFrom<NotFoundObjectResult>(result);
-    Assert.Equal($"Category Id: {categoriesMock[0].Id.Value} not found", objectResult.Value);
+    Assert.Equal($"Category Id: {categoriesMock[0].Id} not found", objectResult.Value);
   }
   [Fact]
   public async void AddOrUpdate_Should_Return_Ok_With_No_Category_Id()
   {
-    var newCategoryId = Guid.NewGuid();
+    var newCategoryId = Guid.NewGuid().ToString();
     var newCategory = new CategoryDTO
     {
       Name = "School",
@@ -118,13 +118,13 @@ public class CategoryControllerTests
     var contextMock = new MockHttpContext(userIdentity);
     CategoryController sut = new CategoryController(applicationServiceMock.Object);
     sut.ControllerContext.HttpContext = contextMock.context;
-    categoryServiceMock.Setup(x => x.GetByIdAsync(It.IsAny<string>(), categoryMock.Id.Value)).ReturnsAsync(() => categoryMock);
+    categoryServiceMock.Setup(x => x.GetByIdAsync(It.IsAny<string>(), categoryMock.Id)).ReturnsAsync(() => categoryMock);
     categoryServiceMock.Setup(x => x.RemoveAsync(It.IsAny<UserData>(), categoryMock));
     applicationServiceMock.Setup(x => x.Category).Returns(categoryServiceMock.Object);
 
-    var result = await sut.Remove(categoryMock.Id.Value);
+    var result = await sut.Remove(categoryMock.Id);
     var objectResult = Assert.IsAssignableFrom<OkObjectResult>(result);
-    var value = Assert.IsAssignableFrom<Guid>(objectResult.Value);
+    var value = Assert.IsAssignableFrom<string>(objectResult.Value);
   }
   [Fact]
   public async void Remove_Should_Return_NotFound_With_Invalid_Category_Id()
@@ -133,10 +133,10 @@ public class CategoryControllerTests
     var contextMock = new MockHttpContext(userIdentity);
     CategoryController sut = new CategoryController(applicationServiceMock.Object);
     sut.ControllerContext.HttpContext = contextMock.context;
-    categoryServiceMock.Setup(x => x.GetByIdAsync(It.IsAny<string>(), categoryMock.Id.Value)).ReturnsAsync(() => null);
+    categoryServiceMock.Setup(x => x.GetByIdAsync(It.IsAny<string>(), categoryMock.Id)).ReturnsAsync(() => null);
     applicationServiceMock.Setup(x => x.Category).Returns(categoryServiceMock.Object);
 
-    var result = await sut.Remove(categoryMock.Id.Value);
+    var result = await sut.Remove(categoryMock.Id);
     var objectResult = Assert.IsAssignableFrom<NotFoundObjectResult>(result);
     Assert.Equal($"Category Id: {categoryMock.Id} not found", objectResult.Value);
   }

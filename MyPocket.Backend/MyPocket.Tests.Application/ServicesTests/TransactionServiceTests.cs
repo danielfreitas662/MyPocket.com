@@ -57,7 +57,7 @@ public class TransactionServiceTests
     };
     var transaction = new Transaction
     {
-      Id = Guid.NewGuid(),
+      Id = Guid.NewGuid().ToString(),
       Description = "School",
       Amount = 1000,
       Date = DateTime.Today,
@@ -100,7 +100,7 @@ public class TransactionServiceTests
     };
     var transaction = new Transaction
     {
-      Id = Guid.NewGuid(),
+      Id = Guid.NewGuid().ToString(),
       Description = "School",
       Amount = 1000,
       Date = DateTime.Today,
@@ -160,7 +160,7 @@ public class TransactionServiceTests
     repo.Setup(x => x.Transaction).Returns(transactionRepo.Object);
     TransactionService sut = new TransactionService(repo.Object);
     //When
-    await Assert.ThrowsAsync<Exception>(() => sut.GetByIdAsync(user.UserId, transactionMock.Id.Value));
+    await Assert.ThrowsAsync<Exception>(() => sut.GetByIdAsync(user.UserId, transactionMock.Id));
   }
   [Fact]
   public async void GetByIdAsync_Should_Return_Transaction_When_Success()

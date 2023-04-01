@@ -63,7 +63,7 @@ public class TransactionControllerTests
     var contextMock = new MockHttpContext(userIdentity);
     TransactionController sut = new TransactionController(applicationServiceMock.Object);
     sut.ControllerContext.HttpContext = contextMock.context;
-    transactionServiceMock.Setup(x => x.GetByIdAsync(userIdentity.UserId, transactionsMock[0].Id.Value)).ReturnsAsync(() => transactionsMock[0]);
+    transactionServiceMock.Setup(x => x.GetByIdAsync(userIdentity.UserId, transactionsMock[0].Id)).ReturnsAsync(() => transactionsMock[0]);
     transactionServiceMock.Setup(x => x.UpdateAsync(It.IsAny<UserData>(), It.IsAny<TransactionDTO>(), It.IsAny<TransactionDTO>())).ReturnsAsync(() => transactionsMock[0]);
     applicationServiceMock.Setup(x => x.Transaction).Returns(transactionServiceMock.Object);
     var result = await sut.AddOrUpdate(transactionsMock[0]);
@@ -79,25 +79,25 @@ public class TransactionControllerTests
     var contextMock = new MockHttpContext();
     TransactionController sut = new TransactionController(applicationServiceMock.Object);
     sut.ControllerContext.HttpContext = contextMock.context;
-    transactionServiceMock.Setup(x => x.GetByIdAsync(userIdentity.UserId, It.IsAny<Guid>())).ReturnsAsync(() => null);
+    transactionServiceMock.Setup(x => x.GetByIdAsync(userIdentity.UserId, It.IsAny<string>())).ReturnsAsync(() => null);
     applicationServiceMock.Setup(x => x.Transaction).Returns(transactionServiceMock.Object);
 
     var result = await sut.AddOrUpdate(transactionsMock[0]);
     var objectResult = Assert.IsAssignableFrom<NotFoundObjectResult>(result);
-    Assert.Equal($"Transaction Id: {transactionsMock[0].Id.Value} not found", objectResult.Value);
+    Assert.Equal($"Transaction Id: {transactionsMock[0].Id} not found", objectResult.Value);
   }
   [Fact]
   public async void AddOrUpdate_Should_Return_Ok_With_No_Transaction_Id()
   {
-    var newTransactionId = Guid.NewGuid();
+    var newTransactionId = Guid.NewGuid().ToString();
     var newTransaction = new TransactionDTO
     {
       Description = "School",
       Amount = 1000,
       Date = DateTime.Today,
       UserId = UserFixtures.GetUsers()[0].Id,
-      CategoryId = CategoryFixtures.GetCategories()[0].Id.Value,
-      AccountId = AccountFixtures.GetAccounts()[0].Id.Value,
+      CategoryId = CategoryFixtures.GetCategories()[0].Id,
+      AccountId = AccountFixtures.GetAccounts()[0].Id,
       Id = null
     };
     var contextMock = new MockHttpContext(userIdentity);
@@ -123,13 +123,13 @@ public class TransactionControllerTests
     var contextMock = new MockHttpContext(userIdentity);
     TransactionController sut = new TransactionController(applicationServiceMock.Object);
     sut.ControllerContext.HttpContext = contextMock.context;
-    transactionServiceMock.Setup(x => x.GetByIdAsync(It.IsAny<string>(), transactionMock.Id.Value)).ReturnsAsync(() => transactionMock);
+    transactionServiceMock.Setup(x => x.GetByIdAsync(It.IsAny<string>(), transactionMock.Id)).ReturnsAsync(() => transactionMock);
     transactionServiceMock.Setup(x => x.RemoveAsync(It.IsAny<UserData>(), transactionMock));
     applicationServiceMock.Setup(x => x.Transaction).Returns(transactionServiceMock.Object);
 
-    var result = await sut.Remove(transactionMock.Id.Value);
+    var result = await sut.Remove(transactionMock.Id);
     var objectResult = Assert.IsAssignableFrom<OkObjectResult>(result);
-    var value = Assert.IsAssignableFrom<Guid>(objectResult.Value);
+    var value = Assert.IsAssignableFrom<string>(objectResult.Value);
   }
   [Fact]
   public async void Remove_Should_Return_NotFound_With_Invalid_Transaction_Id()
@@ -138,10 +138,10 @@ public class TransactionControllerTests
     var contextMock = new MockHttpContext(userIdentity);
     TransactionController sut = new TransactionController(applicationServiceMock.Object);
     sut.ControllerContext.HttpContext = contextMock.context;
-    transactionServiceMock.Setup(x => x.GetByIdAsync(It.IsAny<string>(), transactionMock.Id.Value)).ReturnsAsync(() => null);
+    transactionServiceMock.Setup(x => x.GetByIdAsync(It.IsAny<string>(), transactionMock.Id)).ReturnsAsync(() => null);
     applicationServiceMock.Setup(x => x.Transaction).Returns(transactionServiceMock.Object);
 
-    var result = await sut.Remove(transactionMock.Id.Value);
+    var result = await sut.Remove(transactionMock.Id);
     var objectResult = Assert.IsAssignableFrom<NotFoundObjectResult>(result);
     Assert.Equal($"Transaction Id: {transactionMock.Id} not found", objectResult.Value);
   }

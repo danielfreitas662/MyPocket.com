@@ -4,24 +4,12 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace MyPocket.Infra.Migrations
+namespace MyPocket.Infra.Data.Migrations
 {
     public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "Accounts",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Accounts", x => x.Id);
-                });
-
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -41,7 +29,8 @@ namespace MyPocket.Infra.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "text", nullable: false),
-                    Name = table.Column<Guid>(type: "uuid", nullable: false),
+                    FirstName = table.Column<string>(type: "text", nullable: false),
+                    LastName = table.Column<string>(type: "text", nullable: false),
                     UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
@@ -63,18 +52,6 @@ namespace MyPocket.Infra.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Categories",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Categories", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -91,6 +68,25 @@ namespace MyPocket.Infra.Migrations
                         name: "FK_AspNetRoleClaims_AspNetRoles_RoleId",
                         column: x => x.RoleId,
                         principalTable: "AspNetRoles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Accounts",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "text", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    UserId = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Accounts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Accounts_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -181,12 +177,32 @@ namespace MyPocket.Infra.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Categories",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "text", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    UserId = table.Column<string>(type: "text", nullable: false),
+                    Type = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Categories", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Categories_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Budgets",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Id = table.Column<string>(type: "text", nullable: false),
                     Amount = table.Column<decimal>(type: "numeric", nullable: false),
-                    CategoryId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CategoryId = table.Column<string>(type: "text", nullable: false),
                     Month = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
@@ -204,12 +220,12 @@ namespace MyPocket.Infra.Migrations
                 name: "Transactions",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Id = table.Column<string>(type: "text", nullable: false),
                     Amount = table.Column<decimal>(type: "numeric", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: false),
                     Date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    AccountId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CategoryId = table.Column<Guid>(type: "uuid", nullable: false),
+                    AccountId = table.Column<string>(type: "text", nullable: false),
+                    CategoryId = table.Column<string>(type: "text", nullable: false),
                     UserId = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
@@ -234,6 +250,11 @@ namespace MyPocket.Infra.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Accounts_UserId",
+                table: "Accounts",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -276,6 +297,11 @@ namespace MyPocket.Infra.Migrations
                 name: "IX_Budgets_CategoryId",
                 table: "Budgets",
                 column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Categories_UserId",
+                table: "Categories",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Transactions_AccountId",
@@ -323,10 +349,10 @@ namespace MyPocket.Infra.Migrations
                 name: "Accounts");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "Categories");
 
             migrationBuilder.DropTable(
-                name: "Categories");
+                name: "AspNetUsers");
         }
     }
 }

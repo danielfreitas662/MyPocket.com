@@ -63,7 +63,7 @@ public class BudgetControllerTests
     var contextMock = new MockHttpContext(userIdentity);
     BudgetController sut = new BudgetController(applicationServiceMock.Object);
     sut.ControllerContext.HttpContext = contextMock.context;
-    budgetServiceMock.Setup(x => x.GetByIdAsync(userIdentity.UserId, budgetsMock[0].Id.Value)).ReturnsAsync(() => budgetsMock[0]);
+    budgetServiceMock.Setup(x => x.GetByIdAsync(userIdentity.UserId, budgetsMock[0].Id)).ReturnsAsync(() => budgetsMock[0]);
     budgetServiceMock.Setup(x => x.UpdateAsync(It.IsAny<UserData>(), It.IsAny<BudgetDTO>(), It.IsAny<BudgetDTO>())).ReturnsAsync(() => budgetsMock[0]);
     applicationServiceMock.Setup(x => x.Budget).Returns(budgetServiceMock.Object);
     var result = await sut.AddOrUpdate(budgetsMock[0]);
@@ -79,17 +79,17 @@ public class BudgetControllerTests
     var contextMock = new MockHttpContext();
     BudgetController sut = new BudgetController(applicationServiceMock.Object);
     sut.ControllerContext.HttpContext = contextMock.context;
-    budgetServiceMock.Setup(x => x.GetByIdAsync(userIdentity.UserId, It.IsAny<Guid>())).ReturnsAsync(() => null);
+    budgetServiceMock.Setup(x => x.GetByIdAsync(userIdentity.UserId, It.IsAny<string>())).ReturnsAsync(() => null);
     applicationServiceMock.Setup(x => x.Budget).Returns(budgetServiceMock.Object);
 
     var result = await sut.AddOrUpdate(budgetsMock[0]);
     var objectResult = Assert.IsAssignableFrom<NotFoundObjectResult>(result);
-    Assert.Equal($"Budget Id: {budgetsMock[0].Id.Value} not found", objectResult.Value);
+    Assert.Equal($"Budget Id: {budgetsMock[0].Id} not found", objectResult.Value);
   }
   [Fact]
   public async void AddOrUpdate_Should_Return_Ok_With_No_Budget_Id()
   {
-    var newBudgetId = Guid.NewGuid();
+    var newBudgetId = Guid.NewGuid().ToString();
     var newBudget = new BudgetDTO
     {
       Month = DateTime.Today,
@@ -119,13 +119,13 @@ public class BudgetControllerTests
     var contextMock = new MockHttpContext(userIdentity);
     BudgetController sut = new BudgetController(applicationServiceMock.Object);
     sut.ControllerContext.HttpContext = contextMock.context;
-    budgetServiceMock.Setup(x => x.GetByIdAsync(It.IsAny<string>(), budgetMock.Id.Value)).ReturnsAsync(() => budgetMock);
+    budgetServiceMock.Setup(x => x.GetByIdAsync(It.IsAny<string>(), budgetMock.Id)).ReturnsAsync(() => budgetMock);
     budgetServiceMock.Setup(x => x.RemoveAsync(It.IsAny<UserData>(), budgetMock));
     applicationServiceMock.Setup(x => x.Budget).Returns(budgetServiceMock.Object);
 
-    var result = await sut.Remove(budgetMock.Id.Value);
+    var result = await sut.Remove(budgetMock.Id);
     var objectResult = Assert.IsAssignableFrom<OkObjectResult>(result);
-    var value = Assert.IsAssignableFrom<Guid>(objectResult.Value);
+    var value = Assert.IsAssignableFrom<string>(objectResult.Value);
   }
   [Fact]
   public async void Remove_Should_Return_NotFound_With_Invalid_Budget_Id()
@@ -134,10 +134,10 @@ public class BudgetControllerTests
     var contextMock = new MockHttpContext(userIdentity);
     BudgetController sut = new BudgetController(applicationServiceMock.Object);
     sut.ControllerContext.HttpContext = contextMock.context;
-    budgetServiceMock.Setup(x => x.GetByIdAsync(It.IsAny<string>(), budgetMock.Id.Value)).ReturnsAsync(() => null);
+    budgetServiceMock.Setup(x => x.GetByIdAsync(It.IsAny<string>(), budgetMock.Id)).ReturnsAsync(() => null);
     applicationServiceMock.Setup(x => x.Budget).Returns(budgetServiceMock.Object);
 
-    var result = await sut.Remove(budgetMock.Id.Value);
+    var result = await sut.Remove(budgetMock.Id);
     var objectResult = Assert.IsAssignableFrom<NotFoundObjectResult>(result);
     Assert.Equal($"Budget Id: {budgetMock.Id} not found", objectResult.Value);
   }

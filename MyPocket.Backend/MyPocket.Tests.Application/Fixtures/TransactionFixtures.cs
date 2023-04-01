@@ -12,7 +12,7 @@ namespace MyPocket.Tests.Application.Fixtures
     private static List<User> usersFixture => UserFixtures.GetUsers();
     private static List<TransactionDTO> TransactionsDTO => new List<TransactionDTO>{
       new TransactionDTO{
-        Id = Guid.NewGuid(),
+        Id = Guid.NewGuid().ToString(),
         Description = "School",
         Amount = 1000,
         Date = DateTime.Today,
@@ -24,7 +24,7 @@ namespace MyPocket.Tests.Application.Fixtures
 
       },
       new TransactionDTO{
-        Id = Guid.NewGuid(),
+        Id = Guid.NewGuid().ToString(),
         Description = "Home Rental",
         Amount = 2000,
         Date = DateTime.Today,
@@ -35,7 +35,7 @@ namespace MyPocket.Tests.Application.Fixtures
         Account = accountsFixture[1].Name
       },
       new TransactionDTO{
-       Id = Guid.NewGuid(),
+       Id = Guid.NewGuid().ToString(),
         Description = "Home Energy",
         Amount = 500,
         Date = DateTime.Today,
@@ -46,7 +46,7 @@ namespace MyPocket.Tests.Application.Fixtures
         Account = accountsFixture[1].Name
       },
       new TransactionDTO{
-       Id = Guid.NewGuid(),
+       Id = Guid.NewGuid().ToString(),
         Description = "Restaurant",
         Amount = 200,
         Date = DateTime.Today,
@@ -57,7 +57,7 @@ namespace MyPocket.Tests.Application.Fixtures
         Account = accountsFixture[2].Name
       },
       new TransactionDTO{
-        Id = Guid.NewGuid(),
+        Id = Guid.NewGuid().ToString(),
         Description = "Food Shopping",
         Amount = 4000,
         Date = DateTime.Today,
@@ -70,7 +70,7 @@ namespace MyPocket.Tests.Application.Fixtures
     };
     private static List<Transaction> Transactions => new List<Transaction>{
       new Transaction{
-        Id = Guid.NewGuid(),
+        Id = Guid.NewGuid().ToString(),
         Description = "School",
         Amount = 1000,
         Date = DateTime.Today,
@@ -82,7 +82,7 @@ namespace MyPocket.Tests.Application.Fixtures
 
       },
       new Transaction{
-        Id = Guid.NewGuid(),
+        Id = Guid.NewGuid().ToString(),
         Description = "Home Rental",
         Amount = 2000,
         Date = DateTime.Today,
@@ -93,7 +93,7 @@ namespace MyPocket.Tests.Application.Fixtures
         Account = accountsFixture[1]
       },
       new Transaction{
-       Id = Guid.NewGuid(),
+       Id = Guid.NewGuid().ToString(),
         Description = "Home Energy",
         Amount = 500,
         Date = DateTime.Today,
@@ -104,7 +104,7 @@ namespace MyPocket.Tests.Application.Fixtures
         Account = accountsFixture[1]
       },
       new Transaction{
-       Id = Guid.NewGuid(),
+       Id = Guid.NewGuid().ToString(),
         Description = "Restaurant",
         Amount = 200,
         Date = DateTime.Today,
@@ -115,7 +115,7 @@ namespace MyPocket.Tests.Application.Fixtures
         Account = accountsFixture[2]
       },
       new Transaction{
-        Id = Guid.NewGuid(),
+        Id = Guid.NewGuid().ToString(),
         Description = "Food Shopping",
         Amount = 4000,
         Date = DateTime.Today,

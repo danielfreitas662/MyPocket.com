@@ -24,7 +24,7 @@ namespace MyPocket.API.Controllers
       return Ok(accounts);
     }
     [HttpGet("{Id}")]
-    public async Task<ActionResult<AccountDTO>> GetById([FromRoute] Guid Id)
+    public async Task<ActionResult<AccountDTO>> GetById([FromRoute] string Id)
     {
       var user = HttpContext.User.Identity!.GetUserData();
       var account = await _application.Account.GetByIdAsync(user.UserId, Id);
@@ -35,7 +35,7 @@ namespace MyPocket.API.Controllers
     public async Task<ActionResult> AddOrUpdate([FromBody] AccountDTO account)
     {
       var user = HttpContext.User.Identity!.GetUserData();
-      if (!account.Id.HasValue)
+      if (string.IsNullOrEmpty(account.Id))
       {
         var newAccount = await _application.Account.AddAsync(user, account);
         return Ok(new AddOrUpdateResult<AccountDTO>
@@ -46,7 +46,7 @@ namespace MyPocket.API.Controllers
       }
       else
       {
-        var findAccount = await _application.Account.GetByIdAsync(user.UserId, account.Id.Value);
+        var findAccount = await _application.Account.GetByIdAsync(user.UserId, account.Id);
         if (findAccount == null) return NotFound($"Account Id: {account.Id} not found");
         var updatedAccount = await _application.Account.UpdateAsync(user, findAccount, account);
         return Ok(new AddOrUpdateResult<AccountDTO>
@@ -57,7 +57,7 @@ namespace MyPocket.API.Controllers
       }
     }
     [HttpDelete("{Id}")]
-    public async Task<ActionResult> Remove([FromRoute] Guid Id)
+    public async Task<ActionResult> Remove([FromRoute] string Id)
     {
       var user = HttpContext.User.Identity!.GetUserData();
       var account = await _application.Account.GetByIdAsync(user.UserId, Id);

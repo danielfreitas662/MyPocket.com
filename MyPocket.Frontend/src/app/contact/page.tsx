@@ -3,6 +3,7 @@ import styles from './page.module.scss';
 import contact from '../../images/contact/contact.png';
 import Image from 'next/image';
 import { ContactForm } from '@/components/forms';
+import { FormProvider } from '@/components/form/form';
 
 export const metadata = {
   title: 'MyPocket - Contact',
@@ -14,7 +15,9 @@ function Contact() {
         <Image src={contact} alt="contact" height={300} />
       </div>
       <div className={styles.form}>
-        <ContactForm />
+        <FormProvider>
+          <ContactForm />
+        </FormProvider>
       </div>
     </div>
   );

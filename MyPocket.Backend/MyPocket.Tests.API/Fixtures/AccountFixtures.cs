@@ -8,19 +8,19 @@ namespace MyPocket.Tests.API.Fixtures
   {
     private static List<AccountDTO> Accounts = new List<AccountDTO>{
       new AccountDTO{
-        Id = Guid.NewGuid(),
+        Id = Guid.NewGuid().ToString(),
         Name ="Bank Account 1"
       },
       new AccountDTO{
-        Id = Guid.NewGuid(),
+        Id = Guid.NewGuid().ToString(),
         Name ="Crédit Card 1"
       },
       new AccountDTO{
-        Id = Guid.NewGuid(),
+        Id = Guid.NewGuid().ToString(),
         Name ="Bank Account 2"
       },
       new AccountDTO{
-        Id = Guid.NewGuid(),
+        Id = Guid.NewGuid().ToString(),
         Name ="Credit Card 2"
       },
     };

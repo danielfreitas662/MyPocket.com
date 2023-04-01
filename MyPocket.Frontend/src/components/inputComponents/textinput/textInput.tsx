@@ -8,7 +8,7 @@ export interface TextInputProps extends InputHTMLAttributes<HTMLInputElement> {
 }
 
 const TextInput = React.forwardRef(
-  ({ icon, error, ...restProps }: TextInputProps, ref: React.LegacyRef<HTMLInputElement>) => {
+  ({ icon, error, value, ...restProps }: TextInputProps, ref: React.LegacyRef<HTMLInputElement>) => {
     return (
       <div
         className={clsx({

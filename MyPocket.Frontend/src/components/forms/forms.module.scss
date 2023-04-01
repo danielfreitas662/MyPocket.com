@@ -2,3 +2,9 @@
 .error {
   color: $error-color;
 }
+.feedback {
+  color: $error-color;
+  &.success {
+    color: $success-color;
+  }
+}

@@ -4,19 +4,13 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import styles from './forms.module.scss';
 
-interface FormData {
-  firstName: string;
-  lastName: string;
-  email: string;
-  message: string;
-}
 function LoginForm() {
   const router = useRouter();
   const [result, setResult] = useState<any>();
   const [loading, setLoading] = useState<boolean>(false);
   const handleSubmit = (values: any) => {
     setLoading(true);
-    fetch('/api/auth/authenticate', {
+    fetch('http://localhost:3000/api/auth/authenticate', {
       method: 'POST',
       body: JSON.stringify(values),
       headers: {
@@ -27,7 +21,7 @@ function LoginForm() {
       .then((data) => {
         setLoading(false);
         setResult(data);
-        if (!data?.error) {
+        if (data?.success) {
           router.refresh();
           router.push('/');
         }

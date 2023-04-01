@@ -39,7 +39,7 @@ public class CategoryServiceTests
     var category = new Category
     {
       Name = "new category",
-      Id = Guid.NewGuid()
+      Id = Guid.NewGuid().ToString()
     };
     categoryRepo.Setup(x => x.Add(It.IsAny<Category>())).Returns(category);
     repo.Setup(x => x.Category).Returns(categoryRepo.Object);
@@ -62,7 +62,7 @@ public class CategoryServiceTests
     var category = new Category
     {
       Name = "new category",
-      Id = Guid.NewGuid()
+      Id = Guid.NewGuid().ToString()
     };
     categoryRepo.Setup(x => x.Add(It.IsAny<Category>())).Returns(category);
     repo.Setup(x => x.Category).Returns(categoryRepo.Object);
@@ -105,7 +105,7 @@ public class CategoryServiceTests
     repo.Setup(x => x.Category).Returns(categoryRepo.Object);
     CategoryService sut = new CategoryService(repo.Object);
     //When
-    await Assert.ThrowsAsync<Exception>(() => sut.GetByIdAsync(user.UserId, categoryMock.Id.Value));
+    await Assert.ThrowsAsync<Exception>(() => sut.GetByIdAsync(user.UserId, categoryMock.Id));
   }
   [Fact]
   public async void GetByIdAsync_Should_Return_Category_When_Success()

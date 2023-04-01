@@ -39,7 +39,7 @@ public class AccountServiceTests
     var account = new Account
     {
       Name = "new account",
-      Id = Guid.NewGuid()
+      Id = Guid.NewGuid().ToString()
     };
     accountRepo.Setup(x => x.Add(It.IsAny<Account>())).Returns(account);
     repo.Setup(x => x.Account).Returns(accountRepo.Object);
@@ -62,7 +62,7 @@ public class AccountServiceTests
     var account = new Account
     {
       Name = "new account",
-      Id = Guid.NewGuid()
+      Id = Guid.NewGuid().ToString()
     };
     accountRepo.Setup(x => x.Add(It.IsAny<Account>())).Returns(account);
     repo.Setup(x => x.Account).Returns(accountRepo.Object);
@@ -105,7 +105,7 @@ public class AccountServiceTests
     repo.Setup(x => x.Account).Returns(accountRepo.Object);
     AccountService sut = new AccountService(repo.Object);
     //When
-    await Assert.ThrowsAsync<Exception>(() => sut.GetByIdAsync(user.UserId, accountMock.Id.Value));
+    await Assert.ThrowsAsync<Exception>(() => sut.GetByIdAsync(user.UserId, accountMock.Id));
   }
   [Fact]
   public async void GetByIdAsync_Should_Return_Account_When_Success()

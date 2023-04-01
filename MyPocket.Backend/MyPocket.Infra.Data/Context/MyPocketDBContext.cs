@@ -14,7 +14,7 @@ namespace MyPocket.Infra.Data.Context
     public MyPocketDBContext CreateDbContext(string[] args)
     {
       var optionsBuilder = new DbContextOptionsBuilder<MyPocketDBContext>();
-      optionsBuilder.UseNpgsql("Host=localhost; Database=mypocketDB; Username=postgres; Password=daniel2;");
+      optionsBuilder.UseNpgsql("Host=localhost; Database=mypocketDB2; Username=postgres; Password=daniel2;");
 
       return new MyPocketDBContext(optionsBuilder.Options);
     }

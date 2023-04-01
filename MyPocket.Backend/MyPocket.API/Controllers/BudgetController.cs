@@ -24,7 +24,7 @@ namespace MyPocket.API.Controllers
       return Ok(budgets);
     }
     [HttpGet("{Id}")]
-    public async Task<ActionResult<BudgetDTO>> GetById([FromRoute] Guid Id)
+    public async Task<ActionResult<BudgetDTO>> GetById([FromRoute] string Id)
     {
       var user = HttpContext.User.Identity!.GetUserData();
       var budget = await _application.Budget.GetByIdAsync(user.UserId, Id);
@@ -35,7 +35,7 @@ namespace MyPocket.API.Controllers
     public async Task<ActionResult> AddOrUpdate([FromBody] BudgetDTO budget)
     {
       var user = HttpContext.User.Identity!.GetUserData();
-      if (!budget.Id.HasValue)
+      if (string.IsNullOrEmpty(budget.Id))
       {
         var newBudget = await _application.Budget.AddAsync(user, budget);
         return Ok(new AddOrUpdateResult<BudgetDTO>
@@ -46,7 +46,7 @@ namespace MyPocket.API.Controllers
       }
       else
       {
-        var findBudget = await _application.Budget.GetByIdAsync(user.UserId, budget.Id.Value);
+        var findBudget = await _application.Budget.GetByIdAsync(user.UserId, budget.Id);
         if (findBudget == null) return NotFound($"Budget Id: {budget.Id} not found");
         var updatedBudget = await _application.Budget.UpdateAsync(user, findBudget, budget);
         return Ok(new AddOrUpdateResult<BudgetDTO>
@@ -57,7 +57,7 @@ namespace MyPocket.API.Controllers
       }
     }
     [HttpDelete("{Id}")]
-    public async Task<ActionResult> Remove([FromRoute] Guid Id)
+    public async Task<ActionResult> Remove([FromRoute] string Id)
     {
       var user = HttpContext.User.Identity!.GetUserData();
       var budget = await _application.Budget.GetByIdAsync(user.UserId, Id);

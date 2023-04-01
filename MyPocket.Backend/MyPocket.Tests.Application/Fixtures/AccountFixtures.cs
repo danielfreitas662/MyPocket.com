@@ -9,37 +9,37 @@ namespace MyPocket.Tests.Application.Fixtures
   {
     private static List<Account> Accounts = new List<Account>{
       new Account{
-        Id = Guid.NewGuid(),
+        Id = Guid.NewGuid().ToString(),
         Name ="Bank Account 1"
       },
       new Account{
-        Id = Guid.NewGuid(),
+        Id = Guid.NewGuid().ToString(),
         Name ="Crédit Card 1"
       },
       new Account{
-        Id = Guid.NewGuid(),
+        Id = Guid.NewGuid().ToString(),
         Name ="Bank Account 2"
       },
       new Account{
-        Id = Guid.NewGuid(),
+        Id = Guid.NewGuid().ToString(),
         Name ="Credit Card 2"
       },
     };
     private static List<AccountDTO> AccountsDTO = new List<AccountDTO>{
       new AccountDTO{
-        Id = Guid.NewGuid(),
+        Id = Guid.NewGuid().ToString(),
         Name ="Bank Account 1"
       },
       new AccountDTO{
-        Id = Guid.NewGuid(),
+        Id = Guid.NewGuid().ToString(),
         Name ="Crédit Card 1"
       },
       new AccountDTO{
-        Id = Guid.NewGuid(),
+        Id = Guid.NewGuid().ToString(),
         Name ="Bank Account 2"
       },
       new AccountDTO{
-        Id = Guid.NewGuid(),
+        Id = Guid.NewGuid().ToString(),
         Name ="Credit Card 2"
       },
     };
