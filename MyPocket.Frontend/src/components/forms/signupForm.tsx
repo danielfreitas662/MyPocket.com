@@ -1,14 +1,13 @@
 'use client';
 
-import { Button, Form, TextInput, useForm } from '@/components';
+import { Button, Form, TextInput } from '@/components';
 import styles from './forms.module.scss';
 
 function SignupForm() {
-  const form = useForm({});
   const error = null;
   const loading = false;
   return (
-    <Form form={form} onFinish={(values) => null}>
+    <Form>
       <Form.Item name="firstName" label="First Name" required>
         <TextInput />
       </Form.Item>

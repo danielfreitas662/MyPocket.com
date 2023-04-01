@@ -8,7 +8,7 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL('/', request.url));
     }
   }
-  if (request.nextUrl.pathname.startsWith('/api') && request.method === 'POST') {
+  if (request.nextUrl.pathname.startsWith('/api')) {
   }
 }
 

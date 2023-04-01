@@ -12,8 +12,8 @@ export const config = {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const res = await fetch(process.env.NEXT_PUBLIC_API_ADDRESS + apiEndpoints.USER.AUTHENTICATE, {
-      method: 'POST',
+    const res = await fetch(process.env.NEXT_PUBLIC_API_ADDRESS + apiEndpoints.USER.AUTHENTICATE.endpoint, {
+      method: apiEndpoints.USER.AUTHENTICATE.method,
       body: JSON.stringify(body),
       cache: 'no-cache',
       headers: {

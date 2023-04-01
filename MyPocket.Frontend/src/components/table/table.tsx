@@ -42,13 +42,14 @@ export interface TableProps {
   dataSource?: RecordType[];
   columns: ColumnType<RecordType>[];
   rowKey: string;
+  width?: number | string;
   onChange?: (sorter: Sorter, pagination: Pagination) => void;
 }
-function Table({ dataSource = [], columns, rowKey, onChange = () => null }: TableProps) {
+function Table({ dataSource = [], columns, rowKey, onChange = () => null, width = '100%' }: TableProps) {
   const [sorter, setSorter] = useState<Sorter>({ field: null, order: null });
   const [pagination, setPagination] = useState<Pagination>({ current: 1, total: 0, pageSize: 10 });
   return (
-    <div className={styles.tableWrapper}>
+    <div className={styles.tableWrapper} style={{ width: width }}>
       <TableContext.Provider
         value={{ dataSource, columns, rowKey, onChange, sorter, pagination, setSorter, setPagination }}
       >

@@ -1,5 +1,5 @@
 'use client';
-import { Button, Form, TextAreaInput, TextInput, useForm } from '@/components';
+import { Button, Form, TextAreaInput, TextInput } from '@/components';
 import { FaEnvelope } from 'react-icons/fa';
 import styles from './forms.module.scss';
 
@@ -10,10 +10,9 @@ interface FormData {
   message: string;
 }
 function ContactForm() {
-  const form = useForm<FormData>({});
   const error = null;
   return (
-    <Form form={form} onFinish={(values) => console.log(values)}>
+    <Form onFinish={(values) => console.log(values)}>
       <Form.Item name="firstName" label="First Name" required>
         <TextInput />
       </Form.Item>

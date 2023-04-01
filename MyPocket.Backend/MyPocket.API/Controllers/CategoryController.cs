@@ -35,6 +35,7 @@ namespace MyPocket.API.Controllers
     public async Task<ActionResult> AddOrUpdate([FromBody] CategoryDTO category)
     {
       var user = HttpContext.User.Identity!.GetUserData();
+      Console.WriteLine(user.Email);
       if (!category.Id.HasValue)
       {
         var newCategory = await _application.Category.AddAsync(user, category);

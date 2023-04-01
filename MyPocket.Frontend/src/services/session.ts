@@ -4,6 +4,7 @@ import { cookies } from 'next/headers';
 export interface Session {
   user: IUser;
   exp: number;
+  token: string;
 }
 export async function getSession() {
   const session = cookies().get('session')?.value;

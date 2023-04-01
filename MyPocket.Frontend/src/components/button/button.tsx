@@ -18,7 +18,12 @@ function Button({ children, icon, onClick, disabled, ...restProps }: ButtonProps
       onClick={() => buttonRef?.click()}
     >
       {icon}
-      <button disabled={disabled} ref={(btn) => (buttonRef = btn)} {...restProps}>
+      <button
+        disabled={disabled}
+        ref={(btn) => (buttonRef = btn)}
+        {...restProps}
+        style={{ display: !children ? 'none' : 'block' }}
+      >
         {children}
       </button>
     </div>

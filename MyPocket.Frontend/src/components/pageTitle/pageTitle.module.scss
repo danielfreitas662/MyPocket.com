@@ -1,9 +1,14 @@
 .pageTitle {
   margin-bottom: 30px;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   .title {
+    .backButton {
+      cursor: pointer;
+    }
+    display: inline-flex;
+    gap: 8px 8px;
     font-size: x-large;
     text-align: center;
   }

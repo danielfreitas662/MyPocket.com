@@ -3,4 +3,8 @@
   background-color: white;
   padding: $container-padding;
   gap: 20px 20px;
+  .content {
+    display: flex;
+    justify-content: center;
+  }
 }

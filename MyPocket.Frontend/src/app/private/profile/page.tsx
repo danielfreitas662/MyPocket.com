@@ -1,5 +1,5 @@
 import { Descriptions } from '@/components';
-import { getSession } from '@/services/api';
+import { getSession } from '@/services/session';
 import styles from './page.module.scss';
 
 async function Profile() {

@@ -21,7 +21,7 @@ namespace MyPocket.Application.Services
         {
           Name = category.Name,
           Type = category.Type,
-          UserId = category.UserId,
+          UserId = user.UserId,
         });
         await _repo.SaveAsync();
         return new CategoryDTO

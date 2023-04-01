@@ -1,5 +1,5 @@
 'use client';
-import { Button, Form, TextInput, useForm } from '@/components';
+import { Button, Form, TextInput } from '@/components';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import styles from './forms.module.scss';
@@ -11,7 +11,6 @@ interface FormData {
   message: string;
 }
 function LoginForm() {
-  const form = useForm<FormData>({});
   const router = useRouter();
   const [result, setResult] = useState<any>();
   const [loading, setLoading] = useState<boolean>(false);
@@ -39,7 +38,7 @@ function LoginForm() {
       });
   };
   return (
-    <Form form={form} onFinish={handleSubmit}>
+    <Form onFinish={handleSubmit}>
       <Form.Item name="email" label="E-mail" required type="email">
         <TextInput />
       </Form.Item>

@@ -1,4 +1,4 @@
-import { getSession } from '@/services/api';
+import { getSession } from '@/services/session';
 import React from 'react';
 import styles from './page.module.scss';
 

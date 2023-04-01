@@ -1,0 +1,93 @@
+@import '../../../styles/variables.scss';
+.container {
+  position: relative;
+  display: flex;
+  width: 100%;
+  .select {
+    display: inline-flex;
+    width: 100%;
+    align-items: center;
+    border: 1px solid $primary-color;
+    padding: $component-input-padding;
+    border-radius: $border-radius;
+    &:focus-within {
+      border: 2px solid $primary-color;
+      input {
+        color: grey;
+      }
+    }
+    .icon {
+      color: $primary-color;
+    }
+    &.error {
+      border: 2px solid red;
+    }
+    .clear {
+      transform: rotate(45deg);
+      cursor: pointer;
+    }
+    input {
+      width: 100%;
+      border: none;
+      font-size: $font-size-medium;
+      color: $primary-color;
+      &:focus {
+        .select {
+          border: 3px solid $primary-color;
+        }
+        outline: none;
+      }
+    }
+    select {
+      display: none;
+      width: 100%;
+      font-size: $font-size-medium;
+      color: $primary-color;
+    }
+  }
+  .customSelect {
+    display: none;
+    max-height: 200px;
+    overflow-y: scroll;
+    top: 30px;
+    left: 0;
+    position: absolute;
+    z-index: 1000;
+    width: 100%;
+    color: white;
+    &.visible {
+      display: block;
+      input {
+        color: $light-color;
+      }
+    }
+    .selectOption {
+      background-color: $secondary-color;
+      padding: $component-input-padding;
+      cursor: pointer;
+      border-bottom: 1px solid white;
+      &:last-child {
+        border: none;
+      }
+      &:hover {
+        background-color: $light-color;
+        color: $primary-color;
+        .customSelect {
+          display: block;
+        }
+      }
+      .selected {
+        background-color: $primary-color;
+      }
+    }
+  }
+  .empty {
+    height: 100px;
+    width: 100%;
+    background-color: $secondary-color;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}

@@ -1,4 +1,4 @@
-import { getSession } from '@/services/api';
+import { getSession } from '@/services/session';
 import { IUser } from '@/types/user';
 import Link from 'next/link';
 import React, { Suspense } from 'react';
