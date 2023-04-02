@@ -1,0 +1,30 @@
+@import '../../styles/variables.scss';
+.feedback {
+  display: none;
+  gap: 5px 5px;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid;
+  padding: $component-general-padding;
+  border-radius: $border-radius;
+  color: white;
+  &.visible {
+    display: flex;
+  }
+  &.error {
+    background-color: $error-color;
+  }
+  &.success {
+    background-color: $success-color;
+  }
+  &.info {
+    background-color: $info-color;
+  }
+  .close {
+    transform: rotate(45deg);
+    cursor: pointer;
+  }
+  &.dismissed {
+    display: none;
+  }
+}

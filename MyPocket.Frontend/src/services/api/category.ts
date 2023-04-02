@@ -3,7 +3,7 @@ import { ICategory } from '@/types/category';
 import apiEndpoints from '../apiEndpoints';
 import { getClientSession } from '../clientSession';
 const apiAddress: string = process.env.NEXT_PUBLIC_API_ADDRESS as string;
-export const saveCategory = async (category: ICategory) => {
+export const saveCategory = async (category: Partial<ICategory>) => {
   try {
     const session = await getClientSession();
     const res = await fetch(apiAddress + apiEndpoints.CATEGORY.ADD.endpoint, {
@@ -15,7 +15,6 @@ export const saveCategory = async (category: ICategory) => {
       },
     });
     if (!res.ok) {
-      //const text = await res.text();
       const result: ApiRequest<ICategory | null> = {
         error: true,
         statusCode: res.status,

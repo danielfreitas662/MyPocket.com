@@ -1,7 +1,7 @@
 'use client';
 import clsx from 'clsx';
-import React, { InputHTMLAttributes, ReactNode, useEffect, useRef, useState } from 'react';
-import { UseFormRegisterReturn } from 'react-hook-form';
+import React, { InputHTMLAttributes, MutableRefObject, ReactNode, useEffect, useRef, useState } from 'react';
+import { useController, UseFormRegisterReturn } from 'react-hook-form';
 import { FaDatabase, FaPlus } from 'react-icons/fa';
 import styles from './select.module.scss';
 
@@ -9,31 +9,26 @@ export interface SelectOption {
   value: any;
   label: string;
 }
-interface OnChangeEvent {
-  target: {
-    value: any;
-    name?: string;
-  };
-  type: string;
-}
+
 export interface SelectProps
   extends Omit<InputHTMLAttributes<HTMLInputElement>, 'onClick' | 'name' | 'onChange' | 'onBlur'>,
-    Partial<Omit<UseFormRegisterReturn, 'onChange'>> {
+    Partial<Omit<UseFormRegisterReturn, 'ref'>> {
   icon?: ReactNode;
   error?: string;
   options?: SelectOption[];
   allowClear?: boolean;
-  onChange?: any;
+  control?: any;
 }
 const Select = React.forwardRef(
   (
-    { icon, error, options, placeholder, onChange, id, allowClear = false, ...restProps }: SelectProps,
-    ref: React.ForwardedRef<HTMLInputElement>
+    { icon, error, options, placeholder, control, allowClear = false, ...restProps }: SelectProps,
+    ref: React.LegacyRef<HTMLInputElement>
   ) => {
+    const { field } = useController({ name: restProps.name || '', control: control });
     const [filter, setFilter] = useState<string>('');
     const componentRef = useRef<any>();
     const [visible, setVisible] = useState(false);
-    const [label, setLabel] = useState<string>(options?.find((c) => c.value === restProps.value)?.label || '');
+    const [label, setLabel] = useState<string>(options?.find((c) => c.value === field.value)?.label || '');
     useEffect(() => {
       function handleClickOutside(event: MouseEvent) {
         if (componentRef.current && !componentRef.current.contains(event.target)) {
@@ -44,10 +39,11 @@ const Select = React.forwardRef(
       return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
     useEffect(() => {
-      if (restProps.value) {
-        setLabel(options?.find((c) => c.value === restProps.value)?.label || '');
+      if (field.value) {
+        setLabel(options?.find((c) => c.value === field.value)?.label || '');
       }
-    }, [restProps.value]);
+    }, [field.value]);
+
     return (
       <div className={styles.container}>
         <div
@@ -64,36 +60,14 @@ const Select = React.forwardRef(
             onChange={(e) => setFilter(e.target.value)}
             placeholder={placeholder}
           />
-          <input
-            style={{ display: 'none' }}
-            {...restProps}
-            ref={ref}
-            onChange={(e) => {
-              onChange &&
-                onChange({
-                  type: 'change',
-                  target: {
-                    value: e.target.value,
-                    name: restProps.name || '',
-                  },
-                });
-            }}
-            id={id}
-          />
+          <input style={{ display: 'none' }} {...restProps} ref={ref} onChange={(e) => console.log(e.target.value)} />
           {allowClear && (
             <FaPlus
               className={styles.clear}
               onClick={() => {
                 setFilter('');
                 setLabel('');
-                onChange &&
-                  onChange({
-                    type: 'change',
-                    target: {
-                      value: '',
-                      name: restProps.name,
-                    },
-                  });
+                field.onChange(null);
               }}
             />
           )}
@@ -106,14 +80,7 @@ const Select = React.forwardRef(
                 key={c.value}
                 className={clsx({ [styles.selectOption]: true, [styles.selected]: false })}
                 onClick={() => {
-                  onChange &&
-                    onChange({
-                      type: 'change',
-                      target: {
-                        value: c.value,
-                        name: restProps.name || '',
-                      },
-                    });
+                  field.onChange(c.value);
                   setVisible(false);
                   setFilter('');
                   setLabel(c.label);

@@ -3,18 +3,17 @@
 import { saveCategory } from '@/services/api/category';
 import { ApiRequest } from '@/types/apirequest';
 import { ICategory } from '@/types/category';
-import clsx from 'clsx';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Button from '../button/button';
+import Feedback from '../feedback/feedback';
 import FormItem from '../form/formItem';
 import Select from '../inputComponents/select/select';
 import TextInput from '../inputComponents/textinput/textInput';
-import styles from './forms.module.scss';
 
 interface CategoryFormProps {
-  initialData?: ICategory;
+  initialData?: Partial<ICategory>;
 }
 function CategoryForm({ initialData }: CategoryFormProps) {
   const [loading, setLoading] = useState(false);
@@ -23,10 +22,12 @@ function CategoryForm({ initialData }: CategoryFormProps) {
   const {
     register,
     reset,
+    control,
     handleSubmit,
     formState: { errors },
-  } = useForm<ICategory>({ defaultValues: initialData || { name: '', type: 0 } });
-  const handleSubmit2 = (values: ICategory) => {
+  } = useForm<Partial<ICategory>>({ defaultValues: initialData || { name: '', type: 0 } });
+  const handleSubmit2 = (values: Partial<ICategory>) => {
+    console.log(values);
     setLoading(true);
     saveCategory(values)
       .then((res) => {
@@ -52,6 +53,7 @@ function CategoryForm({ initialData }: CategoryFormProps) {
         <FormItem label="Type" error={errors['type']?.message as string}>
           <Select
             allowClear
+            control={control}
             placeholder="Category type..."
             {...register('type', { required: 'Required field' })}
             options={[
@@ -63,7 +65,7 @@ function CategoryForm({ initialData }: CategoryFormProps) {
         <Button type="submit" disabled={loading}>
           Save
         </Button>
-        <div className={clsx({ [styles.feedback]: true, [styles.success]: !result?.error })}>{result?.message}</div>
+        <Feedback type={result?.error ? 'error' : 'success'} message={result?.message} dismissable />
       </form>
     </div>
   );

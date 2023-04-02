@@ -1,7 +1,8 @@
 'use client';
-import { Button, Form, TextAreaInput, TextInput } from '@/components';
+import { Button, Feedback, FormItem, TextAreaInput, TextInput } from '@/components';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { FaEnvelope } from 'react-icons/fa';
-import styles from './forms.module.scss';
 
 interface FormData {
   firstName: string;
@@ -10,26 +11,41 @@ interface FormData {
   message: string;
 }
 function ContactForm() {
-  const error = null;
+  const [result, setResult] = useState({ error: false, message: '' });
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm<FormData>();
   return (
-    <Form onFinish={(values) => console.log(values)}>
-      <Form.Item name="firstName" label="First Name" required>
-        <TextInput />
-      </Form.Item>
-      <Form.Item name="lasName" label="Last Name" required>
-        <TextInput />
-      </Form.Item>
-      <Form.Item name="email" label="E-mail" required>
-        <TextInput />
-      </Form.Item>
-      <Form.Item name="message" label="Message" required>
-        <TextAreaInput rows={8} />
-      </Form.Item>
+    <form onSubmit={handleSubmit((data) => console.log(data))}>
+      <FormItem label="First Name">
+        <TextInput
+          error={errors?.firstName?.message as string}
+          {...register('firstName', { required: 'Required field' })}
+        />
+      </FormItem>
+      <FormItem label="Last Name">
+        <TextInput
+          error={errors?.lastName?.message as string}
+          {...register('lastName', { required: 'Required field' })}
+        />
+      </FormItem>
+      <FormItem label="E-mail">
+        <TextInput error={errors?.email?.message as string} {...register('email', { required: 'Required field' })} />
+      </FormItem>
+      <FormItem label="Message">
+        <TextAreaInput
+          error={errors?.message?.message as string}
+          rows={8}
+          {...register('message', { required: 'Required field' })}
+        />
+      </FormItem>
       <Button icon={<FaEnvelope />} type="submit">
         Enviar
       </Button>
-      {error && <div className={styles.error}>{error}</div>}
-    </Form>
+      <Feedback type={result?.error ? 'error' : 'success'} message={result?.message} dismissable />
+    </form>
   );
 }
 export default ContactForm;

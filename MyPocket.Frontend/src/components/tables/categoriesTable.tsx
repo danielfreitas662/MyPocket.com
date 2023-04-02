@@ -1,7 +1,7 @@
 'use client';
 import { CategoryType, ICategory } from '@/types/category';
 import Link from 'next/link';
-import { FaEdit } from 'react-icons/fa';
+import { FaEdit, FaTrash } from 'react-icons/fa';
 import Table from '../table/table';
 
 function CategoriesTable({ data = [] }: { data: ICategory[] }) {
@@ -15,9 +15,12 @@ function CategoriesTable({ data = [] }: { data: ICategory[] }) {
           title: '',
           dataIndex: 'id',
           render: (v) => (
-            <Link href={`/private/category/${v}`}>
-              <FaEdit />
-            </Link>
+            <div style={{ display: 'flex', gap: '5px 5px' }}>
+              <Link href={`/private/category/${v}`}>
+                <FaEdit />
+              </Link>
+              <FaTrash style={{ cursor: 'pointer' }} />
+            </div>
           ),
         },
         {

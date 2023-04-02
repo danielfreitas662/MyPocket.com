@@ -11,6 +11,7 @@ import PrivateLayout from './privateLayout/privateLayout';
 import ErrorBoundary from './error/errorBondary';
 import Select from './inputComponents/select/select';
 import FormItem from './form/formItem';
+import Feedback from './feedback/feedback';
 export {
   Button,
   Navbar,
@@ -25,4 +26,5 @@ export {
   ErrorBoundary,
   Select,
   FormItem,
+  Feedback,
 };
