@@ -1,7 +1,8 @@
 'use client';
 import clsx from 'clsx';
-import React, { ReactNode, SetStateAction, useCallback, useState } from 'react';
+import React, { ReactNode, SetStateAction, useState } from 'react';
 import styles from './table.module.scss';
+import { FaDatabase } from 'react-icons/fa';
 
 interface RecordType {
   [key: string]: any;
@@ -42,14 +43,34 @@ export interface TableProps {
   dataSource?: RecordType[];
   columns: ColumnType<RecordType>[];
   rowKey: string;
+  scroll?: {
+    x: number | string;
+    y: number | string;
+  };
+  loading: boolean;
   width?: number | string;
   onChange?: (sorter: Sorter, pagination: Pagination) => void;
 }
-function Table({ dataSource = [], columns, rowKey, onChange = () => null, width = '100%' }: TableProps) {
+function Table({
+  dataSource = [],
+  columns,
+  loading,
+  scroll,
+  rowKey,
+  onChange = () => null,
+  width = '100%',
+}: TableProps) {
   const [sorter, setSorter] = useState<Sorter>({ field: null, order: null });
   const [pagination, setPagination] = useState<Pagination>({ current: 1, total: 0, pageSize: 10 });
   return (
-    <div className={styles.tableWrapper} style={{ width: width }}>
+    <div
+      className={clsx({ [styles.tableWrapper]: true })}
+      style={{ maxHeight: scroll?.y, maxWidth: scroll?.x, overflowY: 'scroll' }}
+    >
+      <div className={clsx({ [styles.spinnerMask]: true, [styles.loading]: loading })}>
+        <div className={styles.spinner} />
+      </div>
+      <div className={clsx({ [styles.mask]: true, [styles.loading]: loading })}></div>
       <TableContext.Provider
         value={{ dataSource, columns, rowKey, onChange, sorter, pagination, setSorter, setPagination }}
       >
@@ -101,6 +122,18 @@ function TableBody() {
   const { columns, dataSource, rowKey } = React.useContext(TableContext);
   return (
     <tbody>
+      {dataSource.length === 0 && (
+        <tr>
+          <td colSpan={columns.length}>
+            <div className={styles.empty}>
+              <div>
+                <FaDatabase />
+              </div>
+              <div>No Data</div>
+            </div>
+          </td>
+        </tr>
+      )}
       {dataSource.map((row, rowIndex) => (
         <tr key={row[rowKey]}>
           {columns.map((col, colIndex) => (

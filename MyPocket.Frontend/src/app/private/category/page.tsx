@@ -7,15 +7,11 @@ import styles from './page.module.scss';
 export const metadata = {
   title: 'MyPocket - Categories',
 };
-async function Category() {
-  const result = await getCategories();
-  if (!result.error)
-    return (
-      <div className={styles.body}>
-        <Suspense fallback={<Skeleton rows={10} />}>
-          <CategoriesTable data={result.data} />
-        </Suspense>
-      </div>
-    );
+function Category() {
+  return (
+    <div className={styles.body}>
+      <CategoriesTable />
+    </div>
+  );
 }
 export default Category;

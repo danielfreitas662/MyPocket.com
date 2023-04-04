@@ -26,9 +26,9 @@ function CategoryForm({ initialData }: CategoryFormProps) {
     handleSubmit,
     formState: { errors },
   } = useForm<Partial<ICategory>>({ defaultValues: initialData || { name: '', type: 0 } });
-  const handleSubmit2 = (values: Partial<ICategory>) => {
-    console.log(values);
+  const handleaAdd = (values: Partial<ICategory>) => {
     setLoading(true);
+    setResult({} as ApiRequest<ICategory>);
     saveCategory(values)
       .then((res) => {
         setLoading(false);
@@ -43,7 +43,7 @@ function CategoryForm({ initialData }: CategoryFormProps) {
   };
   return (
     <div style={{ width: 500 }}>
-      <form onSubmit={handleSubmit((data) => handleSubmit2(data))}>
+      <form onSubmit={handleSubmit((data) => handleaAdd(data))}>
         <FormItem label="Id" hidden>
           <input {...register('id', { required: false })} />
         </FormItem>

@@ -1,6 +1,7 @@
+'use client';
 import clsx from 'clsx';
-import React, { InputHTMLAttributes, ReactNode } from 'react';
-import './textInput.styles.scss';
+import React, { InputHTMLAttributes, ReactNode, useState } from 'react';
+import styles from './textInput.module.scss';
 
 export interface TextInputProps extends InputHTMLAttributes<HTMLInputElement> {
   icon?: ReactNode;
@@ -8,12 +9,12 @@ export interface TextInputProps extends InputHTMLAttributes<HTMLInputElement> {
 }
 
 const TextInput = React.forwardRef(
-  ({ icon, error, value, ...restProps }: TextInputProps, ref: React.LegacyRef<HTMLInputElement>) => {
+  ({ icon, error, ...restProps }: TextInputProps, ref: React.LegacyRef<HTMLInputElement>) => {
     return (
       <div
         className={clsx({
-          'text-input': true,
-          error: !!error,
+          [styles.textInput]: true,
+          [styles.error]: !!error,
         })}
       >
         <div className="icon">{icon}</div>

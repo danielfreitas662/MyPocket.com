@@ -12,7 +12,7 @@
     color: $primary-color;
   }
   &.error {
-    border: 2px solid red;
+    border: 2px solid $error-color;
   }
   textarea {
     border: none;

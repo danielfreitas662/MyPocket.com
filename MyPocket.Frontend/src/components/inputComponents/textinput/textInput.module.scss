@@ -1,0 +1,29 @@
+@import '../../../styles/variables.scss';
+.textInput {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid $primary-color;
+  padding: $component-input-padding;
+  border-radius: $border-radius;
+  &:focus-within {
+    border: 2px solid $primary-color;
+  }
+  .icon {
+    color: $primary-color;
+  }
+  &.error {
+    border: 2px solid $error-color;
+  }
+  input {
+    border: none;
+    width: 100%;
+    font-size: $font-size-medium;
+    color: $primary-color;
+    &:focus {
+      .text-input {
+        border: 3px solid $primary-color;
+      }
+      outline: none;
+    }
+  }
+}

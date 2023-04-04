@@ -20,6 +20,7 @@ namespace MyPocket.Application.Services
       {
         var newAccount = _repo.Account.Add(new Account
         {
+          Id = Guid.NewGuid().ToString(),
           Name = account.Name,
           UserId = User.UserId
         });

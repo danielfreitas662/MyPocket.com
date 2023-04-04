@@ -1,9 +1,9 @@
-import styles from './page.module.scss';
+import AccountsTable from '@/components/tables/accountsTable';
 
 export const metadata = {
   title: 'MyPocket - Accounts',
 };
 function Account() {
-  return <div className={styles.body}></div>;
+  return <AccountsTable />;
 }
 export default Account;

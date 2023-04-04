@@ -5,17 +5,19 @@ import cx from 'clsx';
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   icon?: ReactNode;
+  theme?: 'primary' | 'secondary';
 }
 
-function Button({ children, icon, onClick, disabled, ...restProps }: ButtonProps) {
+function Button({ children, icon, theme = 'primary', disabled, ...restProps }: ButtonProps) {
   let buttonRef: HTMLButtonElement | null = null;
   return (
     <div
       className={cx({
         [styles.button]: true,
         [styles.disabled]: disabled,
+        [styles[theme]]: true,
       })}
-      onClick={() => buttonRef?.click()}
+      onClick={() => icon && buttonRef?.click()}
     >
       {icon}
       <button

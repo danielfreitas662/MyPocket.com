@@ -1,4 +1,5 @@
 import { Button, PrivateLayout } from '@/components';
+import Link from 'next/link';
 import { ReactNode } from 'react';
 import { FaPlus } from 'react-icons/fa';
 interface AccountLayoutProps {
@@ -6,7 +7,14 @@ interface AccountLayoutProps {
 }
 export default function AccountLayout({ children }: AccountLayoutProps) {
   return (
-    <PrivateLayout title="Accounts" extra={<Button icon={<FaPlus />}>New Account</Button>}>
+    <PrivateLayout
+      title="Accounts"
+      extra={
+        <Link href="/private/account/new">
+          <Button icon={<FaPlus />}>New Account</Button>
+        </Link>
+      }
+    >
       {children}
     </PrivateLayout>
   );

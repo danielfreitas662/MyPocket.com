@@ -1,5 +1,5 @@
 @import '../../../styles/variables.scss';
-.text-input {
+.textInput {
   display: inline-flex;
   align-items: center;
   border: 1px solid $primary-color;
@@ -12,7 +12,7 @@
     color: $primary-color;
   }
   &.error {
-    border: 2px solid red;
+    border: 2px solid $error-color;
   }
   input {
     border: none;

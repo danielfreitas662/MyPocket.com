@@ -9,6 +9,10 @@
   border: 1px solid $primary-color;
   border-radius: $border-radius;
   font-size: $font-size-medium;
+  &.secondary {
+    background-color: $secondary-color;
+    border: 1px solid $secondary-color;
+  }
   &.disabled {
     color: darkgrey;
     background-color: $disabled-color;

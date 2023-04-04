@@ -1,0 +1,23 @@
+@import '../../styles/variables.scss';
+.popConfirmWrapper {
+  .popConfirm {
+    position: fixed;
+    border-radius: $border-radius;
+    width: 200px;
+    display: none;
+    background-color: white;
+    border: 1px solid $primary-color;
+    padding: $component-general-padding;
+    z-index: 1000;
+    &.visible {
+      display: block;
+    }
+    .title {
+    }
+    .menu {
+      width: 100%;
+      display: inline-flex;
+      justify-content: space-between;
+    }
+  }
+}

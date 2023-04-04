@@ -9,6 +9,7 @@ export const getCategories = async () => {
     const session = await getSession();
     const res = await fetch(apiAddress + apiEndpoints.CATEGORY.GET.endpoint, {
       method: apiEndpoints.CATEGORY.GET.method,
+      cache: 'no-store',
       headers: {
         Authorization: `Bearer ${session.token}`,
       },

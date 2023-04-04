@@ -24,6 +24,7 @@ namespace MyPocket.Application.Services
         if (account == null) throw new NullReferenceException("Invalid account");
         var newtransaction = _repo.Transaction.Add(new Transaction
         {
+          Id = Guid.NewGuid().ToString(),
           Amount = transaction.Amount,
           CategoryId = transaction.CategoryId,
           Description = transaction.Description,

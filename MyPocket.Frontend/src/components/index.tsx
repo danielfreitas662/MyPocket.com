@@ -12,6 +12,10 @@ import ErrorBoundary from './error/errorBondary';
 import Select from './inputComponents/select/select';
 import FormItem from './form/formItem';
 import Feedback from './feedback/feedback';
+import PopConfirm from './popconfirm/popConfirm';
+import DatePicker from './inputComponents/datePicker/datePicker';
+import TextInputMask from './inputComponents/textInputMask/textInputMask';
+import CurrencyInput from './inputComponents/currencyInput/currencyInput';
 export {
   Button,
   Navbar,
@@ -26,5 +30,9 @@ export {
   ErrorBoundary,
   Select,
   FormItem,
+  DatePicker,
   Feedback,
+  PopConfirm,
+  TextInputMask,
+  CurrencyInput,
 };

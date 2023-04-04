@@ -20,7 +20,7 @@
       color: $primary-color;
     }
     &.error {
-      border: 2px solid red;
+      border: 2px solid $error-color;
     }
     .clear {
       transform: rotate(45deg);

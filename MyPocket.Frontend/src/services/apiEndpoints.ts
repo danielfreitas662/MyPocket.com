@@ -24,6 +24,19 @@ const apiEndpoints: APIEndpoint = {
     GET: { endpoint: '/Category', method: Method.GET },
     GET_BY_ID: { endpoint: '/Category', method: Method.GET },
     ADD: { endpoint: '/Category', method: Method.POST },
+    REMOVE: { endpoint: '/Category', method: Method.DELETE },
+  },
+  ACCOUNT: {
+    GET: { endpoint: '/Account', method: Method.GET },
+    GET_BY_ID: { endpoint: '/Account', method: Method.GET },
+    ADD: { endpoint: '/Account', method: Method.POST },
+    REMOVE: { endpoint: '/Account', method: Method.DELETE },
+  },
+  TRANSACTION: {
+    GET: { endpoint: '/Transaction', method: Method.GET },
+    GET_BY_ID: { endpoint: '/Transaction', method: Method.GET },
+    ADD: { endpoint: '/Transaction', method: Method.POST },
+    REMOVE: { endpoint: '/Transaction', method: Method.DELETE },
   },
 };
 export default apiEndpoints;

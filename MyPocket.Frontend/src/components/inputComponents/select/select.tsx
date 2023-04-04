@@ -1,6 +1,6 @@
 'use client';
 import clsx from 'clsx';
-import React, { InputHTMLAttributes, MutableRefObject, ReactNode, useEffect, useRef, useState } from 'react';
+import React, { InputHTMLAttributes, ReactNode, useEffect, useRef, useState } from 'react';
 import { useController, UseFormRegisterReturn } from 'react-hook-form';
 import { FaDatabase, FaPlus } from 'react-icons/fa';
 import styles from './select.module.scss';
@@ -55,12 +55,13 @@ const Select = React.forwardRef(
           onFocus={() => setVisible(true)}
         >
           <div className={styles.icon}>{icon}</div>
+          <input style={{ display: 'none' }} {...restProps} ref={field.ref} />
           <input
             value={visible ? filter : label}
+            ref={ref}
             onChange={(e) => setFilter(e.target.value)}
             placeholder={placeholder}
           />
-          <input style={{ display: 'none' }} {...restProps} ref={ref} onChange={(e) => console.log(e.target.value)} />
           {allowClear && (
             <FaPlus
               className={styles.clear}
