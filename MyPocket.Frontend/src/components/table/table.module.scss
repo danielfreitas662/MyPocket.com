@@ -77,11 +77,11 @@
       max-height: 100px;
       overflow-y: scroll;
       tr {
-        &:nth-child(even) {
-          background-color: $light-color;
-        }
         &:hover {
           background-color: $light-color2;
+        }
+        &:nth-child(even) {
+          background-color: $light-color;
         }
         td {
           padding: $component-general-padding;

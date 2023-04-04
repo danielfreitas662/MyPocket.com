@@ -15,4 +15,9 @@ namespace MyPocket.Domain.Models
     public string UserId { get; set; }
     public User User { get; set; }
   }
+  public class AmountByCategoryModel
+  {
+    public string Category { get; set; }
+    public decimal Amount { get; set; }
+  }
 }

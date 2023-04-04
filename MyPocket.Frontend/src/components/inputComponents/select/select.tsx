@@ -39,7 +39,7 @@ const Select = React.forwardRef(
       return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
     useEffect(() => {
-      if (field.value) {
+      if (field.value !== null) {
         setLabel(options?.find((c) => c.value === field.value)?.label || '');
       }
     }, [field.value]);

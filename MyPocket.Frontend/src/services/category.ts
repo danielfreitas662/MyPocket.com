@@ -41,7 +41,7 @@ export const getCategories = async () => {
 export const getCategoryById = async (id: string) => {
   try {
     const session = await getSession();
-    const res = await fetch(apiAddress + apiEndpoints.CATEGORY.GET_BY_ID.endpoint + `?id=${id}`, {
+    const res = await fetch(apiAddress + apiEndpoints.CATEGORY.GET_BY_ID.endpoint + `/${id}`, {
       method: apiEndpoints.CATEGORY.GET_BY_ID.method,
       headers: {
         Authorization: `Bearer ${session.token}`,
@@ -58,13 +58,13 @@ export const getCategoryById = async (id: string) => {
       };
       return result;
     }
-    const data: ICategory[] = await res.json();
+    const data: ICategory = await res.json();
     const result: ApiRequest<ICategory | null> = {
       error: false,
       statusCode: res.status,
       statusText: res.statusText,
       message: '',
-      data: data[0],
+      data: data,
     };
     return result;
   } catch (error: any) {

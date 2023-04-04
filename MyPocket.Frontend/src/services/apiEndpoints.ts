@@ -38,5 +38,8 @@ const apiEndpoints: APIEndpoint = {
     ADD: { endpoint: '/Transaction', method: Method.POST },
     REMOVE: { endpoint: '/Transaction', method: Method.DELETE },
   },
+  DASHBOARD: {
+    AMOUNT_BY_CATEGORY: { endpoint: '/Transaction/AmountByCategoryByMonth', method: Method.GET },
+  },
 };
 export default apiEndpoints;

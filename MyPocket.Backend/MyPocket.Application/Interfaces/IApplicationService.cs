@@ -8,5 +8,6 @@ namespace MyPocket.Application.Interfaces
     ICategoryService Category { get; }
     ITransactionService Transaction { get; }
     IUserService User { get; }
+    IDashboardService Dashboard { get; }
   }
 }

@@ -1,5 +1,6 @@
 import { getSession } from '@/services/session';
 import { IUser } from '@/types/user';
+import moment from 'moment';
 import Link from 'next/link';
 import React, { Suspense } from 'react';
 import Skeleton from '../skeleton/skeleton';
@@ -27,7 +28,7 @@ function Navbar({ user }: { user: IUser }) {
         )}
         {user && (
           <nav className={styles.nav}>
-            <Link className={styles.link} href="/private/dashboard">
+            <Link className={styles.link} href={`/private/dashboard/${moment().format('YYYY-MM-DD')}`}>
               Dashboard
             </Link>
             <Link className={styles.link} href="/private/transaction">

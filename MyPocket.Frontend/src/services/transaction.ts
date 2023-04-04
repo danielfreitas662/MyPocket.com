@@ -41,7 +41,7 @@ export const getTransactions = async () => {
 export const getTransactionById = async (id: string) => {
   try {
     const session = await getSession();
-    const res = await fetch(apiAddress + apiEndpoints.CATEGORY.GET_BY_ID.endpoint + `?id=${id}`, {
+    const res = await fetch(apiAddress + apiEndpoints.CATEGORY.GET_BY_ID.endpoint + `/${id}`, {
       method: apiEndpoints.CATEGORY.GET_BY_ID.method,
       headers: {
         Authorization: `Bearer ${session.token}`,
@@ -58,13 +58,13 @@ export const getTransactionById = async (id: string) => {
       };
       return result;
     }
-    const data: ITransaction[] = await res.json();
+    const data: ITransaction = await res.json();
     const result: ApiRequest<ITransaction | null> = {
       error: false,
       statusCode: res.status,
       statusText: res.statusText,
       message: '',
-      data: data[0],
+      data: data,
     };
     return result;
   } catch (error: any) {

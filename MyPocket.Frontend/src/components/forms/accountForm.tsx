@@ -24,6 +24,7 @@ function AccountForm({ initialData }: AccountFormProps) {
     handleSubmit,
     formState: { errors },
   } = useForm<Partial<IAccount>>({ defaultValues: initialData || { name: '' } });
+
   const handleaAdd = (values: Partial<IAccount>) => {
     setLoading(true);
     setResult({} as ApiRequest<IAccount>);

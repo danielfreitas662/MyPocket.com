@@ -4,8 +4,12 @@ import { ReactNode } from 'react';
 import { FaPlus } from 'react-icons/fa';
 interface AccountLayoutProps {
   children: ReactNode;
+  params: {
+    month: string;
+  };
 }
-export default function AccountLayout({ children }: AccountLayoutProps) {
+export default function AccountLayout({ children, params }: AccountLayoutProps) {
+  console.log(params);
   return (
     <PrivateLayout
       title="Accounts"
