@@ -10,5 +10,6 @@ namespace MyPocket.Application.Interfaces
     decimal IncomeByMonth(string UserId, DateTime Month);
     decimal OutcomeByMonth(string UserId, DateTime Month);
     List<MonthTransaction> MonthTransactions(string UserId, DateTime Month, CategoryType type);
+    List<ResultByMonth> ResultByMonth(string UserID, DateTime Month);
   }
 }

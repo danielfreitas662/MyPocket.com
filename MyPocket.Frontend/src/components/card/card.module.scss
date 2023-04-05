@@ -1,6 +1,10 @@
 @import '../../styles/variables.scss';
 .card {
-  border: 1px solid $light-color;
   border-radius: $border-radius;
   padding: $component-general-padding;
+  box-shadow: 0px 0px 4px lightgrey;
+  &:hover {
+    box-shadow: 0px 0px 8px lightgrey;
+    scale: 1.002;
+  }
 }

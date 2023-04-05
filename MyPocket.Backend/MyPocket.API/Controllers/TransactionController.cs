@@ -109,5 +109,12 @@ namespace MyPocket.API.Controllers
       var result = _application.Dashboard.MonthTransactions(user.UserId, Month, type);
       return Ok(result);
     }
+    [HttpGet("ResultsByMonth/{month}")]
+    public ActionResult ResultsByMonth([FromRoute] DateTime Month)
+    {
+      var user = HttpContext.User.Identity!.GetUserData();
+      var result = _application.Dashboard.ResultByMonth(user.UserId, Month);
+      return Ok(result);
+    }
   }
 }

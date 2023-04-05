@@ -33,7 +33,6 @@ export const getAccountById = async (id: string) => {
       message: '',
       data: data,
     };
-    console.log(data);
     return result;
   } catch (error: any) {
     throw new Error(JSON.stringify(error));

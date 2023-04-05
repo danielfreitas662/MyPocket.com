@@ -21,6 +21,7 @@ export async function POST(request: Request) {
         Accept: 'application/json',
       },
     });
+    console.log(res);
     const data = await res.json();
     const response = new Response(JSON.stringify(data, null, 2));
     if (data?.token) {

@@ -43,6 +43,7 @@ const apiEndpoints: APIEndpoint = {
     INCOME_BY_MONTH: { endpoint: '/Transaction/IncomeByMonth', method: Method.GET },
     OUTCOME_BY_MONTH: { endpoint: '/Transaction/OutcomeByMonth', method: Method.GET },
     TRANSACTIONS_BY_MONTH: { endpoint: '/Transaction/TransactionsByMonth', method: Method.GET },
+    RESULTS_BY_MONTH: { endpoint: '/Transaction/ResultsByMonth', method: Method.GET },
   },
 };
 export default apiEndpoints;

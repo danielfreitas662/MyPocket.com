@@ -41,6 +41,19 @@ namespace MyPocket.Infra.Repository
       });
       return result.ToList();
     }
+    public List<ResultByMonth> ResultByMonth(string userId, DateTime month)
+    {
+      DateTime start = month.ToUniversalTime().AddMonths(-3);
+      DateTime end = month.ToUniversalTime().AddMonths(3);
+      var result = _context.Transactions.Include(d => d.Category).Where(c => c.UserId == userId && c.Date >= start && c.Date <= end).GroupBy(c => new { c.Date.Month, c.Date.Year }).Select(c => new ResultByMonth
+      {
+        Date = new DateTime(c.Key.Year, c.Key.Month, 1),
+        Income = c.Where(d => d.Category.Type == CategoryType.Income).Sum(d => d.Amount),
+        Outcome = c.Where(d => d.Category.Type == CategoryType.Outcome).Sum(d => d.Amount),
+        Result = c.Where(d => d.Category.Type == CategoryType.Income).Sum(d => d.Amount) - c.Where(d => d.Category.Type == CategoryType.Outcome).Sum(d => d.Amount)
+      });
+      return result.ToList();
+    }
 
   }
 }

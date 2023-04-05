@@ -7,5 +7,6 @@ namespace MyPocket.Domain.Interfaces
     List<Transaction> GetByCategoryID(Guid UserID, int CategoryID);
     List<AmountByCategoryModel> AmountByCategoryByMonth(string userId, DateTime month);
     List<MonthTransaction> MonthTransactionAmount(string userId, DateTime month, CategoryType type);
+    List<ResultByMonth> ResultByMonth(string userId, DateTime month);
   }
 }

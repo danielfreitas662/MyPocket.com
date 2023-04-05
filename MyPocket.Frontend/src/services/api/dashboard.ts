@@ -1,6 +1,6 @@
 import { ApiRequest } from '@/types/apirequest';
 import { CategoryType } from '@/types/category';
-import { AmountByCategory, TransactionsByMonth } from '@/types/dashboard';
+import { AmountByCategory, ResultsByMonth, TransactionsByMonth } from '@/types/dashboard';
 import apiEndpoints from '../apiEndpoints';
 import { getClientSession } from '../clientSession';
 
@@ -8,7 +8,6 @@ const apiAddress: string = process.env.NEXT_PUBLIC_API_ADDRESS as string;
 export const getAmountByCategory = async (month: string) => {
   try {
     const session = await getClientSession();
-    console.log(session);
     const res = await fetch(apiAddress + apiEndpoints.DASHBOARD.AMOUNT_BY_CATEGORY.endpoint + `/${month}`, {
       method: apiEndpoints.DASHBOARD.AMOUNT_BY_CATEGORY.method,
       headers: {
@@ -43,7 +42,6 @@ export const getAmountByCategory = async (month: string) => {
 export const getIncomeByMonth = async (month: string) => {
   try {
     const session = await getClientSession();
-    console.log(session);
     const res = await fetch(apiAddress + apiEndpoints.DASHBOARD.INCOME_BY_MONTH.endpoint + `/${month}`, {
       method: apiEndpoints.DASHBOARD.INCOME_BY_MONTH.method,
       headers: {
@@ -78,7 +76,6 @@ export const getIncomeByMonth = async (month: string) => {
 export const getOutcomeByMonth = async (month: string) => {
   try {
     const session = await getClientSession();
-    console.log(session);
     const res = await fetch(apiAddress + apiEndpoints.DASHBOARD.OUTCOME_BY_MONTH.endpoint + `/${month}`, {
       method: apiEndpoints.DASHBOARD.OUTCOME_BY_MONTH.method,
       headers: {
@@ -113,7 +110,6 @@ export const getOutcomeByMonth = async (month: string) => {
 export const getTransactionsByMonth = async (month: string, type: CategoryType) => {
   try {
     const session = await getClientSession();
-    console.log(session);
     const res = await fetch(apiAddress + apiEndpoints.DASHBOARD.TRANSACTIONS_BY_MONTH.endpoint + `/${month}/${type}`, {
       method: apiEndpoints.DASHBOARD.TRANSACTIONS_BY_MONTH.method,
       headers: {
@@ -121,7 +117,6 @@ export const getTransactionsByMonth = async (month: string, type: CategoryType) 
         Authorization: `Bearer ${session.token}`,
       },
     });
-    console.log(res);
     if (!res.ok) {
       //const text = await res.text();
       const result: ApiRequest<TransactionsByMonth[]> = {
@@ -135,6 +130,40 @@ export const getTransactionsByMonth = async (month: string, type: CategoryType) 
     }
     const data: TransactionsByMonth[] = await res.json();
     const result: ApiRequest<TransactionsByMonth[]> = {
+      error: false,
+      statusCode: res.status,
+      statusText: res.statusText,
+      message: '',
+      data: data,
+    };
+    return result;
+  } catch (error: any) {
+    throw new Error(JSON.stringify(error));
+  }
+};
+export const getResultsByMonth = async (month: string) => {
+  try {
+    const session = await getClientSession();
+    const res = await fetch(apiAddress + apiEndpoints.DASHBOARD.RESULTS_BY_MONTH.endpoint + `/${month}`, {
+      method: apiEndpoints.DASHBOARD.RESULTS_BY_MONTH.method,
+      headers: {
+        // @ts-ignore
+        Authorization: `Bearer ${session.token}`,
+      },
+    });
+    if (!res.ok) {
+      //const text = await res.text();
+      const result: ApiRequest<ResultsByMonth[]> = {
+        error: true,
+        statusCode: res.status,
+        statusText: res.statusText,
+        message: '',
+        data: [],
+      };
+      return result;
+    }
+    const data: ResultsByMonth[] = await res.json();
+    const result: ApiRequest<ResultsByMonth[]> = {
       error: false,
       statusCode: res.status,
       statusText: res.statusText,

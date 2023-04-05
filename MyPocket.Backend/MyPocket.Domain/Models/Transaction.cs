@@ -25,4 +25,11 @@ namespace MyPocket.Domain.Models
     public DateTime Date { get; set; }
     public decimal Amount { get; set; }
   }
+  public class ResultByMonth
+  {
+    public DateTime Date { get; set; }
+    public decimal Income { get; set; }
+    public decimal Outcome { get; set; }
+    public decimal Result { get; set; }
+  }
 }

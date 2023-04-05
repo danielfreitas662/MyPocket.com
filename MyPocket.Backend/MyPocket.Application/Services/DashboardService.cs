@@ -62,5 +62,17 @@ namespace MyPocket.Application.Services
         throw new Exception(ex.Message, ex);
       }
     }
+    public List<ResultByMonth> ResultByMonth(string UserID, DateTime Month)
+    {
+      try
+      {
+        var result = _repo.Transaction.ResultByMonth(UserID, Month);
+        return result;
+      }
+      catch (Exception ex)
+      {
+        throw new Exception(ex.Message, ex);
+      }
+    }
   }
 }

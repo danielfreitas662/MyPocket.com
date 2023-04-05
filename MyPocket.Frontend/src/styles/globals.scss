@@ -28,6 +28,7 @@ footer {
   padding: $container-padding;
   display: flex;
   bottom: 0;
+  max-width: $maxpagewidth;
   justify-content: space-around;
   .footer-column {
     display: flex;
@@ -39,12 +40,12 @@ a {
   text-decoration: none;
 }
 .main {
-  flex-direction: column;
   justify-content: space-between;
   align-items: center;
   height: 100vh;
   margin: auto;
   width: 100%;
+  max-width: $maxpagewidth;
 }
 .logo {
   margin-top: 20px;

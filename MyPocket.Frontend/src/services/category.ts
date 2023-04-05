@@ -56,6 +56,7 @@ export const getCategoryById = async (id: string) => {
         message: '',
         data: null,
       };
+      console.log(result);
       return result;
     }
     const data: ICategory = await res.json();
