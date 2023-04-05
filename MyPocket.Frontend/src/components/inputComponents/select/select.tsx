@@ -1,7 +1,6 @@
 'use client';
 import clsx from 'clsx';
 import React, { InputHTMLAttributes, ReactNode, useEffect, useRef, useState } from 'react';
-import { RefCallBack } from 'react-hook-form';
 import { FaDatabase, FaPlus } from 'react-icons/fa';
 import styles from './select.module.scss';
 
@@ -24,15 +23,18 @@ export interface SelectProps extends InputHTMLAttributes<HTMLInputElement> {
   value?: any;
   onChange?: (event: EventHandler) => void;
   onBlur?: (event: EventHandler) => void;
-  ref: (instance: RefCallBack) => void;
 }
 const Select = React.forwardRef(
-  ({ icon, error, options, placeholder, name, value, onBlur, onChange, allowClear = false, id }: SelectProps, ref) => {
+  (
+    { icon, error, options, placeholder, name, value, onBlur, onChange, allowClear = false, id }: SelectProps,
+    ref: React.ForwardedRef<any>
+  ) => {
+    let nodeValue: string = '';
     const [filter, setFilter] = useState<string>('');
-    const [internalValue, setInternalValue] = useState<any>(value || null);
+    const [internalValue, setInternalValue] = useState<any>(value || nodeValue || undefined);
     const componentRef = useRef<any>(null);
     const [visible, setVisible] = useState(false);
-    const [label, setLabel] = useState<string>(options?.find((c) => c.value === internalValue || value)?.label || '');
+    const [label, setLabel] = useState<string>('');
     useEffect(() => {
       function handleClickOutside(event: MouseEvent) {
         if (componentRef.current && !componentRef.current.contains(event.target)) {
@@ -44,9 +46,12 @@ const Select = React.forwardRef(
       return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
     useEffect(() => {
-      setLabel(options?.find((c) => c.value === value || internalValue)?.label || '');
-      setInternalValue(value);
-    }, [value]);
+      setLabel(options?.find((c) => c.value == (value || String(internalValue) || nodeValue))?.label || '');
+    }, [value, internalValue, nodeValue]);
+    useEffect(() => {
+      setInternalValue(nodeValue);
+      setLabel(options?.find((c) => c.value == nodeValue)?.label || '');
+    }, [nodeValue]);
     return (
       <div className={styles.container}>
         <div
@@ -64,18 +69,35 @@ const Select = React.forwardRef(
             onChange={(e) => {
               setFilter(e.target.value);
             }}
-            onBlur={onBlur}
             id={id}
-            name={name}
             placeholder={visible ? label || placeholder : placeholder}
           />
+          <select
+            name={name}
+            onBlur={onBlur}
+            onChange={onChange}
+            style={{ display: 'none' }}
+            ref={(node) => {
+              //@ts-ignore
+              ref(node);
+              if (node) {
+                nodeValue = node.value;
+              }
+            }}
+          >
+            {options?.map((c) => (
+              <option key={c.value} value={c.value}>
+                {c.label}
+              </option>
+            ))}
+          </select>
           {allowClear && (
             <FaPlus
               className={styles.clear}
               onClick={() => {
                 setFilter('');
                 setLabel('');
-                setInternalValue(null);
+                setInternalValue(undefined);
                 onChange &&
                   onChange({
                     type: 'onchange',
@@ -102,8 +124,12 @@ const Select = React.forwardRef(
             .map((c) => (
               <div
                 key={c.value}
-                className={clsx({ [styles.selectOption]: true, [styles.selected]: c.value === internalValue })}
+                className={clsx({
+                  [styles.selectOption]: true,
+                  [styles.selected]: c.value == (value || internalValue || nodeValue),
+                })}
                 onClick={() => {
+                  nodeValue = c.value;
                   onChange &&
                     onChange({
                       type: 'onchange',
