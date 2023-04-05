@@ -1,0 +1,70 @@
+@import '../../../styles/variables.scss';
+.wrapper {
+  position: relative;
+  .component {
+    border-radius: $border-radius;
+    border: 1px solid $primary-color;
+    padding: $component-input-padding;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    &.visible {
+      border: 2px solid $primary-color;
+    }
+  }
+  .calendar {
+    position: absolute;
+    top: 34px;
+    height: 180px;
+    width: 200px;
+    box-shadow: 1px 1px 2px lightgrey;
+    display: none;
+    background-color: white;
+    z-index: 1000;
+    padding: $component-input-padding;
+    justify-content: center;
+    &.visible {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .menu {
+      display: flex;
+      justify-content: space-around;
+      .yearButton {
+        &:hover {
+          color: $secondary-color;
+          cursor: pointer;
+        }
+      }
+    }
+    .months {
+      display: grid;
+      grid-template-columns: auto auto auto;
+      grid-template-rows: auto auto auto;
+      align-items: stretch;
+      justify-items: center;
+      .month {
+        padding: $component-input-padding;
+        border-radius: $border-radius;
+        &:hover {
+          background-color: $secondary-color;
+          color: white;
+          cursor: pointer;
+        }
+        &.active {
+          background-color: $primary-color;
+          color: white;
+        }
+      }
+    }
+    .currentMonth {
+      text-align: center;
+      cursor: pointer;
+      &:hover {
+        background-color: $secondary-color;
+        color: white;
+      }
+    }
+  }
+}

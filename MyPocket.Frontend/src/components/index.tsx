@@ -18,6 +18,7 @@ import TextInputMask from './inputComponents/textInputMask/textInputMask';
 import CurrencyInput from './inputComponents/currencyInput/currencyInput';
 import Card from './card/card';
 import { Row, Col } from './row/row';
+import MonthPicker from './inputComponents/monthPicker/monthPicker';
 export {
   Button,
   Navbar,
@@ -40,4 +41,5 @@ export {
   Card,
   Row,
   Col,
+  MonthPicker,
 };

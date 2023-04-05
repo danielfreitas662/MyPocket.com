@@ -1,4 +1,4 @@
-import { Col, Row } from '@/components';
+import { Col, MonthPicker, Row } from '@/components';
 import React from 'react';
 import AmountByCategoryChart from './chart.amountByCategory';
 import ResultByMonth from './chart.resultByMonth';

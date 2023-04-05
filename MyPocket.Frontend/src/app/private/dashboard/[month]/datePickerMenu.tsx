@@ -1,10 +1,16 @@
 'use client';
 
-import { DatePicker } from '@/components';
+import { DatePicker, MonthPicker } from '@/components';
+import moment from 'moment';
 import { useRouter } from 'next/navigation';
 
 function DatePickerMenu({ month }: { month: string }) {
   const router = useRouter();
-  return <DatePicker value={month} onChange={(e) => router.push('/private/dashboard/' + e.target.value)} />;
+  return (
+    <MonthPicker
+      value={moment(month, 'YYYY-MM-DD')}
+      onChange={(value) => router.push('/private/dashboard/' + value.format('YYYY-MM-DD'))}
+    />
+  );
 }
 export default DatePickerMenu;
