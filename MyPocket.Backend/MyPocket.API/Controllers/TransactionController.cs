@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using MyPocket.Application.Interfaces;
 using MyPocket.Infra.Data.Context;
 using MyPocket.Application.DTO;
+using MyPocket.Domain.Models;
 
 namespace MyPocket.API.Controllers
 {
@@ -83,9 +84,29 @@ namespace MyPocket.API.Controllers
     [HttpGet("AmountByCategoryByMonth/{month}")]
     public ActionResult AmountByCategoryByMonth([FromRoute] DateTime Month)
     {
-      Console.WriteLine(Month);
       var user = HttpContext.User.Identity!.GetUserData();
       var result = _application.Dashboard.MonthlyAmountByCategory(user.UserId, Month);
+      return Ok(result);
+    }
+    [HttpGet("IncomeByMonth/{month}")]
+    public ActionResult IncomeByMonth([FromRoute] DateTime Month)
+    {
+      var user = HttpContext.User.Identity!.GetUserData();
+      var result = _application.Dashboard.IncomeByMonth(user.UserId, Month);
+      return Ok(result);
+    }
+    [HttpGet("OutcomeByMonth/{month}")]
+    public ActionResult OutcomeByMonth([FromRoute] DateTime Month)
+    {
+      var user = HttpContext.User.Identity!.GetUserData();
+      var result = _application.Dashboard.OutcomeByMonth(user.UserId, Month);
+      return Ok(result);
+    }
+    [HttpGet("TransactionsByMonth/{month}/{type}")]
+    public ActionResult TransactionsByMonth([FromRoute] DateTime Month, [FromRoute] CategoryType type)
+    {
+      var user = HttpContext.User.Identity!.GetUserData();
+      var result = _application.Dashboard.MonthTransactions(user.UserId, Month, type);
       return Ok(result);
     }
   }

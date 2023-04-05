@@ -1,12 +1,21 @@
+import { Col, Row } from '@/components';
 import React from 'react';
-import AmountByCategoryChart from './chart.amountByCategoryChart';
+import AmountByCategoryChart from './chart.amountByCategory';
+import TransactionsByMonth from './chart.transactionsByMonth';
 
 function Dashboard({ params: { month } }: { params: { month: string } }) {
   return (
-    <div>
-      {/*@ts-ignore */}
-      <AmountByCategoryChart month={month} />
-    </div>
+    <Row gutter={[8, 8]} justifyContent="center">
+      <Col>
+        <TransactionsByMonth month={month} type={1} title="Total Income" />
+      </Col>
+      <Col>
+        <TransactionsByMonth month={month} type={0} title="Total Outcome" />
+      </Col>
+      <Col>
+        <AmountByCategoryChart month={month} />
+      </Col>
+    </Row>
   );
 }
 

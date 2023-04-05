@@ -20,4 +20,9 @@ namespace MyPocket.Domain.Models
     public string Category { get; set; }
     public decimal Amount { get; set; }
   }
+  public class MonthTransaction
+  {
+    public DateTime Date { get; set; }
+    public decimal Amount { get; set; }
+  }
 }

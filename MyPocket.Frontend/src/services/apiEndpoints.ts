@@ -40,6 +40,9 @@ const apiEndpoints: APIEndpoint = {
   },
   DASHBOARD: {
     AMOUNT_BY_CATEGORY: { endpoint: '/Transaction/AmountByCategoryByMonth', method: Method.GET },
+    INCOME_BY_MONTH: { endpoint: '/Transaction/IncomeByMonth', method: Method.GET },
+    OUTCOME_BY_MONTH: { endpoint: '/Transaction/OutcomeByMonth', method: Method.GET },
+    TRANSACTIONS_BY_MONTH: { endpoint: '/Transaction/TransactionsByMonth', method: Method.GET },
   },
 };
 export default apiEndpoints;

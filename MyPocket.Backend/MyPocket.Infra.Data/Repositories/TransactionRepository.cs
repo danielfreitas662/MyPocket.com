@@ -28,9 +28,19 @@ namespace MyPocket.Infra.Repository
       var result = _context.Transactions.Include(c => c.Category).Where(c => c.UserId == userId).GroupBy(c => new { c.Category.Name }).Select(c => new AmountByCategoryModel
       {
         Category = c.Key.Name,
-        Amount = c.Where(d => d.Date.Month == month.Month && d.Date.Year == month.Year).Sum(d => d.Amount)
+        Amount = c.Where(d => d.Date.Month == month.Month && d.Date.Year == month.Year && d.Category.Type == CategoryType.Income).Sum(d => d.Amount) - c.Where(d => d.Date.Month == month.Month && d.Date.Year == month.Year && d.Category.Type == CategoryType.Outcome).Sum(d => d.Amount)
       });
       return result.ToList();
     }
+    public List<MonthTransaction> MonthTransactionAmount(string userId, DateTime month, CategoryType type)
+    {
+      var result = _context.Transactions.Include(c => c.Category).Where(c => c.UserId == userId).GroupBy(c => new { c.Date.Month, c.Date.Year, c.Date.Day }).Select(c => new MonthTransaction
+      {
+        Date = new DateTime(c.Key.Year, c.Key.Month, c.Key.Day),
+        Amount = c.Where(d => d.Date.Month == month.Month && d.Date.Year == month.Year && d.Category.Type == type).Sum(d => d.Amount)
+      });
+      return result.ToList();
+    }
+
   }
 }

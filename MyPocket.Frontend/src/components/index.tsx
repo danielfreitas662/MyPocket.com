@@ -17,6 +17,7 @@ import DatePicker from './inputComponents/datePicker/datePicker';
 import TextInputMask from './inputComponents/textInputMask/textInputMask';
 import CurrencyInput from './inputComponents/currencyInput/currencyInput';
 import Card from './card/card';
+import { Row, Col } from './row/row';
 export {
   Button,
   Navbar,
@@ -37,4 +38,6 @@ export {
   TextInputMask,
   CurrencyInput,
   Card,
+  Row,
+  Col,
 };
