@@ -3,7 +3,7 @@ import styles from './card.module.scss';
 interface CardProps {
   children: ReactNode;
   title: string;
-  style: CSSProperties;
+  style?: CSSProperties;
 }
 function Card({ children, title, style }: CardProps) {
   return (
