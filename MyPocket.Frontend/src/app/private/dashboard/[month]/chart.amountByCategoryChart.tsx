@@ -1,9 +1,8 @@
 'use client';
-import { Skeleton } from '@/components';
 import { getAmountByCategory } from '@/services/api/dashboard';
 import { currencyFormat } from '@/utils/formaters';
 import { ApexOptions } from 'apexcharts';
-import { Suspense, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
 
 function AmountByCategoryChart({ month }: { month: string }) {

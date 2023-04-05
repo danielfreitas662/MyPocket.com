@@ -1,5 +1,5 @@
 import React from 'react';
-import AmountByCategoryChart from './amountByCategoryChart';
+import AmountByCategoryChart from './chart.amountByCategoryChart';
 
 function Dashboard({ params: { month } }: { params: { month: string } }) {
   return (
