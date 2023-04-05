@@ -77,7 +77,6 @@ function TransactionForm({ initialData }: TransactionFormProps) {
         <FormItem label="Category" error={errors['categoryId']?.message as string}>
           <Select
             allowClear
-            control={control}
             placeholder="Category..."
             {...register('categoryId', { required: 'Required field' })}
             options={categories.map((c) => ({ value: c.id, label: c.name }))}
@@ -86,7 +85,6 @@ function TransactionForm({ initialData }: TransactionFormProps) {
         <FormItem label="Account" error={errors['accountId']?.message as string}>
           <Select
             allowClear
-            control={control}
             placeholder="Account..."
             {...register('accountId', { required: 'Required field' })}
             options={accounts.map((c) => ({ value: c.id, label: c.name }))}

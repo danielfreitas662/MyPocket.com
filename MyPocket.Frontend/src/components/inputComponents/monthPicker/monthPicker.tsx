@@ -1,24 +1,33 @@
 'use client';
 import clsx from 'clsx';
 import moment from 'moment';
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { FaBackward, FaCalendar, FaForward } from 'react-icons/fa';
 import styles from './monthPicker.module.scss';
 
+interface EventHandler {
+  target: {
+    value: moment.Moment | null;
+    name: string | undefined;
+  };
+  type: string;
+}
+
 interface MonthPickerProps {
   value?: moment.Moment;
-  onChange?: (value: moment.Moment) => void;
+  name?: string;
+  ref?: any;
+  onChange?: (event: EventHandler) => void;
 }
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-function MonthPicker({ value, onChange }: MonthPickerProps) {
+function MonthPicker({ value, onChange, ref, name }: MonthPickerProps) {
   const [visible, setVisible] = useState(false);
   const [internalValue, setInternalValue] = useState<moment.Moment>(value || moment());
   const [year, setYear] = useState<number>(moment().year());
-  const ref = useRef<any>();
-
+  const wrapperRef = useRef<any>();
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (ref.current && !ref.current.contains(event.target)) {
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
         setVisible(false);
       }
     }
@@ -27,7 +36,11 @@ function MonthPicker({ value, onChange }: MonthPickerProps) {
   }, []);
   return (
     <div className={styles.wrapper} ref={ref}>
-      <div className={clsx({ [styles.component]: true, [styles.visible]: visible })} onClick={() => setVisible(true)}>
+      <div
+        className={clsx({ [styles.component]: true, [styles.visible]: visible })}
+        onClick={() => setVisible(true)}
+        ref={ref}
+      >
         {value?.format('MMM-YYYY') || internalValue.format('MMM-YYYY')}
         <FaCalendar />
       </div>
@@ -53,7 +66,14 @@ function MonthPicker({ value, onChange }: MonthPickerProps) {
               onClick={() => {
                 const newDate = moment(`${m}-${year}`, 'MMM-YYYY');
                 setInternalValue(newDate);
-                onChange && onChange(newDate);
+                const test: EventHandler = {
+                  type: 'onchange',
+                  target: {
+                    name: name,
+                    value: newDate,
+                  },
+                };
+                onChange && onChange(test);
                 setVisible(false);
               }}
             >

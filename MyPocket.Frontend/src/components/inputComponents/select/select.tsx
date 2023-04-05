@@ -1,7 +1,7 @@
 'use client';
 import clsx from 'clsx';
 import React, { InputHTMLAttributes, ReactNode, useEffect, useRef, useState } from 'react';
-import { useController, UseFormRegisterReturn } from 'react-hook-form';
+import { RefCallBack } from 'react-hook-form';
 import { FaDatabase, FaPlus } from 'react-icons/fa';
 import styles from './select.module.scss';
 
@@ -9,41 +9,44 @@ export interface SelectOption {
   value: any;
   label: string;
 }
-
-export interface SelectProps
-  extends Omit<InputHTMLAttributes<HTMLInputElement>, 'onClick' | 'name' | 'onChange' | 'onBlur'>,
-    Partial<Omit<UseFormRegisterReturn, 'ref'>> {
+interface EventHandler {
+  target: {
+    name: string | undefined;
+    value: any;
+  };
+  type: string;
+}
+export interface SelectProps extends InputHTMLAttributes<HTMLInputElement> {
   icon?: ReactNode;
   error?: string;
   options?: SelectOption[];
   allowClear?: boolean;
-  control?: any;
+  value?: any;
+  onChange?: (event: EventHandler) => void;
+  onBlur?: (event: EventHandler) => void;
+  ref: (instance: RefCallBack) => void;
 }
 const Select = React.forwardRef(
-  (
-    { icon, error, options, placeholder, control, allowClear = false, ...restProps }: SelectProps,
-    ref: React.LegacyRef<HTMLInputElement>
-  ) => {
-    const { field } = useController({ name: restProps.name || '', control: control });
+  ({ icon, error, options, placeholder, name, value, onBlur, onChange, allowClear = false, id }: SelectProps, ref) => {
     const [filter, setFilter] = useState<string>('');
-    const componentRef = useRef<any>();
+    const [internalValue, setInternalValue] = useState<any>(value || null);
+    const componentRef = useRef<any>(null);
     const [visible, setVisible] = useState(false);
-    const [label, setLabel] = useState<string>(options?.find((c) => c.value === field.value)?.label || '');
+    const [label, setLabel] = useState<string>(options?.find((c) => c.value === internalValue || value)?.label || '');
     useEffect(() => {
       function handleClickOutside(event: MouseEvent) {
         if (componentRef.current && !componentRef.current.contains(event.target)) {
           setVisible(false);
+          setFilter('');
         }
       }
       document.addEventListener('mousedown', handleClickOutside);
       return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
     useEffect(() => {
-      if (field.value !== null) {
-        setLabel(options?.find((c) => c.value === field.value)?.label || '');
-      }
-    }, [field.value]);
-
+      setLabel(options?.find((c) => c.value === value || internalValue)?.label || '');
+      setInternalValue(value);
+    }, [value]);
     return (
       <div className={styles.container}>
         <div
@@ -52,15 +55,19 @@ const Select = React.forwardRef(
             [styles.select]: true,
             [styles.error]: !!error,
           })}
+          onBlur={() => onBlur && onBlur({ target: { value: internalValue, name: name }, type: 'onblur' })}
           onFocus={() => setVisible(true)}
         >
           <div className={styles.icon}>{icon}</div>
-          <input style={{ display: 'none' }} {...restProps} ref={field.ref} />
           <input
             value={visible ? filter : label}
-            ref={ref}
-            onChange={(e) => setFilter(e.target.value)}
-            placeholder={placeholder}
+            onChange={(e) => {
+              setFilter(e.target.value);
+            }}
+            onBlur={onBlur}
+            id={id}
+            name={name}
+            placeholder={visible ? label || placeholder : placeholder}
           />
           {allowClear && (
             <FaPlus
@@ -68,7 +75,23 @@ const Select = React.forwardRef(
               onClick={() => {
                 setFilter('');
                 setLabel('');
-                field.onChange(null);
+                setInternalValue(null);
+                onChange &&
+                  onChange({
+                    type: 'onchange',
+                    target: {
+                      value: null,
+                      name: name,
+                    },
+                  });
+                onBlur &&
+                  onBlur({
+                    type: 'onchange',
+                    target: {
+                      value: null,
+                      name: name,
+                    },
+                  });
               }}
             />
           )}
@@ -79,9 +102,25 @@ const Select = React.forwardRef(
             .map((c) => (
               <div
                 key={c.value}
-                className={clsx({ [styles.selectOption]: true, [styles.selected]: false })}
+                className={clsx({ [styles.selectOption]: true, [styles.selected]: c.value === internalValue })}
                 onClick={() => {
-                  field.onChange(c.value);
+                  onChange &&
+                    onChange({
+                      type: 'onchange',
+                      target: {
+                        value: c.value,
+                        name: name,
+                      },
+                    });
+                  onBlur &&
+                    onBlur({
+                      type: 'onchange',
+                      target: {
+                        value: c.value,
+                        name: name,
+                      },
+                    });
+                  setInternalValue(c.value);
                   setVisible(false);
                   setFilter('');
                   setLabel(c.label);

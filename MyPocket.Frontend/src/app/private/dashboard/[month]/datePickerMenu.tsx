@@ -9,7 +9,7 @@ function DatePickerMenu({ month }: { month: string }) {
   return (
     <MonthPicker
       value={moment(month, 'YYYY-MM-DD')}
-      onChange={(value) => router.push('/private/dashboard/' + value.format('YYYY-MM-DD'))}
+      onChange={(e) => router.push('/private/dashboard/' + e.target.value?.format('YYYY-MM-DD'))}
     />
   );
 }

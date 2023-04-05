@@ -22,12 +22,12 @@ function CategoryForm({ initialData }: CategoryFormProps) {
   const {
     register,
     reset,
-    control,
     handleSubmit,
     formState: { errors },
-  } = useForm<Partial<ICategory>>({ defaultValues: initialData || { name: '', type: 0 } });
+  } = useForm<Partial<ICategory>>({ defaultValues: initialData || { name: '', type: 1 } });
   const handleaAdd = (values: Partial<ICategory>) => {
-    setLoading(true);
+    console.log(values);
+    /*  setLoading(true);
     setResult({} as ApiRequest<ICategory>);
     saveCategory(values)
       .then((res) => {
@@ -39,7 +39,7 @@ function CategoryForm({ initialData }: CategoryFormProps) {
       .catch((res) => {
         setLoading(false);
         setResult(res);
-      });
+      }); */
   };
   return (
     <div style={{ width: 500 }}>
@@ -53,7 +53,6 @@ function CategoryForm({ initialData }: CategoryFormProps) {
         <FormItem label="Type" error={errors['type']?.message as string}>
           <Select
             allowClear
-            control={control}
             placeholder="Category type..."
             {...register('type', { required: 'Required field' })}
             options={[
