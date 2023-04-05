@@ -16,6 +16,7 @@ import PopConfirm from './popconfirm/popConfirm';
 import DatePicker from './inputComponents/datePicker/datePicker';
 import TextInputMask from './inputComponents/textInputMask/textInputMask';
 import CurrencyInput from './inputComponents/currencyInput/currencyInput';
+import Card from './card/card';
 export {
   Button,
   Navbar,
@@ -35,4 +36,5 @@ export {
   PopConfirm,
   TextInputMask,
   CurrencyInput,
+  Card,
 };

@@ -1,0 +1,6 @@
+@import '../../styles/variables.scss';
+.card {
+  border: 1px solid $light-color;
+  border-radius: $border-radius;
+  padding: $component-general-padding;
+}

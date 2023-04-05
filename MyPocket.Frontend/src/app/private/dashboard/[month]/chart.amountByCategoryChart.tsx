@@ -1,4 +1,5 @@
 'use client';
+import { Card } from '@/components';
 import { getAmountByCategory } from '@/services/api/dashboard';
 import { currencyFormat } from '@/utils/formaters';
 import { ApexOptions } from 'apexcharts';
@@ -40,9 +41,9 @@ function AmountByCategoryChart({ month }: { month: string }) {
     },
   };
   return (
-    <div>
+    <Card title="Expenses by Category">
       <ReactApexChart options={options} series={data} type="pie" width={380} />
-    </div>
+    </Card>
   );
 }
 
