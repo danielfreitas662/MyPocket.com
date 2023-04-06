@@ -19,6 +19,7 @@ import Card from './card/card';
 import { Row, Col } from './row/row';
 import DatePicker from './inputComponents/datePicker/datePicker';
 import MonthPicker from './inputComponents/monthPicker/monthPicker';
+import Pagination from './pagination/pagination';
 export {
   Button,
   Navbar,
@@ -42,4 +43,5 @@ export {
   Row,
   Col,
   MonthPicker,
+  Pagination,
 };

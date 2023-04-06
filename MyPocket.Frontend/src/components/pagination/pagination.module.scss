@@ -1,0 +1,20 @@
+@import '../../styles/variables.scss';
+.pagination {
+  margin: 5px;
+  display: inline-flex;
+  gap: 5px;
+  .pageButton {
+    width: 16px;
+    text-align: center;
+    border: 1px solid $light-color;
+    padding: $component-input-padding;
+    cursor: pointer;
+    &:hover {
+      background-color: $light-color;
+    }
+    &.active {
+      background-color: $primary-color;
+      color: white;
+    }
+  }
+}

@@ -79,7 +79,7 @@ const Select = React.forwardRef(
             style={{ display: 'none' }}
             ref={(node) => {
               //@ts-ignore
-              ref(node);
+              ref && ref(node);
               if (node) {
                 nodeValue = node.value;
               }

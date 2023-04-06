@@ -12,6 +12,7 @@ export interface SignInModel {
   lastName: string;
   email: string;
   password: string;
+  confirmPassword: string;
 }
 export interface SignInResult {
   user: IUser;

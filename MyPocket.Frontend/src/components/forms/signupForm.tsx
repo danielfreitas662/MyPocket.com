@@ -1,19 +1,26 @@
 'use client';
 
-import { Button, Form, TextInput } from '@/components';
+import { Button, FormItem, TextInput } from '@/components';
 import { signup } from '@/services/api/auth';
 import { ApiRequest } from '@/types/apirequest';
 import { SignInModel, SignInResult } from '@/types/user';
+import { GetPattern } from '@/utils/patterns';
 import clsx from 'clsx';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import styles from './forms.module.scss';
 
 function SignupForm() {
   const [result, setResult] = useState<ApiRequest<SignInResult | null>>();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const handleSubmit = (data: SignInModel) => {
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm<SignInModel>();
+  const submitForm = (data: SignInModel) => {
     setLoading(true);
     signup(data)
       .then((res) => {
@@ -27,32 +34,40 @@ function SignupForm() {
       });
   };
   return (
-    <Form onFinish={handleSubmit}>
-      <Form.Item name="firstName" label="First Name" required>
-        <TextInput />
-      </Form.Item>
-      <Form.Item name="lastName" label="Last Name" required>
-        <TextInput />
-      </Form.Item>
-      <Form.Item name="email" label="E-mail" required type="email">
-        <TextInput />
-      </Form.Item>
-      <Form.Item
-        name="password"
-        label="Password"
-        required
-        minLength={{ value: 8, message: 'Must have at least 8 characters' }}
-      >
-        <TextInput type="password" />
-      </Form.Item>
-      <Form.Item
-        name="confirmPassword"
-        label="Confirm Password"
-        required
-        validate={(value, values) => value == values.password || 'Passwords don`t match'}
-      >
-        <TextInput type="password" />
-      </Form.Item>
+    <form onSubmit={handleSubmit((data) => submitForm(data))}>
+      <FormItem label="First Name" error={errors['firstName']?.message}>
+        <TextInput {...register('firstName', { required: 'Required field' })} />
+      </FormItem>
+      <FormItem label="Last Name" error={errors['lastName']?.message}>
+        <TextInput {...register('lastName', { required: 'Required field' })} />
+      </FormItem>
+      <FormItem label="E-mail" error={errors['email']?.message}>
+        <TextInput
+          {...register('email', {
+            required: 'Required field',
+            pattern: { value: GetPattern('email'), message: 'Wrong e-mail format' },
+          })}
+        />
+      </FormItem>
+      <FormItem label="Password" error={errors['password']?.message}>
+        <TextInput
+          type="password"
+          {...register('password', {
+            required: 'Required field',
+            minLength: 8,
+          })}
+        />
+      </FormItem>
+      <FormItem error={errors['confirmPassword']?.message} label="Confirm Password">
+        <TextInput
+          type="password"
+          {...register('confirmPassword', {
+            required: 'Required field',
+            minLength: 8,
+            validate: (value, values) => value == values.password || 'Passwords don`t match',
+          })}
+        />
+      </FormItem>
       <Button type="submit" disabled={loading}>
         Sign Up
       </Button>
@@ -66,7 +81,7 @@ function SignupForm() {
           {result.message}
         </div>
       )}
-    </Form>
+    </form>
   );
 }
 export default SignupForm;

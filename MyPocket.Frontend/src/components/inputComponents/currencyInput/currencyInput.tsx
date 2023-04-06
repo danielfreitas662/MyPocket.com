@@ -18,19 +18,6 @@ export interface CurrencyInputProps extends InputHTMLAttributes<HTMLInputElement
   decimalSeparator?: string;
   thousandsSeparator?: string;
 }
-const currencyConfig = {
-  locale: 'pt-BR',
-  formats: {
-    number: {
-      BRL: {
-        style: 'currency',
-        currency: 'BRL',
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-      },
-    },
-  },
-};
 const formatNewInput = (pv: string, nv: string, decimalSeparator: string = ',', thousandsSeparator: string = '.') => {
   let format: string = '';
   if (nv.length > pv.length) {
@@ -87,7 +74,8 @@ const CurrencyInput = React.forwardRef(
           value={internalValue}
           name={name}
           {...restProps}
-          ref={ref}
+          //@ts-ignore
+          ref={(node) => node && ref(node)}
           onBlur={onBlur}
           onChange={(event) => {
             const newValue = formatNewInput(internalValue, event.target.value);

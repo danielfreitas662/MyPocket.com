@@ -1,8 +1,9 @@
 'use client';
 import clsx from 'clsx';
-import React, { ReactNode, SetStateAction, useState } from 'react';
+import React, { ReactNode, SetStateAction, useEffect, useState } from 'react';
 import styles from './table.module.scss';
 import { FaDatabase } from 'react-icons/fa';
+import Pagination, { PaginationProps } from '../pagination/pagination';
 
 interface RecordType {
   [key: string]: any;
@@ -12,11 +13,9 @@ interface TableContextProps {
   dataSource: RecordType[];
   columns: ColumnType<RecordType>[];
   rowKey: string;
-  onChange: (sorter: Sorter, pagination: Pagination) => void;
+  onChange: (sorter: Sorter, pagination: PaginationProps) => void;
   sorter: Sorter;
-  pagination: Pagination;
   setSorter: React.Dispatch<SetStateAction<Sorter>>;
-  setPagination: React.Dispatch<SetStateAction<Pagination>>;
 }
 export const TableContext = React.createContext<TableContextProps>({} as TableContextProps);
 
@@ -34,11 +33,6 @@ export interface Sorter {
   field: null | string;
   order: null | 'asc' | 'desc';
 }
-export interface Pagination {
-  current: number;
-  total: number;
-  pageSize: number;
-}
 export interface TableProps {
   dataSource?: RecordType[];
   columns: ColumnType<RecordType>[];
@@ -48,8 +42,8 @@ export interface TableProps {
     y: number | string;
   };
   loading: boolean;
-  width?: number | string;
-  onChange?: (sorter: Sorter, pagination: Pagination) => void;
+  onChange?: (sorter: Sorter, currentPagination: PaginationProps) => void;
+  pagination: Partial<PaginationProps>;
 }
 function Table({
   dataSource = [],
@@ -57,34 +51,55 @@ function Table({
   loading,
   scroll,
   rowKey,
+  pagination: { total, current = 1, pageOptions = [2, 5, 10], pageSize = 2 },
   onChange = () => null,
-  width = '100%',
 }: TableProps) {
   const [sorter, setSorter] = useState<Sorter>({ field: null, order: null });
-  const [pagination, setPagination] = useState<Pagination>({ current: 1, total: 0, pageSize: 10 });
+  const [currentPagination, setCurrentPagination] = useState<Omit<PaginationProps, 'total' | 'setCurrentPagination'>>({
+    current: current,
+    pageOptions: pageOptions,
+    pageSize: pageSize,
+  });
+  const [data, setData] = useState(dataSource);
+  useEffect(() => {
+    setData(dataSource);
+  }, [dataSource]);
+
   return (
-    <div
-      className={clsx({ [styles.tableWrapper]: true })}
-      style={{ maxHeight: scroll?.y, maxWidth: scroll?.x, overflowY: 'scroll' }}
-    >
-      <div className={clsx({ [styles.spinnerMask]: true, [styles.loading]: loading })}>
-        <div className={styles.spinner} />
-      </div>
-      <div className={clsx({ [styles.mask]: true, [styles.loading]: loading })}></div>
-      <TableContext.Provider
-        value={{ dataSource, columns, rowKey, onChange, sorter, pagination, setSorter, setPagination }}
+    <div className={styles.all}>
+      <div
+        className={clsx({ [styles.tableWrapper]: true })}
+        style={{ maxHeight: scroll?.y, maxWidth: scroll?.x, overflowY: 'scroll' }}
       >
-        <table>
-          <TableHeader />
-          <TableBody />
-        </table>
-      </TableContext.Provider>
+        <div className={clsx({ [styles.spinnerMask]: true, [styles.loading]: loading })}>
+          <div className={styles.spinner} />
+        </div>
+        <div className={clsx({ [styles.mask]: true, [styles.loading]: loading })}></div>
+        <TableContext.Provider
+          value={{
+            dataSource: data
+              .filter((_, index) => index >= ((currentPagination.current || 1) - 1) * (currentPagination.pageSize || 1))
+              .filter((_, index) => index <= (currentPagination.pageSize || 1) - 1),
+            columns,
+            rowKey,
+            onChange,
+            sorter,
+            setSorter,
+          }}
+        >
+          <table>
+            <TableHeader />
+            <TableBody />
+          </table>
+        </TableContext.Provider>
+      </div>
+      <Pagination {...currentPagination} total={total} setCurrentPagination={setCurrentPagination} />
     </div>
   );
 }
 
 function TableHeader() {
-  const { columns, onChange, setSorter, pagination, sorter } = React.useContext(TableContext);
+  const { columns, onChange, setSorter, sorter } = React.useContext(TableContext);
   return (
     <thead>
       <tr>
@@ -101,7 +116,7 @@ function TableHeader() {
                 }
               };
               setSorter(newSorter());
-              onChange && onChange(newSorter(), pagination);
+              //onChange && onChange(newSorter(), currentPagination);
             }}
             key={i}
             style={{ width: c.width }}
@@ -120,6 +135,7 @@ function TableHeader() {
 }
 function TableBody() {
   const { columns, dataSource, rowKey } = React.useContext(TableContext);
+  console.log(dataSource.length);
   return (
     <tbody>
       {dataSource.length === 0 && (
