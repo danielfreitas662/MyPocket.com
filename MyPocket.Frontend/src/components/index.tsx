@@ -13,11 +13,12 @@ import Select from './inputComponents/select/select';
 import FormItem from './form/formItem';
 import Feedback from './feedback/feedback';
 import PopConfirm from './popconfirm/popConfirm';
-import DatePicker from './inputComponents/datePicker/datePicker';
+import DatePicker2 from './inputComponents/datePicker/datePicker';
 import TextInputMask from './inputComponents/textInputMask/textInputMask';
 import CurrencyInput from './inputComponents/currencyInput/currencyInput';
 import Card from './card/card';
 import { Row, Col } from './row/row';
+import DatePicker from './inputComponents/datePickerNew/datePicker';
 import MonthPicker from './inputComponents/monthPicker/monthPicker';
 export {
   Button,

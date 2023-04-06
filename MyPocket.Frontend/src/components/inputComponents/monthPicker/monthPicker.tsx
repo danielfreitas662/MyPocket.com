@@ -17,12 +17,13 @@ interface MonthPickerProps {
   value?: moment.Moment;
   name?: string;
   ref?: any;
+  id?: string;
   onChange?: (event: EventHandler) => void;
 }
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-function MonthPicker({ value, onChange, ref, name }: MonthPickerProps) {
+function MonthPicker({ value, onChange, ref, name, id }: MonthPickerProps) {
   const [visible, setVisible] = useState(false);
-  const [internalValue, setInternalValue] = useState<moment.Moment>(value || moment());
+  const [internalValue, setInternalValue] = useState<moment.Moment | null>(value || null);
   const [year, setYear] = useState<number>(moment().year());
   const wrapperRef = useRef<any>();
   useEffect(() => {
@@ -35,14 +36,17 @@ function MonthPicker({ value, onChange, ref, name }: MonthPickerProps) {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
   return (
-    <div className={styles.wrapper} ref={ref}>
+    <div className={styles.wrapper} ref={wrapperRef}>
       <div
         className={clsx({ [styles.component]: true, [styles.visible]: visible })}
         onClick={() => setVisible(true)}
         ref={ref}
       >
-        {value?.format('MMM-YYYY') || internalValue.format('MMM-YYYY')}
-        <FaCalendar />
+        <input style={{ display: 'none' }} id={id} />
+        <div>{value?.format('MMM-YYYY') || internalValue?.format('MMM-YYYY')}</div>
+        <div>
+          <FaCalendar />
+        </div>
       </div>
       <div className={clsx({ [styles.calendar]: true, [styles.visible]: visible })}>
         <div className={styles.menu}>
@@ -61,7 +65,7 @@ function MonthPicker({ value, onChange, ref, name }: MonthPickerProps) {
               className={clsx({
                 [styles.month]: true,
                 [styles.active]:
-                  moment(`${m}-${year}`, 'MMM-YYYY').format('MMM-YYYY') === internalValue.format('MMM-YYYY'),
+                  moment(`${m}-${year}`, 'MMM-YYYY').format('MMM-YYYY') === internalValue?.format('MMM-YYYY'),
               })}
               onClick={() => {
                 const newDate = moment(`${m}-${year}`, 'MMM-YYYY');
@@ -81,7 +85,14 @@ function MonthPicker({ value, onChange, ref, name }: MonthPickerProps) {
             </div>
           ))}
         </div>
-        <div className={styles.currentMonth} onClick={() => setYear(internalValue.year())}>
+        <div
+          className={styles.currentMonth}
+          onClick={() => {
+            internalValue && setYear(internalValue?.year());
+            setInternalValue(moment());
+            setVisible(false);
+          }}
+        >
           Current Month
         </div>
       </div>

@@ -7,13 +7,14 @@ const apiAddress: string = process.env.NEXT_PUBLIC_API_ADDRESS as string;
 export const getTransactions = async () => {
   try {
     const session = await getSession();
-    const res = await fetch(apiAddress + apiEndpoints.CATEGORY.GET.endpoint, {
-      method: apiEndpoints.CATEGORY.GET.method,
+    const res = await fetch(apiAddress + apiEndpoints.TRANSACTION.GET.endpoint, {
+      method: apiEndpoints.TRANSACTION.GET.method,
       cache: 'no-store',
       headers: {
         Authorization: `Bearer ${session.token}`,
       },
     });
+
     if (!res.ok) {
       //const text = await res.text();
       const result: ApiRequest<ITransaction[]> = {
@@ -41,8 +42,8 @@ export const getTransactions = async () => {
 export const getTransactionById = async (id: string) => {
   try {
     const session = await getSession();
-    const res = await fetch(apiAddress + apiEndpoints.CATEGORY.GET_BY_ID.endpoint + `/${id}`, {
-      method: apiEndpoints.CATEGORY.GET_BY_ID.method,
+    const res = await fetch(apiAddress + apiEndpoints.TRANSACTION.GET_BY_ID.endpoint + `/${id}`, {
+      method: apiEndpoints.TRANSACTION.GET_BY_ID.method,
       headers: {
         Authorization: `Bearer ${session.token}`,
       },
