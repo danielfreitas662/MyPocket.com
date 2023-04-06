@@ -11,20 +11,16 @@ import { ICategory } from '@/types/category';
 import { IAccount } from '@/types/account';
 import { getCategories } from '@/services/api/category';
 import { getAccounts } from '@/services/api/account';
-import { currencyNormalize } from '@/utils/formaters';
 import moment from 'moment';
 import Button from '../button/button';
 import FormItem from '../form/formItem';
 import CurrencyInput from '../inputComponents/currencyInput/currencyInput';
-import DatePicker from '../inputComponents/datePickerNew/datePicker';
+import DatePicker from '../inputComponents/datePicker/datePicker';
 import Select from '../inputComponents/select/select';
 import TextInput from '../inputComponents/textinput/textInput';
 
-export interface TransactionData extends Omit<ITransaction, 'amount'> {
-  amount: string;
-}
 interface TransactionFormProps {
-  initialData?: Partial<TransactionData>;
+  initialData?: Partial<ITransaction>;
 }
 function TransactionForm({ initialData }: TransactionFormProps) {
   const [loading, setLoading] = useState(false);
@@ -38,13 +34,11 @@ function TransactionForm({ initialData }: TransactionFormProps) {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<TransactionData>({ defaultValues: initialData || { description: '' } });
-  const handleaAdd = (values: Partial<TransactionData>) => {
-    console.log(values);
-    /* setLoading(true);
+  } = useForm<ITransaction>({ defaultValues: initialData || { description: '' } });
+  const handleaAdd = (values: Partial<ITransaction>) => {
+    setLoading(true);
     setResult({} as ApiRequest<ITransaction>);
-
-    saveTransaction({ ...values, amount: currencyNormalize(values.amount), date: moment(values.date).utc() })
+    saveTransaction({ ...values, date: moment(values.date).utc() })
       .then((res) => {
         setLoading(false);
         setResult(res);
@@ -54,7 +48,7 @@ function TransactionForm({ initialData }: TransactionFormProps) {
       .catch((res) => {
         setLoading(false);
         setResult(res);
-      }); */
+      });
   };
   useEffect(() => {
     getCategories().then((res) => setCategories(res.data));
@@ -70,7 +64,15 @@ function TransactionForm({ initialData }: TransactionFormProps) {
           <TextInput placeholder="Description..." {...register('description', { required: 'Required field' })} />
         </FormItem>
         <FormItem label="Amount" error={errors['amount']?.message as string}>
-          <CurrencyInput placeholder="Amount..." {...register('amount', { required: 'Required field' })} />
+          <CurrencyInput
+            placeholder="Amount..."
+            {...register('amount', {
+              required: 'Required field',
+              validate: (val) => {
+                return val !== 0 || 'Amount cannot be zero';
+              },
+            })}
+          />
         </FormItem>
         <FormItem label="Date" error={errors['date']?.message as string}>
           <DatePicker {...register('date', { required: 'Required field' })} placeholder="Date..." />

@@ -1,11 +1,22 @@
 'use client';
 import clsx from 'clsx';
-import React, { InputHTMLAttributes, ReactNode } from 'react';
+import React, { InputHTMLAttributes, ReactNode, useEffect, useState } from 'react';
 import styles from './currencyInput.module.scss';
-import IntlCurrencyInput from 'react-intl-currency-input';
+import { currencyFormat, currencyNormalize } from '@/utils/formaters';
+
+interface EventHandler {
+  target: any;
+  type: string;
+}
 export interface CurrencyInputProps extends InputHTMLAttributes<HTMLInputElement> {
   icon?: ReactNode;
   error?: string;
+  value?: number;
+  onChange: (event: EventHandler) => void;
+  onBlur: (event: EventHandler) => void;
+  name?: string;
+  decimalSeparator?: string;
+  thousandsSeparator?: string;
 }
 const currencyConfig = {
   locale: 'pt-BR',
@@ -20,8 +31,50 @@ const currencyConfig = {
     },
   },
 };
+const formatNewInput = (pv: string, nv: string, decimalSeparator: string = ',', thousandsSeparator: string = '.') => {
+  let format: string = '';
+  if (nv.length > pv.length) {
+    let parts = nv.split(decimalSeparator);
+    let temp = parts[0] + parts[1][0] + decimalSeparator + parts[1].slice(1, parts[1].length);
+    format = temp;
+  }
+  if (nv.length < pv.length) {
+    let parts = nv.split(',');
+    if (parts[0][0] === '0') parts[0] = parts[0].slice(1, parts[0].length - 1);
+    let temp = parts[0].slice(0, parts[0].length - 1) + decimalSeparator + parts[0][parts[0].length - 1] + parts[1];
+    format = temp;
+  }
+  return currencyFormat(currencyNormalize(format), 'pt-BR');
+};
 const CurrencyInput = React.forwardRef(
-  ({ icon, error, ...restProps }: CurrencyInputProps, ref: React.Ref<HTMLInputElement> | undefined) => {
+  (
+    {
+      icon,
+      error,
+      onChange,
+      onBlur,
+      name,
+      decimalSeparator = ',',
+      thousandsSeparator = '.',
+      value,
+      ...restProps
+    }: CurrencyInputProps,
+    ref: React.Ref<HTMLInputElement> | undefined
+  ) => {
+    const [internalValue, setInternalValue] = useState<string>(currencyFormat(value || 0, 'pt-BR'));
+    useEffect(() => {
+      setInternalValue(currencyFormat(value, 'pt-BR'));
+    }, [value]);
+    useEffect(() => {
+      const test: EventHandler = {
+        type: 'onchange',
+        target: {
+          name: name,
+          value: currencyNormalize(internalValue),
+        },
+      };
+      onChange && onChange(test);
+    }, []);
     return (
       <div
         className={clsx({
@@ -30,8 +83,26 @@ const CurrencyInput = React.forwardRef(
         })}
       >
         <div className="icon">{icon}</div>
-        {/* @ts-ignore */}
-        <IntlCurrencyInput currency="BRL" inputRef={ref} {...restProps} config={currencyConfig} />
+        <input
+          value={internalValue}
+          name={name}
+          {...restProps}
+          ref={ref}
+          onBlur={onBlur}
+          onChange={(event) => {
+            const newValue = formatNewInput(internalValue, event.target.value);
+            const test: EventHandler = {
+              type: 'onchange',
+              target: {
+                name: name,
+                value: currencyNormalize(newValue),
+              },
+            };
+            setInternalValue(newValue);
+            onChange && onChange(test);
+            onBlur && onBlur(test);
+          }}
+        />
       </div>
     );
   }
