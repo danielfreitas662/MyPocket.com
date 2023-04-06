@@ -44,7 +44,7 @@ function TransactionsTable() {
       <Table
         rowKey="id"
         dataSource={data}
-        scroll={{ x: 1000, y: 200 }}
+        scroll={{ x: 1000, y: 'calc(100vh - 200px)' }}
         loading={loading}
         width={500}
         columns={[
