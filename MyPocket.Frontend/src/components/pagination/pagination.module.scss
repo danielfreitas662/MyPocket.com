@@ -1,10 +1,10 @@
 @import '../../styles/variables.scss';
 .pagination {
-  margin: 5px;
+  margin-top: 5px;
   display: inline-flex;
   gap: 5px;
   .pageButton {
-    width: 16px;
+    min-width: 20px;
     text-align: center;
     border: 1px solid $light-color;
     padding: $component-input-padding;

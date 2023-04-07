@@ -1,6 +1,7 @@
 'use client';
 import clsx from 'clsx';
 import React, { SetStateAction, useEffect, useState } from 'react';
+import { FaBackward, FaForward } from 'react-icons/fa';
 import Select from '../inputComponents/select/select';
 import styles from './pagination.module.scss';
 
@@ -15,10 +16,13 @@ function Pagination({
   current = 1,
   pageSize = 10,
   total = 0,
-  pageOptions = [2, 10, 50],
+  pageOptions = [10, 20, 50],
   setCurrentPagination,
 }: PaginationProps) {
   const [pages, setPages] = useState<number[]>([]);
+  const setCurrentPage = (page: number) => {
+    setCurrentPagination({ pageSize, pageOptions, current: page });
+  };
   useEffect(() => {
     let tempPages: number[] = [];
     let pagesLenth = Math.ceil((total || 0) / (pageSize || 1));
@@ -30,15 +34,59 @@ function Pagination({
   }, [total, pageSize]);
   return (
     <div className={styles.pagination}>
-      {pages?.map((c) => (
-        <div
-          className={clsx({ [styles.pageButton]: true, [styles.active]: current === c })}
-          key={c}
-          onClick={() => setCurrentPagination({ pageSize, pageOptions, current: c })}
-        >
-          {c}
-        </div>
-      ))}
+      {pages.length > 5 && (
+        <>
+          <div
+            className={clsx({ [styles.pageButton]: true, [styles.active]: current === 1 })}
+            onClick={() => setCurrentPage(1)}
+          >
+            {1}
+          </div>
+          {current > 3 && (
+            <div
+              className={clsx({ [styles.pageButton]: true })}
+              onClick={() => setCurrentPage(current - 5 < 1 ? 1 : current - 5)}
+            >
+              <FaBackward />
+            </div>
+          )}
+          {pages
+            .filter((c) => c > current - 3 && c < current + 3 && c < pages.length && c > 1)
+            .map((c) => (
+              <div
+                className={clsx({ [styles.pageButton]: true, [styles.active]: current === c })}
+                key={c}
+                onClick={() => setCurrentPage(c)}
+              >
+                {c}
+              </div>
+            ))}
+          {pages.length - 3 > current && (
+            <div
+              className={clsx({ [styles.pageButton]: true })}
+              onClick={() => setCurrentPage(current + 5 > pages.length ? pages.length : current + 5)}
+            >
+              <FaForward />
+            </div>
+          )}
+          <div
+            className={clsx({ [styles.pageButton]: true, [styles.active]: current === pages.length })}
+            onClick={() => setCurrentPage(pages.length)}
+          >
+            {pages.length}
+          </div>
+        </>
+      )}
+      {pages.length <= 5 &&
+        pages?.map((c) => (
+          <div
+            className={clsx({ [styles.pageButton]: true, [styles.active]: current === c })}
+            key={c}
+            onClick={() => setCurrentPage(c)}
+          >
+            {c}
+          </div>
+        ))}
       {pages.length > 0 && (
         <Select
           value={pageSize}

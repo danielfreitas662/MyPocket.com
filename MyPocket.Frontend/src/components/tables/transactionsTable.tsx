@@ -44,11 +44,11 @@ function TransactionsTable() {
       <Table
         rowKey="id"
         dataSource={data}
-        scroll={{ x: 1000, y: 'calc(100vh - 200px)' }}
+        scroll={{ x: 1000, y: 'calc(100vh - 300px)' }}
         loading={loading}
         pagination={{
           total: data.length,
-          pageSize: 2,
+          pageSize: 10,
         }}
         columns={[
           {

@@ -18,6 +18,7 @@ import CurrencyInput from '../inputComponents/currencyInput/currencyInput';
 import DatePicker from '../inputComponents/datePicker/datePicker';
 import Select from '../inputComponents/select/select';
 import TextInput from '../inputComponents/textinput/textInput';
+import { currencyNormalize } from '@/utils/formaters';
 
 interface TransactionFormProps {
   initialData?: Partial<ITransaction>;
@@ -38,12 +39,12 @@ function TransactionForm({ initialData }: TransactionFormProps) {
   const handleaAdd = (values: Partial<ITransaction>) => {
     setLoading(true);
     setResult({} as ApiRequest<ITransaction>);
-    saveTransaction({ ...values, date: moment(values.date).utc() })
+    saveTransaction({ ...values, date: moment(values.date).utc(), amount: currencyNormalize(values.amount) })
       .then((res) => {
         setLoading(false);
         setResult(res);
         router.prefetch('/private/transaction');
-        !values.id && reset();
+        //!values.id && reset();
       })
       .catch((res) => {
         setLoading(false);

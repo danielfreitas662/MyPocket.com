@@ -51,7 +51,7 @@ function Table({
   loading,
   scroll,
   rowKey,
-  pagination: { total, current = 1, pageOptions = [2, 5, 10], pageSize = 2 },
+  pagination: { total, current = 1, pageOptions = [10, 20, 50], pageSize = 2 },
   onChange = () => null,
 }: TableProps) {
   const [sorter, setSorter] = useState<Sorter>({ field: null, order: null });

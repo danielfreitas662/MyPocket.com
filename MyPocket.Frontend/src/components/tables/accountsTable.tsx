@@ -43,7 +43,10 @@ function AccountsTable() {
         dataSource={data}
         scroll={{ x: 1000, y: 'calc(100vh - 200px)' }}
         loading={loading}
-        width={500}
+        pagination={{
+          total: data.length,
+          pageSize: 10,
+        }}
         columns={[
           {
             title: '',
