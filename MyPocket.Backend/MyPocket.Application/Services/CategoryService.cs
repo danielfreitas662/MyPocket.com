@@ -39,7 +39,7 @@ namespace MyPocket.Application.Services
       }
     }
 
-    public PaginationResult<CategoryDTO> Filter(PaginationRequest<CategoryDTO> data, UserData user)
+    public PaginationResult<Category> Filter(PaginationRequest<Category> data, UserData user)
     {
       throw new NotImplementedException();
     }

@@ -34,6 +34,7 @@ const apiEndpoints: APIEndpoint = {
   },
   TRANSACTION: {
     GET: { endpoint: '/Transaction', method: Method.GET },
+    FILTER: { endpoint: '/Transaction/Filter', method: Method.POST },
     GET_BY_ID: { endpoint: '/Transaction', method: Method.GET },
     ADD: { endpoint: '/Transaction', method: Method.POST },
     REMOVE: { endpoint: '/Transaction', method: Method.DELETE },

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using MyPocket.Application.Interfaces;
 using MyPocket.Infra.Data.Context;
 using MyPocket.Application.DTO;
+using MyPocket.Domain.Models;
 
 namespace MyPocket.API.Controllers
 {

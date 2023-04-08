@@ -1,5 +1,5 @@
-namespace MyPocket.Application.DTO
-{
+
+namespace MyPocket.Domain.Models{
   public class PaginationRequest<T>
   {
     public Filters<T> Filters { get; set; }
@@ -26,5 +26,4 @@ namespace MyPocket.Application.DTO
     public int Total { get; set; }
     public int Current { get; set; }
   }
-
 }

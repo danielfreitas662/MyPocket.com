@@ -8,5 +8,6 @@ namespace MyPocket.Domain.Interfaces
     List<AmountByCategoryModel> AmountByCategoryByMonth(string userId, DateTime month);
     List<MonthTransaction> MonthTransactionAmount(string userId, DateTime month, CategoryType type);
     List<ResultByMonth> ResultByMonth(string userId, DateTime month);
+    PaginationResult<TransactionWithRelated> Filter(PaginationRequest<TransactionWithRelated> filters, string userId);
   }
 }

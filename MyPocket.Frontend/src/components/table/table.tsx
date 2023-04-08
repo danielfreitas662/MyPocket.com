@@ -13,9 +13,10 @@ interface TableContextProps {
   dataSource: RecordType[];
   columns: ColumnType<RecordType>[];
   rowKey: string;
-  onChange: (sorter: Sorter, pagination: PaginationProps) => void;
+  onChange: (sorter: Sorter, pagination: Omit<PaginationProps, 'total' | 'setCurrentPagination'>) => void;
   sorter: Sorter;
   setSorter: React.Dispatch<SetStateAction<Sorter>>;
+  currentPagination: Omit<PaginationProps, 'total' | 'setCurrentPagination'>;
 }
 export const TableContext = React.createContext<TableContextProps>({} as TableContextProps);
 
@@ -42,7 +43,7 @@ export interface TableProps {
     y: number | string;
   };
   loading: boolean;
-  onChange?: (sorter: Sorter, currentPagination: PaginationProps) => void;
+  onChange?: (sorter: Sorter, currentPagination: Omit<PaginationProps, 'total' | 'setCurrentPagination'>) => void;
   pagination: Partial<PaginationProps>;
 }
 function Table({
@@ -64,7 +65,6 @@ function Table({
   useEffect(() => {
     setData(dataSource);
   }, [dataSource]);
-
   return (
     <div className={styles.all}>
       <div
@@ -85,6 +85,7 @@ function Table({
             onChange,
             sorter,
             setSorter,
+            currentPagination,
           }}
         >
           <table>
@@ -93,13 +94,18 @@ function Table({
           </table>
         </TableContext.Provider>
       </div>
-      <Pagination {...currentPagination} total={total} setCurrentPagination={setCurrentPagination} />
+      <Pagination
+        {...currentPagination}
+        total={total}
+        setCurrentPagination={setCurrentPagination}
+        onChange={(pagination) => onChange && onChange(sorter, pagination)}
+      />
     </div>
   );
 }
 
 function TableHeader() {
-  const { columns, onChange, setSorter, sorter } = React.useContext(TableContext);
+  const { columns, onChange, setSorter, sorter, currentPagination } = React.useContext(TableContext);
   return (
     <thead>
       <tr>
@@ -116,7 +122,7 @@ function TableHeader() {
                 }
               };
               setSorter(newSorter());
-              //onChange && onChange(newSorter(), currentPagination);
+              onChange && onChange(newSorter(), currentPagination);
             }}
             key={i}
             style={{ width: c.width }}
@@ -135,7 +141,6 @@ function TableHeader() {
 }
 function TableBody() {
   const { columns, dataSource, rowKey } = React.useContext(TableContext);
-  console.log(dataSource.length);
   return (
     <tbody>
       {dataSource.length === 0 && (

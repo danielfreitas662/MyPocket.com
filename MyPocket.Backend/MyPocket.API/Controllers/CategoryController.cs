@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using MyPocket.Application.Interfaces;
 using MyPocket.Infra.Data.Context;
 using MyPocket.Application.DTO;
+using MyPocket.Domain.Models;
 
 namespace MyPocket.API.Controllers
 {
@@ -74,7 +75,7 @@ namespace MyPocket.API.Controllers
       return Ok(data.Ids);
     }
     [HttpPost("Filter")]
-    public ActionResult Filter([FromBody] PaginationRequest<CategoryDTO> data)
+    public ActionResult Filter([FromBody] PaginationRequest<Category> data)
     {
       var user = HttpContext.User.Identity!.GetUserData();
       var result = _application.Category.Filter(data, user);

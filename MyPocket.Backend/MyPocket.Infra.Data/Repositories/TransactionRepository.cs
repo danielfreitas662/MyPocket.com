@@ -54,6 +54,66 @@ namespace MyPocket.Infra.Repository
       });
       return result.ToList();
     }
+    public PaginationResult<TransactionWithRelated> Filter(PaginationRequest<TransactionWithRelated> filters, string userId)
+    {
+      try
+      {
+        var results = _context.Transactions
+        .Include(c => c.Category)
+        .Include(c => c.Account)
+        .Where(c => c.UserId == userId);
+        if (filters.Sorter != null)
+        {
+          if (filters.Sorter.Field == "date")
+          {
+            if (filters.Sorter.Order == "asc") results = results.OrderBy(c => c.Date);
+            else results = results.OrderByDescending(c => c.Date);
+          }
+          if (filters.Sorter.Field == "amount")
+          {
+            if (filters.Sorter.Order == "asc") results = results.OrderBy(c => c.Amount);
+            else results = results.OrderByDescending(c => c.Amount);
+          }
+          if (filters.Sorter.Field == "category")
+          {
+            if (filters.Sorter.Order == "asc") results = results.OrderBy(c => c.Category.Name);
+            else results = results.OrderByDescending(c => c.Category.Name);
+          }
+          if (filters.Sorter.Field == "account")
+          {
+            if (filters.Sorter.Order == "asc") results = results.OrderBy(c => c.Account.Name);
+            else results = results.OrderByDescending(c => c.Account.Name);
+          }
+          if (filters.Sorter.Field == "description")
+          {
+            if (filters.Sorter.Order == "asc") results = results.OrderBy(c => c.Description);
+            else results = results.OrderByDescending(c => c.Description);
+          }
+        }
+        var total = results.Count();
+
+        var results2 = results.Skip(filters.Pagination.Current * (filters.Pagination.PageSize - 1)).Take(filters.Pagination.PageSize).Select(c => new TransactionWithRelated
+        {
+          Id = c.Id,
+          Description = c.Description,
+          Date = c.Date,
+          Amount = c.Amount,
+          Category = c.Category.Name,
+          Account = c.Account.Name
+        });
+        return new PaginationResult<TransactionWithRelated>
+        {
+          Results = results2.ToList(),
+          Total = total,
+          Current = filters.Pagination.Current
+        };
+      }
+      catch (Exception ex)
+      {
+        throw new Exception(ex.Message, ex);
+      }
+
+    }
 
   }
 }

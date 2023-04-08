@@ -11,6 +11,7 @@ export interface PaginationProps {
   total?: number;
   pageOptions?: number[];
   setCurrentPagination: React.Dispatch<SetStateAction<Omit<PaginationProps, 'total' | 'setCurrentPagination'>>>;
+  onChange?: (pagination: Omit<PaginationProps, 'total' | 'setCurrentPagination'>) => void;
 }
 function Pagination({
   current = 1,
@@ -18,10 +19,12 @@ function Pagination({
   total = 0,
   pageOptions = [10, 20, 50],
   setCurrentPagination,
+  onChange,
 }: PaginationProps) {
   const [pages, setPages] = useState<number[]>([]);
   const setCurrentPage = (page: number) => {
     setCurrentPagination({ pageSize, pageOptions, current: page });
+    onChange && onChange({ current: page, pageSize, pageOptions });
   };
   useEffect(() => {
     let tempPages: number[] = [];
@@ -91,7 +94,10 @@ function Pagination({
         <Select
           value={pageSize}
           options={pageOptions.map((c) => ({ value: c, label: `${c} per page` }))}
-          onChange={(e) => setCurrentPagination({ pageSize: e.target.value, pageOptions, current })}
+          onChange={(e) => {
+            setCurrentPagination({ pageSize: e.target.value, pageOptions, current });
+            onChange && onChange({ pageOptions, pageSize: e.target.value, current });
+          }}
         />
       )}
     </div>
