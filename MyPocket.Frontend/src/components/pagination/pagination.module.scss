@@ -3,18 +3,30 @@
   margin-top: 5px;
   display: inline-flex;
   gap: 5px;
-  .pageButton {
-    min-width: 20px;
-    text-align: center;
-    border: 1px solid $light-color;
-    padding: $component-input-padding;
-    cursor: pointer;
-    &:hover {
-      background-color: $light-color;
+  width: 100%;
+  align-items: center;
+  .pages {
+    display: inline-flex;
+    .pageButton {
+      min-width: 20px;
+      text-align: center;
+      border: 1px solid $light-color;
+      padding: $component-input-padding;
+      font-size: $font-size-medium;
+      cursor: pointer;
+      &:hover {
+        background-color: $light-color;
+      }
+      &.active {
+        background-color: $primary-color;
+        color: white;
+      }
     }
-    &.active {
-      background-color: $primary-color;
-      color: white;
-    }
+  }
+  .pageSize {
+    width: 100px;
+  }
+  .text {
+    font-size: $font-size-medium;
   }
 }

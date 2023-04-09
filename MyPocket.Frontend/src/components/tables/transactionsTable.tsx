@@ -53,7 +53,7 @@ function TransactionsTable(props: TransactionsTableProps) {
       .catch(() => {
         setLoading(false);
       });
-  }, []);
+  }, [props]);
 
   return (
     <>
@@ -65,7 +65,7 @@ function TransactionsTable(props: TransactionsTableProps) {
         loading={loading}
         onChange={(sorter, pagination) =>
           router.push(
-            `/private/transaction/pagination/${pagination.current}/${pagination.pageSize}/${sorter.field}/${sorter.order}`
+            `/private/transaction?current=${pagination.current}&pageSize=${pagination.pageSize}&sortField=${sorter.field}&sortOrder=${sorter.order}`
           )
         }
         pagination={{

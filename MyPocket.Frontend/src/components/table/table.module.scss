@@ -17,7 +17,11 @@
   animation: spinning 0.5s linear infinite;
 }
 .all {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
   .tableWrapper {
+    width: 100%;
     position: relative;
     overflow-x: scroll;
     border: 1px solid $secondary-color;
@@ -47,6 +51,7 @@
     }
     table {
       width: 100%;
+      font-size: $font-size-medium;
       position: relative;
       border: 1px solid $light-color;
       border-collapse: collapse;
@@ -70,6 +75,11 @@
             }
             &.alignCenter {
               text-align: center;
+            }
+            .header {
+              display: inline-flex;
+              justify-content: space-between;
+              align-items: center;
             }
           }
         }

@@ -2,7 +2,7 @@
 import clsx from 'clsx';
 import React, { ReactNode, SetStateAction, useEffect, useState } from 'react';
 import styles from './table.module.scss';
-import { FaDatabase } from 'react-icons/fa';
+import { FaArrowDown, FaArrowUp, FaDatabase } from 'react-icons/fa';
 import Pagination, { PaginationProps } from '../pagination/pagination';
 
 interface RecordType {
@@ -65,6 +65,7 @@ function Table({
   useEffect(() => {
     setData(dataSource);
   }, [dataSource]);
+  console.log(currentPagination);
   return (
     <div className={styles.all}>
       <div
@@ -77,9 +78,7 @@ function Table({
         <div className={clsx({ [styles.mask]: true, [styles.loading]: loading })}></div>
         <TableContext.Provider
           value={{
-            dataSource: data
-              .filter((_, index) => index >= ((currentPagination.current || 1) - 1) * (currentPagination.pageSize || 1))
-              .filter((_, index) => index <= (currentPagination.pageSize || 1) - 1),
+            dataSource: data,
             columns,
             rowKey,
             onChange,
@@ -132,7 +131,13 @@ function TableHeader() {
               [styles.alignCenter]: c.align === 'center',
             })}
           >
-            {c.title}
+            <div className={styles.header}>
+              <div className={styles.headerTitle}>{c.title}</div>
+              <div className={styles.headerSorter}>
+                {sorter.field === c.dataIndex && sorter.order === 'asc' && <FaArrowDown />}
+                {sorter.field === c.dataIndex && sorter.order === 'desc' && <FaArrowUp />}
+              </div>
+            </div>
           </th>
         ))}
       </tr>

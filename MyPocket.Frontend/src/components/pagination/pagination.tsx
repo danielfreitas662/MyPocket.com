@@ -37,69 +37,74 @@ function Pagination({
   }, [total, pageSize]);
   return (
     <div className={styles.pagination}>
-      {pages.length > 5 && (
-        <>
-          <div
-            className={clsx({ [styles.pageButton]: true, [styles.active]: current === 1 })}
-            onClick={() => setCurrentPage(1)}
-          >
-            {1}
-          </div>
-          {current > 3 && (
+      <div className={styles.pages}>
+        {pages.length > 5 && (
+          <>
             <div
-              className={clsx({ [styles.pageButton]: true })}
-              onClick={() => setCurrentPage(current - 5 < 1 ? 1 : current - 5)}
+              className={clsx({ [styles.pageButton]: true, [styles.active]: current === 1 })}
+              onClick={() => setCurrentPage(1)}
             >
-              <FaBackward />
+              {1}
             </div>
-          )}
-          {pages
-            .filter((c) => c > current - 3 && c < current + 3 && c < pages.length && c > 1)
-            .map((c) => (
+            {current > 3 && (
               <div
-                className={clsx({ [styles.pageButton]: true, [styles.active]: current === c })}
-                key={c}
-                onClick={() => setCurrentPage(c)}
+                className={clsx({ [styles.pageButton]: true })}
+                onClick={() => setCurrentPage(current - 5 < 1 ? 1 : current - 5)}
               >
-                {c}
+                <FaBackward />
               </div>
-            ))}
-          {pages.length - 3 > current && (
+            )}
+            {pages
+              .filter((c) => c > current - 3 && c < current + 3 && c < pages.length && c > 1)
+              .map((c) => (
+                <div
+                  className={clsx({ [styles.pageButton]: true, [styles.active]: current === c })}
+                  key={c}
+                  onClick={() => setCurrentPage(c)}
+                >
+                  {c}
+                </div>
+              ))}
+            {pages.length - 3 > current && (
+              <div
+                className={clsx({ [styles.pageButton]: true })}
+                onClick={() => setCurrentPage(current + 5 > pages.length ? pages.length : current + 5)}
+              >
+                <FaForward />
+              </div>
+            )}
             <div
-              className={clsx({ [styles.pageButton]: true })}
-              onClick={() => setCurrentPage(current + 5 > pages.length ? pages.length : current + 5)}
+              className={clsx({ [styles.pageButton]: true, [styles.active]: current === pages.length })}
+              onClick={() => setCurrentPage(pages.length)}
             >
-              <FaForward />
+              {pages.length}
             </div>
-          )}
-          <div
-            className={clsx({ [styles.pageButton]: true, [styles.active]: current === pages.length })}
-            onClick={() => setCurrentPage(pages.length)}
-          >
-            {pages.length}
-          </div>
-        </>
-      )}
-      {pages.length <= 5 &&
-        pages?.map((c) => (
-          <div
-            className={clsx({ [styles.pageButton]: true, [styles.active]: current === c })}
-            key={c}
-            onClick={() => setCurrentPage(c)}
-          >
-            {c}
-          </div>
-        ))}
-      {pages.length > 0 && (
-        <Select
-          value={pageSize}
-          options={pageOptions.map((c) => ({ value: c, label: `${c} per page` }))}
-          onChange={(e) => {
-            setCurrentPagination({ pageSize: e.target.value, pageOptions, current });
-            onChange && onChange({ pageOptions, pageSize: e.target.value, current });
-          }}
-        />
-      )}
+          </>
+        )}
+        {pages.length <= 5 &&
+          pages?.map((c) => (
+            <div
+              className={clsx({ [styles.pageButton]: true, [styles.active]: current === c })}
+              key={c}
+              onClick={() => setCurrentPage(c)}
+            >
+              {c}
+            </div>
+          ))}
+      </div>
+      <div className={styles.pageSize}>
+        {pages.length > 0 && (
+          <Select
+            value={pageSize}
+            options={pageOptions.map((c) => ({ value: c, label: `${c} per page` }))}
+            onChange={(e) => {
+              setCurrentPagination({ pageSize: e.target.value, pageOptions, current });
+              onChange && onChange({ pageOptions, pageSize: e.target.value, current });
+            }}
+          />
+        )}
+      </div>
+      <div className={styles.text}>{`Showing ${pageSize} of ${total} entries`}</div>
     </div>
   );
 }
