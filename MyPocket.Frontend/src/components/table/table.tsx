@@ -14,8 +14,8 @@ interface TableContextProps {
   columns: ColumnType<RecordType>[];
   rowKey: string;
   onChange: (sorter: Sorter, pagination: Omit<PaginationProps, 'total' | 'setCurrentPagination'>) => void;
-  sorter: Sorter;
-  setSorter: React.Dispatch<SetStateAction<Sorter>>;
+  currentSorter: Sorter;
+  setCurrentSorter: React.Dispatch<SetStateAction<Sorter>>;
   currentPagination: Omit<PaginationProps, 'total' | 'setCurrentPagination'>;
 }
 export const TableContext = React.createContext<TableContextProps>({} as TableContextProps);
@@ -42,6 +42,7 @@ export interface TableProps {
     x: number | string;
     y: number | string;
   };
+  sorter?: Sorter;
   loading: boolean;
   onChange?: (sorter: Sorter, currentPagination: Omit<PaginationProps, 'total' | 'setCurrentPagination'>) => void;
   pagination: Partial<PaginationProps>;
@@ -50,12 +51,13 @@ function Table({
   dataSource = [],
   columns,
   loading,
+  sorter,
   scroll,
   rowKey,
   pagination: { total, current = 1, pageOptions = [10, 20, 50], pageSize = 2 },
   onChange = () => null,
 }: TableProps) {
-  const [sorter, setSorter] = useState<Sorter>({ field: null, order: null });
+  const [currentSorter, setCurrentSorter] = useState<Sorter>(sorter || { order: null, field: null });
   const [currentPagination, setCurrentPagination] = useState<Omit<PaginationProps, 'total' | 'setCurrentPagination'>>({
     current: current,
     pageOptions: pageOptions,
@@ -65,7 +67,6 @@ function Table({
   useEffect(() => {
     setData(dataSource);
   }, [dataSource]);
-  console.log(currentPagination);
   return (
     <div className={styles.all}>
       <div
@@ -82,8 +83,8 @@ function Table({
             columns,
             rowKey,
             onChange,
-            sorter,
-            setSorter,
+            currentSorter,
+            setCurrentSorter,
             currentPagination,
           }}
         >
@@ -97,14 +98,14 @@ function Table({
         {...currentPagination}
         total={total}
         setCurrentPagination={setCurrentPagination}
-        onChange={(pagination) => onChange && onChange(sorter, pagination)}
+        onChange={(pagination) => onChange && onChange(currentSorter, pagination)}
       />
     </div>
   );
 }
 
 function TableHeader() {
-  const { columns, onChange, setSorter, sorter, currentPagination } = React.useContext(TableContext);
+  const { columns, onChange, setCurrentSorter, currentSorter, currentPagination } = React.useContext(TableContext);
   return (
     <thead>
       <tr>
@@ -112,15 +113,15 @@ function TableHeader() {
           <th
             onClick={() => {
               const newSorter: () => Sorter = () => {
-                if (sorter.field === c.dataIndex) {
-                  if (sorter.order === 'asc') return { field: sorter.field, order: 'desc' };
-                  else if (sorter.order === 'desc') return { field: null, order: null };
+                if (currentSorter.field === c.dataIndex) {
+                  if (currentSorter.order === 'asc') return { field: currentSorter.field, order: 'desc' };
+                  else if (currentSorter.order === 'desc') return { field: null, order: null };
                   else return { field: c.dataIndex, order: 'asc' };
                 } else {
                   return { field: c.dataIndex, order: 'asc' };
                 }
               };
-              setSorter(newSorter());
+              setCurrentSorter(newSorter());
               onChange && onChange(newSorter(), currentPagination);
             }}
             key={i}
@@ -134,8 +135,8 @@ function TableHeader() {
             <div className={styles.header}>
               <div className={styles.headerTitle}>{c.title}</div>
               <div className={styles.headerSorter}>
-                {sorter.field === c.dataIndex && sorter.order === 'asc' && <FaArrowDown />}
-                {sorter.field === c.dataIndex && sorter.order === 'desc' && <FaArrowUp />}
+                {currentSorter.field === c.dataIndex && currentSorter.order === 'asc' && <FaArrowDown />}
+                {currentSorter.field === c.dataIndex && currentSorter.order === 'desc' && <FaArrowUp />}
               </div>
             </div>
           </th>

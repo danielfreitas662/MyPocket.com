@@ -52,6 +52,9 @@ const Select = React.forwardRef(
       setInternalValue(nodeValue);
       setLabel(options?.find((c) => c.value == nodeValue)?.label || '');
     }, [nodeValue]);
+    useEffect(() => {
+      if (componentRef.current !== null) console.log(componentRef.current.getBoundingClientRect());
+    }, [componentRef.current]);
     return (
       <div className={styles.container}>
         <div

@@ -47,6 +47,11 @@ function TransactionsTable(props: TransactionsTableProps) {
       sorter: { field: props.sortField, order: props.sortOrder },
     })
       .then((res) => {
+        if (res.data.current != props.current) {
+          router.replace(
+            `/private/transaction?current=${res.data.current}&pageSize=${props.pageSize}&sortField=${props.sortField}&sortOrder=${props.sortOrder}`
+          );
+        }
         setLoading(false);
         setData(res.data);
       })
@@ -61,8 +66,9 @@ function TransactionsTable(props: TransactionsTableProps) {
       <Table
         rowKey="id"
         dataSource={data.results}
-        scroll={{ x: 1000, y: 'calc(100vh - 300px)' }}
+        scroll={{ x: '100%', y: 'calc(100vh - 300px)' }}
         loading={loading}
+        sorter={{ field: props.sortField, order: props.sortOrder }}
         onChange={(sorter, pagination) =>
           router.push(
             `/private/transaction?current=${pagination.current}&pageSize=${pagination.pageSize}&sortField=${sorter.field}&sortOrder=${sorter.order}`

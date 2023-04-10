@@ -9,7 +9,6 @@ interface AccountLayoutProps {
   };
 }
 export default function AccountLayout({ children, params }: AccountLayoutProps) {
-  console.log(params);
   return (
     <PrivateLayout
       title="Accounts"
