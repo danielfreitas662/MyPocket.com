@@ -11,6 +11,7 @@
     width: 100%;
     justify-content: space-between;
     gap: 8px;
+    font-size: $font-size-medium;
     .placeholder {
       color: rgb(157, 155, 155);
       font-size: 14.4px;
@@ -102,6 +103,7 @@
         flex: 1;
         margin-top: 4px;
         text-align: center;
+        padding: $component-input-padding;
         cursor: pointer;
         &:hover {
           background-color: $secondary-color;

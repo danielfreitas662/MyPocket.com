@@ -18,6 +18,7 @@ export interface CurrencyInputProps extends InputHTMLAttributes<HTMLInputElement
   decimalSeparator?: string;
   thousandsSeparator?: string;
 }
+
 const formatNewInput = (pv: string, nv: string, decimalSeparator: string = ',', thousandsSeparator: string = '.') => {
   let format: string = '';
   if (nv.length > pv.length) {
@@ -48,20 +49,21 @@ const CurrencyInput = React.forwardRef(
     }: CurrencyInputProps,
     ref: React.Ref<HTMLInputElement> | undefined
   ) => {
-    const [internalValue, setInternalValue] = useState<string>(currencyFormat(value || 0, 'pt-BR'));
+    let nodeValue: any = 0;
+    const [internalValue, setInternalValue] = useState<string>(
+      (value && currencyFormat(value, 'pt-BR')) || currencyFormat(nodeValue, 'pt-BR')
+    );
     useEffect(() => {
       setInternalValue(currencyFormat(value, 'pt-BR'));
     }, [value]);
     useEffect(() => {
-      const test: EventHandler = {
-        type: 'onchange',
-        target: {
-          name: name,
-          value: currencyNormalize(internalValue),
-        },
-      };
-      onChange && onChange(test);
-    }, []);
+      if (value) {
+        setInternalValue(currencyFormat(value, 'pt-BR'));
+      } else if (nodeValue) {
+        setInternalValue(currencyFormat(nodeValue, 'pt-BR'));
+      }
+    }, [nodeValue, value]);
+
     return (
       <div
         className={clsx({
@@ -72,10 +74,31 @@ const CurrencyInput = React.forwardRef(
         <div className="icon">{icon}</div>
         <input
           value={internalValue}
+          onChange={(event) => {
+            const newValue = formatNewInput(internalValue, event.target.value);
+            const test: EventHandler = {
+              type: 'onchange',
+              target: {
+                name: name,
+                value: currencyNormalize(newValue),
+              },
+            };
+            setInternalValue(newValue);
+            onChange && onChange(test);
+            onBlur && onBlur(test);
+          }}
+        />
+        <input
           name={name}
+          style={{ display: 'none' }}
           {...restProps}
-          //@ts-ignore
-          ref={(node) => node && ref(node)}
+          ref={(node) => {
+            //@ts-ignore
+            ref && ref(node);
+            if (node) {
+              nodeValue = node.value;
+            }
+          }}
           onBlur={onBlur}
           onChange={(event) => {
             const newValue = formatNewInput(internalValue, event.target.value);

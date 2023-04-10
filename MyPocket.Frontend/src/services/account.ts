@@ -38,3 +38,36 @@ export const getAccountById = async (id: string) => {
     throw new Error(JSON.stringify(error));
   }
 };
+export const getAccounts = async () => {
+  try {
+    const session = await getSession();
+    const res = await fetch(apiAddress + apiEndpoints.ACCOUNT.GET.endpoint, {
+      method: apiEndpoints.ACCOUNT.GET.method,
+      headers: {
+        Authorization: `Bearer ${session.token}`,
+      },
+    });
+    if (!res.ok) {
+      //const text = await res.text();
+      const result: ApiRequest<IAccount[]> = {
+        error: true,
+        statusCode: res.status,
+        statusText: res.statusText,
+        message: '',
+        data: [],
+      };
+      return result;
+    }
+    const data: IAccount[] = await res.json();
+    const result: ApiRequest<IAccount[]> = {
+      error: false,
+      statusCode: res.status,
+      statusText: res.statusText,
+      message: '',
+      data: data,
+    };
+    return result;
+  } catch (error: any) {
+    throw new Error(JSON.stringify(error));
+  }
+};

@@ -18,28 +18,31 @@ import CurrencyInput from '../inputComponents/currencyInput/currencyInput';
 import DatePicker from '../inputComponents/datePicker/datePicker';
 import Select from '../inputComponents/select/select';
 import TextInput from '../inputComponents/textinput/textInput';
-import { currencyNormalize } from '@/utils/formaters';
+import { currencyFormat, currencyNormalize } from '@/utils/formaters';
 
 interface TransactionFormProps {
   initialData?: Partial<ITransaction>;
+  categories: ICategory[];
+  accounts: IAccount[];
 }
-function TransactionForm({ initialData }: TransactionFormProps) {
+function TransactionForm({ initialData, categories, accounts }: TransactionFormProps) {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<ApiRequest<ITransaction | null>>({} as ApiRequest<ITransaction>);
   const router = useRouter();
-  const [categories, setCategories] = useState<ICategory[]>([]);
-  const [accounts, setAccounts] = useState<IAccount[]>([]);
   const {
     register,
     reset,
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<ITransaction>({ defaultValues: initialData || { description: '' } });
+  } = useForm<ITransaction>({
+    defaultValues: { ...initialData } || { description: '' },
+  });
   const handleaAdd = (values: Partial<ITransaction>) => {
-    setLoading(true);
+    console.log(values);
+    /* setLoading(true);
     setResult({} as ApiRequest<ITransaction>);
-    saveTransaction({ ...values, date: moment(values.date).utc(), amount: currencyNormalize(values.amount) })
+    saveTransaction({ ...values, date: moment(values.date).utc() })
       .then((res) => {
         setLoading(false);
         setResult(res);
@@ -49,12 +52,8 @@ function TransactionForm({ initialData }: TransactionFormProps) {
       .catch((res) => {
         setLoading(false);
         setResult(res);
-      });
+      }); */
   };
-  useEffect(() => {
-    getCategories().then((res) => setCategories(res.data));
-    getAccounts().then((res) => setAccounts(res.data));
-  }, []);
   return (
     <div style={{ width: 500 }}>
       <form onSubmit={handleSubmit((data) => handleaAdd(data))}>
