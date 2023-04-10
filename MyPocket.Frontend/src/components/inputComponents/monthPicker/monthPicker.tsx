@@ -62,6 +62,7 @@ function MonthPicker({ value, onChange, ref, name, id }: MonthPickerProps) {
         <div className={styles.months}>
           {months.map((m) => (
             <div
+              key={m}
               className={clsx({
                 [styles.month]: true,
                 [styles.active]:

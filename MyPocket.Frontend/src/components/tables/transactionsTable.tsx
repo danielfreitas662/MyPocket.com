@@ -76,7 +76,7 @@ function TransactionsTable(props: TransactionsTableProps) {
         }
         pagination={{
           total: data.total,
-          pageOptions: [10, 20, 50, 100],
+          pageOptions: [10, 20, 50, 100, 150, 200, 250],
           pageSize: props.pageSize || 10,
           current: props.current,
         }}

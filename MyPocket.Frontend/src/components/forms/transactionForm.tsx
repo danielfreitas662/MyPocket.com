@@ -2,15 +2,13 @@
 
 import { ApiRequest } from '@/types/apirequest';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Feedback from '../feedback/feedback';
 import { ITransaction } from '@/types/transaction';
 import { saveTransaction } from '@/services/api/transaction';
 import { ICategory } from '@/types/category';
 import { IAccount } from '@/types/account';
-import { getCategories } from '@/services/api/category';
-import { getAccounts } from '@/services/api/account';
 import moment from 'moment';
 import Button from '../button/button';
 import FormItem from '../form/formItem';
@@ -18,7 +16,6 @@ import CurrencyInput from '../inputComponents/currencyInput/currencyInput';
 import DatePicker from '../inputComponents/datePicker/datePicker';
 import Select from '../inputComponents/select/select';
 import TextInput from '../inputComponents/textinput/textInput';
-import { currencyFormat, currencyNormalize } from '@/utils/formaters';
 
 interface TransactionFormProps {
   initialData?: Partial<ITransaction>;
@@ -31,12 +28,10 @@ function TransactionForm({ initialData, categories, accounts }: TransactionFormP
   const router = useRouter();
   const {
     register,
-    reset,
-    control,
     handleSubmit,
     formState: { errors },
   } = useForm<ITransaction>({
-    defaultValues: { ...initialData } || { description: '' },
+    defaultValues: { ...initialData } || { description: '', amount: 10 },
   });
   const handleaAdd = (values: Partial<ITransaction>) => {
     setLoading(true);

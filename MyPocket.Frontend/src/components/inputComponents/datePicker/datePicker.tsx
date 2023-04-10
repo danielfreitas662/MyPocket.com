@@ -1,6 +1,6 @@
 'use client';
 import clsx from 'clsx';
-import moment from 'moment';
+import moment, { utc } from 'moment';
 import React, { useEffect, useRef, useState } from 'react';
 import { FaBackward, FaCalendar, FaForward } from 'react-icons/fa';
 import styles from './datePicker.module.scss';
@@ -24,7 +24,7 @@ const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', '
 const daysOfWeek = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 const DatePicker = React.forwardRef(
   ({ value, onChange, placeholder, onBlur, error, name, id }: MonthPickerProps, ref) => {
-    let nodeValue: any = null;
+    let nodeValue: any = moment(null).format();
     const [visible, setVisible] = useState(false);
     const [internalValue, setInternalValue] = useState<moment.Moment | null>(value || null);
     const [year, setYear] = useState<number>(moment().year());
@@ -72,7 +72,8 @@ const DatePicker = React.forwardRef(
           <input
             name={name}
             id={id}
-            style={{ display: 'none' }}
+            value={internalValue?.utc().format()}
+            style={{ display: 'block' }}
             ref={(node) => {
               //@ts-ignore
               ref && ref(node);
@@ -107,7 +108,10 @@ const DatePicker = React.forwardRef(
           <hr />
           <div className={clsx({ [styles.daysOfWeek]: true })}>
             {daysOfWeek.map((c, index) => (
-              <div className={clsx({ [styles.dayOfWeek]: true, [styles.weekend]: index === 0 || index === 6 })}>
+              <div
+                key={index}
+                className={clsx({ [styles.dayOfWeek]: true, [styles.weekend]: index === 0 || index === 6 })}
+              >
                 {c}
               </div>
             ))}
@@ -115,7 +119,7 @@ const DatePicker = React.forwardRef(
               <>
                 {index === 0 && firstDay > 0 && <div style={{ gridColumnStart: 0, gridColumnEnd: firstDay + 1 }}></div>}
                 <div
-                  //style={{ gridRow: index === 0 ? firstDay : 0 }}
+                  key={d}
                   className={clsx({
                     [styles.day]: true,
                     [styles.active]:
@@ -127,6 +131,7 @@ const DatePicker = React.forwardRef(
                   })}
                   onClick={() => {
                     const newDate = moment(`${year}-${month}-${d}`, 'YYYY-MM-DD');
+                    nodeValue = newDate.format();
                     setInternalValue(newDate);
                     const test: EventHandler = {
                       type: 'onchange',
@@ -136,6 +141,7 @@ const DatePicker = React.forwardRef(
                       },
                     };
                     onChange && onChange(test);
+                    onBlur && onBlur(test);
                     setVisible(false);
                   }}
                 >

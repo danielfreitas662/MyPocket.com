@@ -42,6 +42,7 @@ const CurrencyInput = React.forwardRef(
       onChange,
       onBlur,
       name,
+      id,
       decimalSeparator = ',',
       thousandsSeparator = '.',
       value,
@@ -49,9 +50,9 @@ const CurrencyInput = React.forwardRef(
     }: CurrencyInputProps,
     ref: React.Ref<HTMLInputElement> | undefined
   ) => {
-    let nodeValue: any = 0;
+    let nodeValue: any = currencyFormat(0, 'pt-BR');
     const [internalValue, setInternalValue] = useState<string>(
-      (value && currencyFormat(value, 'pt-BR')) || currencyFormat(nodeValue, 'pt-BR')
+      (value && currencyFormat(value || 0, 'pt-BR')) || nodeValue
     );
     useEffect(() => {
       setInternalValue(currencyFormat(value, 'pt-BR'));
@@ -60,10 +61,9 @@ const CurrencyInput = React.forwardRef(
       if (value) {
         setInternalValue(currencyFormat(value, 'pt-BR'));
       } else if (nodeValue) {
-        setInternalValue(currencyFormat(nodeValue, 'pt-BR'));
+        setInternalValue(nodeValue);
       }
     }, [nodeValue, value]);
-
     return (
       <div
         className={clsx({
@@ -73,6 +73,7 @@ const CurrencyInput = React.forwardRef(
       >
         <div className="icon">{icon}</div>
         <input
+          id={id}
           value={internalValue}
           onChange={(event) => {
             const newValue = formatNewInput(internalValue, event.target.value);
@@ -90,7 +91,9 @@ const CurrencyInput = React.forwardRef(
         />
         <input
           name={name}
+          value={internalValue}
           style={{ display: 'none' }}
+          onChange={onChange}
           {...restProps}
           ref={(node) => {
             //@ts-ignore
@@ -98,20 +101,6 @@ const CurrencyInput = React.forwardRef(
             if (node) {
               nodeValue = node.value;
             }
-          }}
-          onBlur={onBlur}
-          onChange={(event) => {
-            const newValue = formatNewInput(internalValue, event.target.value);
-            const test: EventHandler = {
-              type: 'onchange',
-              target: {
-                name: name,
-                value: currencyNormalize(newValue),
-              },
-            };
-            setInternalValue(newValue);
-            onChange && onChange(test);
-            onBlur && onBlur(test);
           }}
         />
       </div>

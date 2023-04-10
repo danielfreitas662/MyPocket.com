@@ -34,7 +34,7 @@
       border: none;
       padding: 0 1em 0 0;
       margin: 0;
-      width: 100%;
+      width: 'fit-content';
       font-family: inherit;
       font-size: inherit;
       cursor: inherit;
@@ -69,15 +69,14 @@
     display: none;
     max-height: 200px;
     overflow-y: scroll;
-    top: 32px;
     left: 0;
     font-size: $font-size-medium;
     position: absolute;
     z-index: 1000;
-    width: 100%;
     color: white;
     border-radius: $border-radius;
     box-shadow: 1px 1px 2px lightgrey;
+    width: 100%;
     &.visible {
       display: block;
       input {
@@ -87,9 +86,12 @@
     .selectOption {
       background-color: $light-color;
       padding: $component-input-padding;
+      word-break: normal;
       cursor: pointer;
+      width: 100%;
       color: $primary-color;
       border-bottom: 1px solid white;
+      white-space: nowrap;
       &:last-child {
         border: none;
       }

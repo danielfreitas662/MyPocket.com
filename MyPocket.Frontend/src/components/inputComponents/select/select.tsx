@@ -30,11 +30,17 @@ const Select = React.forwardRef(
     ref: React.ForwardedRef<any>
   ) => {
     let nodeValue: string = '';
+    let nodePosition: { x: number | undefined; y: number | undefined } = { x: undefined, y: undefined };
+    let nodeOptionsSize: { x: number | undefined; y: number | undefined } = { x: undefined, y: undefined };
     const [filter, setFilter] = useState<string>('');
-    const [internalValue, setInternalValue] = useState<any>(value || nodeValue || undefined);
+    const [internalValue, setInternalValue] = useState<any>(value || nodeValue);
     const componentRef = useRef<any>(null);
+    const optionsRef = useRef<any>(null);
     const [visible, setVisible] = useState(false);
     const [label, setLabel] = useState<string>('');
+    const [windowSize, setWindowSize] = useState([0, 0]);
+    const [optionsSize, setOptionsSize] = useState([0, 0]);
+    const [componentPosition, setComponentPosition] = useState([0, 0]);
     useEffect(() => {
       function handleClickOutside(event: MouseEvent) {
         if (componentRef.current && !componentRef.current.contains(event.target)) {
@@ -53,12 +59,34 @@ const Select = React.forwardRef(
       setLabel(options?.find((c) => c.value == nodeValue)?.label || '');
     }, [nodeValue]);
     useEffect(() => {
-      //if (componentRef.current !== null) console.log(componentRef.current.getBoundingClientRect());
-    }, [componentRef.current]);
+      const handleWindowResize = () => {
+        setWindowSize([window.innerWidth, window.innerHeight]);
+      };
+      window.addEventListener('resize', handleWindowResize);
+      return () => {
+        window.removeEventListener('resize', handleWindowResize);
+      };
+    });
+    useEffect(() => {
+      if (nodeOptionsSize.x !== optionsSize[0] || nodeOptionsSize.y !== optionsSize[1]) {
+        setOptionsSize([nodeOptionsSize.x || 0, nodeOptionsSize.y || 0]);
+      }
+      if (nodePosition.x !== componentPosition[0] || nodePosition.y !== componentPosition[1]) {
+        setComponentPosition([nodePosition.x || 0, nodePosition.y || 0]);
+      }
+    }, [nodePosition, nodeOptionsSize]);
     return (
-      <div className={styles.container}>
+      <div
+        className={styles.container}
+        ref={(node) => {
+          if (node) {
+            componentRef.current = node;
+            const p = node.getBoundingClientRect();
+            nodePosition = { x: p.x, y: p.y };
+          }
+        }}
+      >
         <div
-          ref={componentRef}
           className={clsx({
             [styles.select]: true,
             [styles.error]: !!error,
@@ -77,9 +105,9 @@ const Select = React.forwardRef(
           />
           <select
             name={name}
-            onBlur={onBlur}
-            onChange={onChange}
             style={{ display: 'none' }}
+            value={internalValue}
+            onChange={onChange}
             ref={(node) => {
               //@ts-ignore
               ref && ref(node);
@@ -121,7 +149,19 @@ const Select = React.forwardRef(
             />
           )}
         </div>
-        <div className={clsx({ [styles.customSelect]: true, [styles.visible]: visible })} ref={componentRef}>
+        <div
+          ref={(node) => {
+            if (node) {
+              const p = node.getBoundingClientRect();
+              nodeOptionsSize = { x: p.width, y: p.height };
+            }
+          }}
+          className={clsx({ [styles.customSelect]: true, [styles.visible]: visible })}
+          style={{
+            top: componentPosition[1] + optionsSize[1] >= windowSize[1] ? 32 : -optionsSize[1],
+            right: componentPosition[0] + optionsSize[0] >= windowSize[0] ? 0 : optionsSize[0],
+          }}
+        >
           {options
             ?.filter((c) => (filter ? c.label.toLocaleLowerCase().includes(filter.toLocaleLowerCase()) : true))
             .map((c) => (
