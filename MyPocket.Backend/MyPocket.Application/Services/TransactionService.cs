@@ -144,6 +144,7 @@ namespace MyPocket.Application.Services
       try
       {
         var entity = await _repo.Transaction.GetSingleAsync(c => c.Id == transaction.Id);
+        values.UserId = User.UserId;
         _repo.Transaction.Update(entity, values);
         await _repo.SaveAsync();
         return values;

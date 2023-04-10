@@ -53,7 +53,6 @@ const DatePicker = React.forwardRef(
       setInternalValue(value || null);
     }, [value]);
     useEffect(() => {
-      console.log(nodeValue);
       if (value) {
         setInternalValue(value || null);
       } else if (nodeValue) {
@@ -78,7 +77,6 @@ const DatePicker = React.forwardRef(
               //@ts-ignore
               ref && ref(node);
               if (node) {
-                console.log('daa');
                 nodeValue = node.value;
               }
             }}

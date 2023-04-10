@@ -93,7 +93,7 @@ namespace MyPocket.Infra.Repository
         var total = results.Count();
         var pages = total % filters.Pagination.Current > 0 ? 1 + total / filters.Pagination.Current : total / filters.Pagination.Current;
         var current = pages < filters.Pagination.PageSize ? 1 : filters.Pagination.Current;
-        var results2 = results.Skip(filters.Pagination.Current * (filters.Pagination.PageSize - 1)).Take(filters.Pagination.PageSize).Select(c => new TransactionWithRelated
+        var results2 = results.Skip(filters.Pagination.Current * filters.Pagination.PageSize - filters.Pagination.PageSize).Take(filters.Pagination.PageSize).Select(c => new TransactionWithRelated
         {
           Id = c.Id,
           Description = c.Description,

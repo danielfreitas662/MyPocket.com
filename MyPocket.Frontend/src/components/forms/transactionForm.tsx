@@ -39,8 +39,7 @@ function TransactionForm({ initialData, categories, accounts }: TransactionFormP
     defaultValues: { ...initialData } || { description: '' },
   });
   const handleaAdd = (values: Partial<ITransaction>) => {
-    console.log(values);
-    /* setLoading(true);
+    setLoading(true);
     setResult({} as ApiRequest<ITransaction>);
     saveTransaction({ ...values, date: moment(values.date).utc() })
       .then((res) => {
@@ -52,7 +51,7 @@ function TransactionForm({ initialData, categories, accounts }: TransactionFormP
       .catch((res) => {
         setLoading(false);
         setResult(res);
-      }); */
+      });
   };
   return (
     <div style={{ width: 500 }}>
