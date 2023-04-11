@@ -35,7 +35,6 @@ const Select = React.forwardRef(
     const [filter, setFilter] = useState<string>('');
     const [internalValue, setInternalValue] = useState<any>(value || nodeValue);
     const componentRef = useRef<any>(null);
-    const optionsRef = useRef<any>(null);
     const [visible, setVisible] = useState(false);
     const [label, setLabel] = useState<string>('');
     const [windowSize, setWindowSize] = useState([0, 0]);
@@ -66,7 +65,10 @@ const Select = React.forwardRef(
       return () => {
         window.removeEventListener('resize', handleWindowResize);
       };
-    });
+    }, []);
+    useEffect(() => {
+      setWindowSize([window.innerWidth, window.innerHeight]);
+    }, []);
     useEffect(() => {
       if (nodeOptionsSize.x !== optionsSize[0] || nodeOptionsSize.y !== optionsSize[1]) {
         setOptionsSize([nodeOptionsSize.x || 0, nodeOptionsSize.y || 0]);

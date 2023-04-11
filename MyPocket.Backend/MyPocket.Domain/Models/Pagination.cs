@@ -9,8 +9,8 @@ namespace MyPocket.Domain.Models
   }
   public class Pagination
   {
-    public int Current { get; set; }
-    public int PageSize { get; set; }
+    public int Current { get; set; } = 1;
+    public int PageSize { get; set; } = 10;
   }
   public class Sorter
   {

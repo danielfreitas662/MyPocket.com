@@ -26,10 +26,10 @@ function Table({
   });
   const [data, setData] = useState<RecordType[]>(dataSource);
   const [filterValue, setFilterValue] = useState<RecordType>(
-    columns.map((c) => c.dataIndex).reduce((a, b) => ({ ...a, [b]: null }), {})
+    columns.reduce((a, b) => ({ ...a, [b.dataIndex]: b.filter?.filterValue }), {})
   );
   useEffect(() => {
-    setFilterValue(columns.map((c) => c.dataIndex).reduce((a, b) => ({ ...a, [b]: null }), {}));
+    setFilterValue(columns.reduce((a, b) => ({ ...a, [b.dataIndex]: b.filter?.filterValue }), {}));
   }, []);
   useEffect(() => {
     setData(dataSource);

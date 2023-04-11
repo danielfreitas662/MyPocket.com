@@ -17,7 +17,7 @@ function Button({ children, icon, theme = 'primary', disabled, ...restProps }: B
         [styles.disabled]: disabled,
         [styles[theme]]: true,
       })}
-      onClick={() => icon && buttonRef?.click()}
+      onClick={() => buttonRef?.click()}
     >
       {icon}
       <button

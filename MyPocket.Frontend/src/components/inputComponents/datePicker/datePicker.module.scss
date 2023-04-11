@@ -11,9 +11,10 @@
     justify-content: space-between;
     gap: 8px;
     font-size: $font-size-medium;
+    align-items: center;
     .placeholder {
       color: rgb(157, 155, 155);
-      font-size: 14.4px;
+      font-size: $font-size-large;
     }
     &.error {
       border: 1px solid $error-color;

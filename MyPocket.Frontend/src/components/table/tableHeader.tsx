@@ -82,6 +82,7 @@ function TableHeader() {
 const FilterBox = ({ filterType, column, dataIndex, setColumn }: FilterProps) => {
   const { onChange, filter, setFilter, currentPagination, currentSorter } = React.useContext(TableContext);
   const filterboxRef = useRef<any>();
+  const [internalValue, setInternalValue] = useState(filter[dataIndex]);
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (filterboxRef.current && !filterboxRef.current.contains(event.target)) {
@@ -111,14 +112,14 @@ const FilterBox = ({ filterType, column, dataIndex, setColumn }: FilterProps) =>
       <div className={styles.body}>
         {filterType === 'string' && (
           <TextInput
-            value={filter[dataIndex] || ''}
+            value={internalValue || ''}
             onChange={(e) => setFilter({ ...filter, [dataIndex]: e.target.value })}
             placeholder="Search..."
           />
         )}
         {filterType === 'date' && (
           <DatePicker
-            value={moment(filter[dataIndex]).isValid() ? moment(filter[dataIndex]) : null}
+            value={moment(internalValue).isValid() ? moment(internalValue) : null}
             onChange={(e) =>
               setFilter({
                 ...filter,

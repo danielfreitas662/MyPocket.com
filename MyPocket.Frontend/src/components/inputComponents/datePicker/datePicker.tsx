@@ -53,10 +53,12 @@ const DatePicker = React.forwardRef(
       setInternalValue(value || null);
     }, [value]);
     useEffect(() => {
-      if (!value?.isValid()) {
-        setInternalValue(null);
-      } else if (value?.isValid()) {
-        setInternalValue(moment(value));
+      if (value) {
+        if (!value?.isValid()) {
+          setInternalValue(null);
+        } else if (value?.isValid()) {
+          setInternalValue(moment(value));
+        }
       } else if (nodeValue) {
         setInternalValue(moment(nodeValue));
       }
@@ -68,11 +70,8 @@ const DatePicker = React.forwardRef(
           onClick={() => setVisible(true)}
         >
           <div>
-            {(value?.isValid() && value?.format('YYYY-MM-DD')) ||
-              (internalValue?.isValid() && internalValue?.format('YYYY-MM-DD'))}
-            {!(value?.isValid() && internalValue?.isValid()) && (
-              <span className={styles.placeholder}>{placeholder}</span>
-            )}
+            {internalValue?.isValid() && internalValue?.format('YYYY-MM-DD')}
+            {!internalValue?.isValid() && <span className={styles.placeholder}>{placeholder}</span>}
           </div>
           <input
             name={name}

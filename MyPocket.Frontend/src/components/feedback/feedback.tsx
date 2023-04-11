@@ -1,7 +1,7 @@
 'use client';
 import clsx from 'clsx';
 import styles from './feedback.module.scss';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FaCheckCircle, FaInfoCircle, FaPlus, FaStopCircle } from 'react-icons/fa';
 
 interface FeedbackProps {
@@ -11,6 +11,9 @@ interface FeedbackProps {
 }
 function Feedback({ type, message, dismissable }: FeedbackProps) {
   const [dismissed, setDismissed] = useState(false);
+  useEffect(() => {
+    setDismissed(false);
+  }, [message, type]);
   return (
     <div
       className={clsx({

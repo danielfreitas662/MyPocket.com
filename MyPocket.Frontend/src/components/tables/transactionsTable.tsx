@@ -78,6 +78,7 @@ function TransactionsTable(props: PageSearchParams & ITransaction) {
       dataIndex: 'date',
       filter: {
         filterType: 'date',
+        filterValue: props.date,
       },
       render: (v: string) => moment(v).format('DD/MM/YYYY'),
     },
@@ -94,12 +95,17 @@ function TransactionsTable(props: PageSearchParams & ITransaction) {
       dataIndex: 'amount',
       align: 'right',
       render: (v: number) => currencyFormat(v, 'pt-BR'),
+      filter: {
+        filterType: 'string',
+        filterValue: props.amount,
+      },
     },
     {
       title: 'Category',
       dataIndex: 'category',
       filter: {
         filterType: 'string',
+        filterValue: props.category,
       },
     },
     {
@@ -107,6 +113,7 @@ function TransactionsTable(props: PageSearchParams & ITransaction) {
       dataIndex: 'account',
       filter: {
         filterType: 'string',
+        filterValue: props.account,
       },
     },
   ];
