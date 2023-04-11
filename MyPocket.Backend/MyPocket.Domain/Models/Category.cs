@@ -17,4 +17,10 @@ namespace MyPocket.Domain.Models
     public ICollection<Budget> Budgets { get; set; }
     public ICollection<Transaction> Transactions { get; set; }
   }
+  public class CategoryWithRelated
+  {
+    public string? Id { get; set; }
+    public string? Name { get; set; }
+    public CategoryType? Type { get; set; }
+  }
 }

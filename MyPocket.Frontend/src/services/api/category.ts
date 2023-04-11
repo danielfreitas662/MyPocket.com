@@ -2,30 +2,37 @@ import { ApiRequest } from '@/types/apirequest';
 import { ICategory } from '@/types/category';
 import apiEndpoints from '../apiEndpoints';
 import { getClientSession } from '../clientSession';
+import { Filter, FilterResult } from '@/types/pagination';
 const apiAddress: string = process.env.NEXT_PUBLIC_API_ADDRESS as string;
-export const getCategories = async () => {
+export const getCategories = async (filters: Filter<ICategory>) => {
   try {
     const session = await getClientSession();
-    const res = await fetch(apiAddress + apiEndpoints.CATEGORY.GET.endpoint, {
-      method: apiEndpoints.CATEGORY.GET.method,
+    const res = await fetch(apiAddress + apiEndpoints.CATEGORY.FILTER.endpoint, {
+      method: apiEndpoints.CATEGORY.FILTER.method,
       cache: 'no-store',
       headers: {
         // @ts-ignore
         Authorization: `Bearer ${session.token}`,
+        'content-type': 'application/json',
       },
+      body: JSON.stringify(filters),
     });
     if (!res.ok) {
-      const result: ApiRequest<ICategory[]> = {
+      const result: ApiRequest<FilterResult<ICategory>> = {
         error: true,
         statusCode: res.status,
         statusText: res.statusText,
         message: '',
-        data: [],
+        data: {
+          results: [],
+          total: 0,
+          current: 1,
+        },
       };
       return result;
     }
-    const data: ICategory[] = await res.json();
-    const result: ApiRequest<ICategory[]> = {
+    const data: FilterResult<ICategory> = await res.json();
+    const result: ApiRequest<FilterResult<ICategory>> = {
       error: false,
       statusCode: res.status,
       statusText: res.statusText,

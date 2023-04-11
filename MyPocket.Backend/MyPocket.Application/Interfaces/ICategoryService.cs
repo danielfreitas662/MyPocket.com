@@ -7,7 +7,7 @@ namespace MyPocket.Application.Interfaces
   public interface ICategoryService
   {
     List<CategoryDTO> GetAll(string UserId);
-    PaginationResult<Category> Filter(PaginationRequest<Category> data, UserData user);
+    PaginationResult<CategoryWithRelated> Filter(PaginationRequest<CategoryWithRelated> data, UserData user);
     Task<CategoryDTO?> GetByIdAsync(string UserId, string Id);
     Task<CategoryDTO> AddAsync(UserData User, CategoryDTO account);
     Task<CategoryDTO> UpdateAsync(UserData User, CategoryDTO account, CategoryDTO values);

@@ -23,12 +23,14 @@ const apiEndpoints: APIEndpoint = {
   CATEGORY: {
     GET: { endpoint: '/Category', method: Method.GET },
     GET_BY_ID: { endpoint: '/Category', method: Method.GET },
+    FILTER: { endpoint: '/Category/Filter', method: Method.POST },
     ADD: { endpoint: '/Category', method: Method.POST },
     REMOVE: { endpoint: '/Category', method: Method.DELETE },
   },
   ACCOUNT: {
     GET: { endpoint: '/Account', method: Method.GET },
     GET_BY_ID: { endpoint: '/Account', method: Method.GET },
+    FILTER: { endpoint: '/Account/Filter', method: Method.POST },
     ADD: { endpoint: '/Account', method: Method.POST },
     REMOVE: { endpoint: '/Account', method: Method.DELETE },
   },

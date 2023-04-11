@@ -62,6 +62,8 @@ function TransactionsTable(props: PageSearchParams & ITransaction) {
     {
       title: '',
       dataIndex: 'id',
+      width: 80,
+      align: 'center',
       render: (v: string) => (
         <div style={{ display: 'flex', gap: '5px 5px' }}>
           <Link href={`/private/transaction/${v}`}>

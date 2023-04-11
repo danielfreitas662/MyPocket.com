@@ -2,30 +2,37 @@ import { ApiRequest } from '@/types/apirequest';
 import { IAccount } from '@/types/account';
 import apiEndpoints from '../apiEndpoints';
 import { getClientSession } from '../clientSession';
+import { Filter, FilterResult } from '@/types/pagination';
 const apiAddress: string = process.env.NEXT_PUBLIC_API_ADDRESS as string;
-export const getAccounts = async () => {
+export const getAccounts = async (filters: Filter<IAccount>) => {
   try {
     const session = await getClientSession();
-    const res = await fetch(apiAddress + apiEndpoints.ACCOUNT.GET.endpoint, {
-      method: apiEndpoints.ACCOUNT.GET.method,
+    const res = await fetch(apiAddress + apiEndpoints.ACCOUNT.FILTER.endpoint, {
+      method: apiEndpoints.ACCOUNT.FILTER.method,
       cache: 'no-store',
       headers: {
         // @ts-ignore
         Authorization: `Bearer ${session.token}`,
+        'content-type': 'application/json',
       },
+      body: JSON.stringify(filters),
     });
     if (!res.ok) {
-      const result: ApiRequest<IAccount[]> = {
+      const result: ApiRequest<FilterResult<IAccount>> = {
         error: true,
         statusCode: res.status,
         statusText: res.statusText,
         message: '',
-        data: [],
+        data: {
+          results: [],
+          total: 0,
+          current: 1,
+        },
       };
       return result;
     }
-    const data: IAccount[] = await res.json();
-    const result: ApiRequest<IAccount[]> = {
+    const data: FilterResult<IAccount> = await res.json();
+    const result: ApiRequest<FilterResult<IAccount>> = {
       error: false,
       statusCode: res.status,
       statusText: res.statusText,

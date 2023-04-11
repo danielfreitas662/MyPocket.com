@@ -39,9 +39,17 @@ namespace MyPocket.Application.Services
       }
     }
 
-    public PaginationResult<Category> Filter(PaginationRequest<Category> data, UserData user)
+    public PaginationResult<CategoryWithRelated> Filter(PaginationRequest<CategoryWithRelated> data, UserData user)
     {
-      throw new NotImplementedException();
+      try
+      {
+        var result = _repo.Category.Filter(data, user.UserId);
+        return result;
+      }
+      catch (Exception ex)
+      {
+        throw new Exception(ex.Message, ex);
+      }
     }
 
     public List<CategoryDTO> GetAll(string UserId)

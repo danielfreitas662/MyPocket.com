@@ -75,7 +75,7 @@ namespace MyPocket.API.Controllers
       return Ok(data.Ids);
     }
     [HttpPost("Filter")]
-    public ActionResult Filter([FromBody] PaginationRequest<AccountDTO> data)
+    public ActionResult Filter([FromBody] PaginationRequest<AccountWithRelated> data)
     {
       var user = HttpContext.User.Identity!.GetUserData();
       var result = _application.Account.Filter(data, user);

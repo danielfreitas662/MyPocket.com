@@ -39,7 +39,7 @@ namespace MyPocket.Infra.Repository
         Date = new DateTime(c.Key.Year, c.Key.Month, c.Key.Day),
         Amount = c.Where(d => d.Date.Month == month.Month && d.Date.Year == month.Year && d.Category.Type == type).Sum(d => d.Amount)
       });
-      return result.ToList();
+      return result.OrderBy(c => c.Date).ToList();
     }
     public List<ResultByMonth> ResultByMonth(string userId, DateTime month)
     {
@@ -113,7 +113,6 @@ namespace MyPocket.Infra.Repository
           }
         }
         var total = results.Count();
-
         var pages = Math.Ceiling(Convert.ToDouble(total) / filters.Pagination.PageSize);
         var current = filters.Pagination.Current > pages ? pages : filters.Pagination.Current;
         var results2 = results.Skip(filters.Pagination.Current * filters.Pagination.PageSize - filters.Pagination.PageSize).Take(filters.Pagination.PageSize).Select(c => new TransactionWithRelated

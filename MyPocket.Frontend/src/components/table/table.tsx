@@ -66,6 +66,7 @@ function Table({
       <Pagination
         {...currentPagination}
         total={total}
+        pageData={dataSource}
         setCurrentPagination={setCurrentPagination}
         onChange={(pagination) => onChange && onChange(filterValue, currentSorter, pagination)}
       />

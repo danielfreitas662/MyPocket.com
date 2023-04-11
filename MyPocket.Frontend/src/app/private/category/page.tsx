@@ -1,16 +1,18 @@
-import { Skeleton } from '@/components';
 import CategoriesTable from '@/components/tables/categoriesTable';
-import { getCategories } from '@/services/category';
-import { Suspense } from 'react';
 import styles from './page.module.scss';
+import { PageSearchParams } from '@/types/pagination';
+import { ICategory } from '@/types/category';
 
 export const metadata = {
   title: 'MyPocket - Categories',
 };
-function Category() {
+interface PageProps {
+  searchParams: PageSearchParams & ICategory;
+}
+function Category({ searchParams }: PageProps) {
   return (
     <div className={styles.body}>
-      <CategoriesTable />
+      <CategoriesTable {...searchParams} />
     </div>
   );
 }

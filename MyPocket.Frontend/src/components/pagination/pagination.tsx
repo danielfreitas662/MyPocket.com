@@ -10,6 +10,7 @@ export interface PaginationProps {
   pageSize?: number;
   total?: number;
   pageOptions?: number[];
+  pageData?: any[];
   setCurrentPagination: React.Dispatch<SetStateAction<Omit<PaginationProps, 'total' | 'setCurrentPagination'>>>;
   onChange?: (pagination: Omit<PaginationProps, 'total' | 'setCurrentPagination'>) => void;
 }
@@ -17,6 +18,7 @@ function Pagination({
   current = 1,
   pageSize = 10,
   total = 0,
+  pageData = [],
   pageOptions = [10, 20, 50],
   setCurrentPagination,
   onChange,
@@ -104,7 +106,7 @@ function Pagination({
           />
         )}
       </div>
-      {total > 0 && <div className={styles.text}>{`Showing ${pageSize} of ${total} entries`}</div>}
+      {total > 0 && <div className={styles.text}>{`Showing ${pageData.length} of ${total} entries`}</div>}
     </div>
   );
 }

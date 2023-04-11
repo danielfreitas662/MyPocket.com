@@ -10,5 +10,10 @@ namespace MyPocket.Domain.Models
     public User User { get; set; }
     public ICollection<Transaction> Transactions { get; set; }
   }
+  public class AccountWithRelated
+  {
+    public string? Id { get; set; }
+    public string? Name { get; set; }
+  }
 
 }
