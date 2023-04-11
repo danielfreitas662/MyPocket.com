@@ -22,7 +22,6 @@
   flex-direction: column;
   .tableWrapper {
     width: 100%;
-    position: relative;
     overflow-x: scroll;
     border: 1px solid $secondary-color;
     .mask,
@@ -57,7 +56,6 @@
       border-collapse: collapse;
       thead {
         display: 'fixed';
-        top: 0;
         tr {
           th {
             position: sticky;
@@ -77,11 +75,42 @@
               text-align: center;
             }
             .header {
+              width: 100%;
               display: inline-flex;
               justify-content: space-between;
-              align-items: center;
+              align-items: baseline;
+
+              .headerTitle {
+              }
               .headerSorter {
-                color: $secondary-color;
+                color: $light-color;
+                display: inline-flex;
+                gap: 8px;
+                .filter {
+                  &.active {
+                    color: $primary-color;
+                  }
+                }
+              }
+            }
+            .filterBox {
+              display: none;
+              flex-direction: column;
+              gap: 10px 10px;
+              position: absolute;
+              background-color: white;
+              box-shadow: 1px 1px 4px grey;
+              border-radius: $border-radius;
+              padding: $component-general-padding;
+              &.filterBoxVisible {
+                display: flex;
+              }
+              .body {
+                width: 100%;
+              }
+              .menu {
+                display: inline-flex;
+                gap: 5px;
               }
             }
           }
@@ -93,6 +122,9 @@
         tr {
           &:nth-child(even) {
             background-color: $light-color;
+          }
+          &:nth-child(odd) {
+            background-color: white;
           }
           &:hover {
             background-color: $light-color2;

@@ -1,5 +1,5 @@
 export interface Filter<T> {
-  filter?: T;
+  filters?: T;
   sorter?: Sorter;
   pagination?: Pagination;
 }
@@ -16,4 +16,11 @@ export interface FilterResult<T> {
   results: T[];
   total: number;
   current: number;
+}
+
+export interface PageSearchParams {
+  current: number;
+  pageSize: number;
+  field: string;
+  order: 'asc' | 'desc';
 }

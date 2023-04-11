@@ -1,6 +1,5 @@
 @import '../../../styles/variables.scss';
 .wrapper {
-  position: relative;
   display: flex;
   width: 100%;
   .component {
@@ -25,17 +24,18 @@
   }
   .calendar {
     font-size: $font-size-small;
-    position: absolute;
-    top: 34px;
+    position: fixed;
     box-shadow: 1px 1px 4px grey;
     display: none;
     background-color: white;
-    z-index: 1000;
+    z-index: 3000;
+    overflow: visible;
     padding: $component-input-padding;
     justify-content: center;
     border-radius: $border-radius;
     &.visible {
       display: flex;
+      position: fixed;
       flex-direction: column;
       justify-content: space-between;
     }
@@ -70,6 +70,7 @@
         border: 1px solid $light-color;
         padding: $component-input-padding;
         border-radius: $border-radius;
+        background-color: white;
         min-width: 14px;
         text-align: center;
         &.weekend {

@@ -158,8 +158,11 @@ const Select = React.forwardRef(
           }}
           className={clsx({ [styles.customSelect]: true, [styles.visible]: visible })}
           style={{
-            top: componentPosition[1] + optionsSize[1] >= windowSize[1] ? 32 : -optionsSize[1],
-            right: componentPosition[0] + optionsSize[0] >= windowSize[0] ? 0 : optionsSize[0],
+            top:
+              componentPosition[1] + optionsSize[1] <= windowSize[1]
+                ? componentPosition[1] + 32
+                : componentPosition[1] - optionsSize[1],
+            minWidth: componentRef.current?.getBoundingClientRect().width,
           }}
         >
           {options

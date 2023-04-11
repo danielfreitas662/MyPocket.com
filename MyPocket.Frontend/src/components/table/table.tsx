@@ -1,52 +1,13 @@
 'use client';
 import clsx from 'clsx';
-import React, { ReactNode, SetStateAction, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './table.module.scss';
-import { FaArrowDown, FaArrowUp, FaDatabase } from 'react-icons/fa';
 import Pagination, { PaginationProps } from '../pagination/pagination';
+import { RecordType, Sorter, TableProps } from './tableTypes';
+import { TableContext } from './ tableContext';
+import TableHeader from './tableHeader';
+import TableBody from './tableBody';
 
-interface RecordType {
-  [key: string]: any;
-}
-
-interface TableContextProps {
-  dataSource: RecordType[];
-  columns: ColumnType<RecordType>[];
-  rowKey: string;
-  onChange: (sorter: Sorter, pagination: Omit<PaginationProps, 'total' | 'setCurrentPagination'>) => void;
-  currentSorter: Sorter;
-  setCurrentSorter: React.Dispatch<SetStateAction<Sorter>>;
-  currentPagination: Omit<PaginationProps, 'total' | 'setCurrentPagination'>;
-}
-export const TableContext = React.createContext<TableContextProps>({} as TableContextProps);
-
-export type CompareFn<T> = (a: T, b: T) => number;
-
-export interface ColumnType<RecordType> {
-  sorter?: CompareFn<Partial<RecordType>> | boolean;
-  align?: 'left' | 'right' | 'center';
-  title: string | ReactNode;
-  dataIndex: string;
-  width?: number | string;
-  render?: (value: any, row: Partial<RecordType>, index: number) => any;
-}
-export interface Sorter {
-  field: null | string;
-  order: null | 'asc' | 'desc';
-}
-export interface TableProps {
-  dataSource?: RecordType[];
-  columns: ColumnType<RecordType>[];
-  rowKey: string;
-  scroll?: {
-    x: number | string;
-    y: number | string;
-  };
-  sorter?: Sorter;
-  loading: boolean;
-  onChange?: (sorter: Sorter, currentPagination: Omit<PaginationProps, 'total' | 'setCurrentPagination'>) => void;
-  pagination: Partial<PaginationProps>;
-}
 function Table({
   dataSource = [],
   columns,
@@ -63,7 +24,13 @@ function Table({
     pageOptions: pageOptions,
     pageSize: pageSize,
   });
-  const [data, setData] = useState(dataSource);
+  const [data, setData] = useState<RecordType[]>(dataSource);
+  const [filterValue, setFilterValue] = useState<RecordType>(
+    columns.map((c) => c.dataIndex).reduce((a, b) => ({ ...a, [b]: null }), {})
+  );
+  useEffect(() => {
+    setFilterValue(columns.map((c) => c.dataIndex).reduce((a, b) => ({ ...a, [b]: null }), {}));
+  }, []);
   useEffect(() => {
     setData(dataSource);
   }, [dataSource]);
@@ -86,6 +53,8 @@ function Table({
             currentSorter,
             setCurrentSorter,
             currentPagination,
+            filter: filterValue,
+            setFilter: setFilterValue,
           }}
         >
           <table>
@@ -98,86 +67,9 @@ function Table({
         {...currentPagination}
         total={total}
         setCurrentPagination={setCurrentPagination}
-        onChange={(pagination) => onChange && onChange(currentSorter, pagination)}
+        onChange={(pagination) => onChange && onChange(filterValue, currentSorter, pagination)}
       />
     </div>
-  );
-}
-
-function TableHeader() {
-  const { columns, onChange, setCurrentSorter, currentSorter, currentPagination } = React.useContext(TableContext);
-  return (
-    <thead>
-      <tr>
-        {columns.map((c, i) => (
-          <th
-            onClick={() => {
-              const newSorter: () => Sorter = () => {
-                if (currentSorter.field === c.dataIndex) {
-                  if (currentSorter.order === 'asc') return { field: currentSorter.field, order: 'desc' };
-                  else if (currentSorter.order === 'desc') return { field: null, order: null };
-                  else return { field: c.dataIndex, order: 'asc' };
-                } else {
-                  return { field: c.dataIndex, order: 'asc' };
-                }
-              };
-              setCurrentSorter(newSorter());
-              onChange && onChange(newSorter(), currentPagination);
-            }}
-            key={i}
-            style={{ width: c.width }}
-            className={clsx({
-              [styles.alignLeft]: c.align === 'left',
-              [styles.alignRight]: c.align === 'right',
-              [styles.alignCenter]: c.align === 'center',
-            })}
-          >
-            <div className={styles.header}>
-              <div className={styles.headerTitle}>{c.title}</div>
-              <div className={styles.headerSorter}>
-                {currentSorter.field === c.dataIndex && currentSorter.order === 'asc' && <FaArrowDown />}
-                {currentSorter.field === c.dataIndex && currentSorter.order === 'desc' && <FaArrowUp />}
-              </div>
-            </div>
-          </th>
-        ))}
-      </tr>
-    </thead>
-  );
-}
-function TableBody() {
-  const { columns, dataSource, rowKey } = React.useContext(TableContext);
-  return (
-    <tbody>
-      {dataSource.length === 0 && (
-        <tr>
-          <td colSpan={columns.length}>
-            <div className={styles.empty}>
-              <div>
-                <FaDatabase />
-              </div>
-              <div>No Data</div>
-            </div>
-          </td>
-        </tr>
-      )}
-      {dataSource.map((row, rowIndex) => (
-        <tr key={row[rowKey]}>
-          {columns.map((col, colIndex) => (
-            <td
-              key={colIndex}
-              className={clsx({
-                [styles.alignLeft]: col.align === 'left',
-                [styles.alignRight]: col.align === 'right',
-                [styles.alignCenter]: col.align === 'center',
-              })}
-            >
-              {(col.render && col.render(row[col.dataIndex], row, rowIndex)) || row[col.dataIndex]}
-            </td>
-          ))}
-        </tr>
-      ))}
-    </tbody>
   );
 }
 

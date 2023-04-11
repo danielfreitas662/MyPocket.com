@@ -11,7 +11,7 @@ interface EventHandler {
 }
 
 interface MonthPickerProps {
-  value?: moment.Moment;
+  value?: moment.Moment | null;
   name?: string;
   ref?: any;
   id?: string;
@@ -53,8 +53,10 @@ const DatePicker = React.forwardRef(
       setInternalValue(value || null);
     }, [value]);
     useEffect(() => {
-      if (value) {
-        setInternalValue(value || null);
+      if (!value?.isValid()) {
+        setInternalValue(null);
+      } else if (value?.isValid()) {
+        setInternalValue(moment(value));
       } else if (nodeValue) {
         setInternalValue(moment(nodeValue));
       }
@@ -66,14 +68,17 @@ const DatePicker = React.forwardRef(
           onClick={() => setVisible(true)}
         >
           <div>
-            {value?.format('YYYY-MM-DD') || internalValue?.format('YYYY-MM-DD')}
-            {!(value || internalValue) && <span className={styles.placeholder}>{placeholder}</span>}
+            {(value?.isValid() && value?.format('YYYY-MM-DD')) ||
+              (internalValue?.isValid() && internalValue?.format('YYYY-MM-DD'))}
+            {!(value?.isValid() && internalValue?.isValid()) && (
+              <span className={styles.placeholder}>{placeholder}</span>
+            )}
           </div>
           <input
             name={name}
             id={id}
             value={internalValue?.utc().format()}
-            style={{ display: 'block' }}
+            style={{ display: 'none' }}
             ref={(node) => {
               //@ts-ignore
               ref && ref(node);
@@ -86,7 +91,10 @@ const DatePicker = React.forwardRef(
             <FaCalendar />
           </div>
         </div>
-        <div className={clsx({ [styles.calendar]: true, [styles.visible]: visible })}>
+        <div
+          className={clsx({ [styles.calendar]: true, [styles.visible]: visible })}
+          style={{ top: wrapperRef.current?.getBoundingClientRect().y + 34 }}
+        >
           <div className={styles.yearMenu}>
             <div className={styles.yearButton} onClick={() => setYear((pv) => pv - 1)}>
               <FaBackward />

@@ -62,6 +62,28 @@ namespace MyPocket.Infra.Repository
         .Include(c => c.Category)
         .Include(c => c.Account)
         .Where(c => c.UserId == userId);
+
+        if (!string.IsNullOrEmpty(filters.Filters.Description))
+        {
+          results = results.Where(c => c.Description.ToLower().Contains(filters.Filters.Description.ToLower()));
+        }
+        if (filters.Filters.Amount.HasValue)
+        {
+          results = results.Where(c => c.Amount == filters.Filters.Amount);
+        }
+        if (!string.IsNullOrEmpty(filters.Filters.Category))
+        {
+          results = results.Where(c => c.Category.Name.ToLower().Contains(filters.Filters.Category.ToLower()));
+        }
+        if (!string.IsNullOrEmpty(filters.Filters.Account))
+        {
+          results = results.Where(c => c.Account.Name.ToLower().Contains(filters.Filters.Account.ToLower()));
+        }
+        if (filters.Filters.Date.HasValue)
+        {
+          results = results.Where(c => c.Date.Year == filters.Filters.Date.Value.Year && c.Date.Month == filters.Filters.Date.Value.Month && c.Date.Day == filters.Filters.Date.Value.Day);
+        }
+
         if (filters.Sorter != null)
         {
           if (filters.Sorter.Field == "date")
@@ -91,8 +113,9 @@ namespace MyPocket.Infra.Repository
           }
         }
         var total = results.Count();
-        var pages = total % filters.Pagination.Current > 0 ? 1 + total / filters.Pagination.Current : total / filters.Pagination.Current;
-        var current = pages < filters.Pagination.PageSize ? 1 : filters.Pagination.Current;
+
+        var pages = Math.Ceiling(Convert.ToDouble(total) / filters.Pagination.PageSize);
+        var current = filters.Pagination.Current > pages ? pages : filters.Pagination.Current;
         var results2 = results.Skip(filters.Pagination.Current * filters.Pagination.PageSize - filters.Pagination.PageSize).Take(filters.Pagination.PageSize).Select(c => new TransactionWithRelated
         {
           Id = c.Id,
@@ -106,15 +129,13 @@ namespace MyPocket.Infra.Repository
         {
           Results = results2.ToList(),
           Total = total,
-          Current = current
+          Current = Convert.ToInt32(current)
         };
       }
       catch (Exception ex)
       {
         throw new Exception(ex.Message, ex);
       }
-
     }
-
   }
 }

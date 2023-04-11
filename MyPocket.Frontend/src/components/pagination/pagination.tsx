@@ -104,7 +104,7 @@ function Pagination({
           />
         )}
       </div>
-      <div className={styles.text}>{`Showing ${pageSize} of ${total} entries`}</div>
+      {total > 0 && <div className={styles.text}>{`Showing ${pageSize} of ${total} entries`}</div>}
     </div>
   );
 }

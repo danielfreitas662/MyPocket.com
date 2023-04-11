@@ -1,13 +1,9 @@
 import TransactionsTable from '@/components/tables/transactionsTable';
-export const dynamic = 'force-dynamic';
+import { PageSearchParams } from '@/types/pagination';
+import { ITransaction } from '@/types/transaction';
 
 interface PageProps {
-  searchParams: {
-    current: number;
-    pageSize: number;
-    sortField: string;
-    sortOrder: 'asc' | 'desc';
-  };
+  searchParams: PageSearchParams & ITransaction;
 }
 function Transaction({ searchParams }: PageProps) {
   return <TransactionsTable {...searchParams} />;

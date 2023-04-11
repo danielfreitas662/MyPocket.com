@@ -1,8 +1,9 @@
 
-namespace MyPocket.Domain.Models{
+namespace MyPocket.Domain.Models
+{
   public class PaginationRequest<T>
   {
-    public Filters<T> Filters { get; set; }
+    public T Filters { get; set; }
     public Pagination Pagination { get; set; }
     public Sorter Sorter { get; set; }
   }
@@ -13,12 +14,8 @@ namespace MyPocket.Domain.Models{
   }
   public class Sorter
   {
-    public string Field { get; set; }
-    public string Order { get; set; }
-  }
-  public class Filters<T>
-  {
-    public Dictionary<string, object> data { get; set; }
+    public string? Field { get; set; }
+    public string? Order { get; set; }
   }
   public class PaginationResult<T>
   {

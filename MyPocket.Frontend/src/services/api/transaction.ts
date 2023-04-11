@@ -4,13 +4,13 @@ import { Filter, FilterResult } from '@/types/pagination';
 import apiEndpoints from '../apiEndpoints';
 import { getClientSession } from '../clientSession';
 const apiAddress: string = process.env.NEXT_PUBLIC_API_ADDRESS as string;
-export const getTransactions = async (filter: Filter<ITransaction>) => {
+export const getTransactions = async (filters: Filter<ITransaction>) => {
   try {
     const session = await getClientSession();
     const res = await fetch(apiAddress + apiEndpoints.TRANSACTION.FILTER.endpoint, {
       method: apiEndpoints.TRANSACTION.FILTER.method,
       cache: 'no-store',
-      body: JSON.stringify(filter),
+      body: JSON.stringify(filters),
       headers: {
         // @ts-ignore
         Authorization: `Bearer ${session.token}`,
