@@ -5,7 +5,7 @@ namespace MyPocket.Domain.Interfaces
   {
     List<Transaction> GetByAccount(Guid UserID);
     List<Transaction> GetByCategoryID(Guid UserID, int CategoryID);
-    List<AmountByCategoryModel> AmountByCategoryByMonth(string userId, DateTime month);
+    List<AmountByCategoryModel> AmountByCategoryByMonth(string userId, DateTime month, CategoryType type);
     List<MonthTransaction> MonthTransactionAmount(string userId, DateTime month, CategoryType type);
     List<ResultByMonth> ResultByMonth(string userId, DateTime month);
     PaginationResult<TransactionWithRelated> Filter(PaginationRequest<TransactionWithRelated> filters, string userId);

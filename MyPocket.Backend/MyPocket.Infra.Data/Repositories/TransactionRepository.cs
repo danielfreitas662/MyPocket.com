@@ -23,12 +23,12 @@ namespace MyPocket.Infra.Repository
     {
       throw new NotImplementedException();
     }
-    public List<AmountByCategoryModel> AmountByCategoryByMonth(string userId, DateTime month)
+    public List<AmountByCategoryModel> AmountByCategoryByMonth(string userId, DateTime month, CategoryType type)
     {
       var result = _context.Transactions.Include(c => c.Category).Where(c => c.UserId == userId).GroupBy(c => new { c.Category.Name }).Select(c => new AmountByCategoryModel
       {
         Category = c.Key.Name,
-        Amount = c.Where(d => d.Date.Month == month.Month && d.Date.Year == month.Year && d.Category.Type == CategoryType.Income).Sum(d => d.Amount) - c.Where(d => d.Date.Month == month.Month && d.Date.Year == month.Year && d.Category.Type == CategoryType.Outcome).Sum(d => d.Amount)
+        Amount = c.Where(d => d.Date.Month == month.Month && d.Date.Year == month.Year && d.Category.Type == type).Sum(d => d.Amount)
       });
       return result.ToList();
     }

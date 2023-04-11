@@ -1,39 +1,23 @@
 'use client';
 import { Card } from '@/components';
 import { getAmountByCategory } from '@/services/api/dashboard';
+import { CategoryType } from '@/types/category';
 import { currencyFormat } from '@/utils/formaters';
 import { ApexOptions } from 'apexcharts';
 import { useEffect, useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
 
-function AmountByCategoryChart({ month }: { month: string }) {
+function AmountByCategoryChart({ month, type, title }: { month: string; type: CategoryType; title: string }) {
   const [data, setData] = useState<number[]>([]);
   const [labels, setLabels] = useState<string[]>([]);
   useEffect(() => {
-    getAmountByCategory(month).then((res) => {
+    getAmountByCategory(month, type).then((res) => {
       setData(res.data?.map((c) => c.amount) || []);
       setLabels(res.data?.map((c) => c.category) || []);
     });
   }, []);
   const options: ApexOptions = {
-    chart: {
-      width: 380,
-      type: 'pie',
-    },
     labels: labels,
-    responsive: [
-      {
-        breakpoint: 480,
-        options: {
-          chart: {
-            width: 200,
-          },
-          legend: {
-            position: 'bottom',
-          },
-        },
-      },
-    ],
     tooltip: {
       y: {
         formatter: (val) => currencyFormat(val, 'pt-BR'),
@@ -41,8 +25,8 @@ function AmountByCategoryChart({ month }: { month: string }) {
     },
   };
   return (
-    <Card title="Expenses by Category">
-      <ReactApexChart options={options} series={data} type="pie" width={380} />
+    <Card title={title} align="center" style={{ minWidth: 400 }}>
+      <ReactApexChart options={options} series={data} type="pie" height={500} width={400} />
     </Card>
   );
 }

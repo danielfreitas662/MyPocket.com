@@ -21,26 +21,7 @@ function ResultByMonth({ month, title }: { month: string; title: string }) {
     });
   }, []);
   const options: ApexOptions = {
-    chart: {
-      type: 'bar',
-      height: 200,
-      width: '100%',
-    },
     labels: labels,
-    responsive: [
-      {
-        breakpoint: 480,
-        options: {
-          chart: {
-            width: 200,
-          },
-          legend: {
-            position: 'bottom',
-          },
-        },
-      },
-    ],
-
     xaxis: {
       //type: 'datetime',
     },
@@ -58,10 +39,28 @@ function ResultByMonth({ month, title }: { month: string; title: string }) {
         formatter: (val) => currencyFormat(val, 'pt-BR'),
       },
     },
+    responsive: [
+      {
+        breakpoint: 600,
+        options: {
+          chart: {
+            width: 400,
+          },
+        },
+      },
+      {
+        breakpoint: 800,
+        options: {
+          chart: {
+            width: 600,
+          },
+        },
+      },
+    ],
   };
   return (
-    <Card title={title}>
-      <ReactApexChart options={options} series={series} type="bar" width={380} />
+    <Card title={title} align="center" style={{ minWidth: 400 }}>
+      <ReactApexChart options={options} series={series} type="bar" height={400} width={800} />
     </Card>
   );
 }

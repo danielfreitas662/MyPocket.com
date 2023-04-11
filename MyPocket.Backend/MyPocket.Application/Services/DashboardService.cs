@@ -14,11 +14,11 @@ namespace MyPocket.Application.Services
     {
       _repo = repo;
     }
-    public List<AmountByCategoryModel> MonthlyAmountByCategory(string UserId, DateTime Month)
+    public List<AmountByCategoryModel> MonthlyAmountByCategory(string UserId, DateTime Month, CategoryType type)
     {
       try
       {
-        var result = _repo.Transaction.AmountByCategoryByMonth(UserId, Month);
+        var result = _repo.Transaction.AmountByCategoryByMonth(UserId, Month, type);
         return result;
       }
       catch (Exception ex)

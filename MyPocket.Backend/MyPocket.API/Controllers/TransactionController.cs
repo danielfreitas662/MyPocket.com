@@ -81,11 +81,11 @@ namespace MyPocket.API.Controllers
       var result = _application.Transaction.Filter(data, user);
       return Ok(result);
     }
-    [HttpGet("AmountByCategoryByMonth/{month}")]
-    public ActionResult AmountByCategoryByMonth([FromRoute] DateTime Month)
+    [HttpGet("AmountByCategoryByMonth/{month}/{type}")]
+    public ActionResult AmountByCategoryByMonth([FromRoute] DateTime Month, [FromRoute] CategoryType type)
     {
       var user = HttpContext.User.Identity!.GetUserData();
-      var result = _application.Dashboard.MonthlyAmountByCategory(user.UserId, Month);
+      var result = _application.Dashboard.MonthlyAmountByCategory(user.UserId, Month, type);
       return Ok(result);
     }
     [HttpGet("IncomeByMonth/{month}")]

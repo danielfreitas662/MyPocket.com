@@ -6,7 +6,7 @@ namespace MyPocket.Application.Interfaces
 {
   public interface IDashboardService
   {
-    List<AmountByCategoryModel> MonthlyAmountByCategory(string UserId, DateTime Month);
+    List<AmountByCategoryModel> MonthlyAmountByCategory(string UserId, DateTime Month, CategoryType type);
     decimal IncomeByMonth(string UserId, DateTime Month);
     decimal OutcomeByMonth(string UserId, DateTime Month);
     List<MonthTransaction> MonthTransactions(string UserId, DateTime Month, CategoryType type);

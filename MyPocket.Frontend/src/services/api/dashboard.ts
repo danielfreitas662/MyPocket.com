@@ -5,10 +5,10 @@ import apiEndpoints from '../apiEndpoints';
 import { getClientSession } from '../clientSession';
 
 const apiAddress: string = process.env.NEXT_PUBLIC_API_ADDRESS as string;
-export const getAmountByCategory = async (month: string) => {
+export const getAmountByCategory = async (month: string, type: CategoryType) => {
   try {
     const session = await getClientSession();
-    const res = await fetch(apiAddress + apiEndpoints.DASHBOARD.AMOUNT_BY_CATEGORY.endpoint + `/${month}`, {
+    const res = await fetch(apiAddress + apiEndpoints.DASHBOARD.AMOUNT_BY_CATEGORY.endpoint + `/${month}/${type}`, {
       method: apiEndpoints.DASHBOARD.AMOUNT_BY_CATEGORY.method,
       headers: {
         // @ts-ignore

@@ -7,4 +7,16 @@
     box-shadow: 0px 0px 8px lightgrey;
     scale: 1.002;
   }
+  .body {
+    display: flex;
+    &.alignCenter {
+      justify-content: center;
+    }
+    &.alignRight {
+      justify-content: flex-end;
+    }
+    &.alignLeft {
+      justify-content: flex-start;
+    }
+  }
 }

@@ -19,23 +19,9 @@ function IncomeByMonthChart({ month, type, title }: { month: string; type: Categ
   const options: ApexOptions = {
     chart: {
       type: 'area',
-      height: 200,
-      width: '100%',
+      height: 400,
     },
     labels: labels,
-    responsive: [
-      {
-        breakpoint: 480,
-        options: {
-          chart: {
-            width: 200,
-          },
-          legend: {
-            position: 'bottom',
-          },
-        },
-      },
-    ],
     stroke: {
       curve: 'straight',
     },
@@ -43,6 +29,11 @@ function IncomeByMonthChart({ month, type, title }: { month: string; type: Categ
       type: 'datetime',
       labels: {
         show: false,
+      },
+    },
+    plotOptions: {
+      area: {
+        fillTo: 'origin',
       },
     },
     grid: { show: false },
@@ -68,8 +59,8 @@ function IncomeByMonthChart({ month, type, title }: { month: string; type: Categ
     },
   };
   return (
-    <Card title={title}>
-      <ReactApexChart options={options} series={[{ name: 'amount', data: data }]} type="area" width={380} />
+    <Card title={title} align="center" style={{ minWidth: 400 }}>
+      <ReactApexChart options={options} series={[{ name: 'amount', data: data }]} type="area" height={200} />
     </Card>
   );
 }
