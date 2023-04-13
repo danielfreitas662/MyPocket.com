@@ -14,7 +14,7 @@ function ResultByMonth({ month, title }: { month: string; title: string }) {
     getResultsByMonth(moment(month).utc().format('YYYY-MM-DD')).then((res) => {
       setSeries([
         { name: 'Income', data: res?.data.map((c) => c.income) },
-        { name: 'Outcome', data: res?.data.map((c) => c.outcome) },
+        { name: 'Expenses', data: res?.data.map((c) => c.expense) },
         { name: 'Result', data: res?.data.map((c) => c.result) },
       ]);
       setLabels(res.data?.map((c) => moment(c.date).format('MMM-YYYY')));

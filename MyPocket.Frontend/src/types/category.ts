@@ -10,5 +10,5 @@ export interface ICategory {
 
 export enum CategoryType {
   Income = 0,
-  Outcome = 1,
+  Expense = 1,
 }

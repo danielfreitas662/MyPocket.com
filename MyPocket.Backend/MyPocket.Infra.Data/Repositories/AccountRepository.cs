@@ -15,7 +15,7 @@ namespace MyPocket.Infra.Repository
     {
       try
       {
-        var results = _context.Categories
+        var results = _context.Accounts
         .Where(c => c.UserId == userId);
 
         if (!string.IsNullOrEmpty(filters.Filters.Name))

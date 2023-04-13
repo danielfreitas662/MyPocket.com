@@ -4,6 +4,7 @@ import { getTransactionsByMonth } from '@/services/api/dashboard';
 import { CategoryType } from '@/types/category';
 import { currencyFormat } from '@/utils/formatters';
 import { ApexOptions } from 'apexcharts';
+import moment from 'moment';
 import { useEffect, useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
 
@@ -13,7 +14,7 @@ function IncomeByMonthChart({ month, type, title }: { month: string; type: Categ
   useEffect(() => {
     getTransactionsByMonth(month, type).then((res) => {
       setData(res.data?.map((c) => c.amount));
-      setLabels(res.data?.map((c) => c.date));
+      setLabels(res.data?.map((c) => moment(c.date).date().toString()));
     });
   }, []);
   const options: ApexOptions = {
@@ -26,7 +27,7 @@ function IncomeByMonthChart({ month, type, title }: { month: string; type: Categ
       curve: 'straight',
     },
     xaxis: {
-      type: 'datetime',
+      //type: 'datetime',
       labels: {
         show: false,
       },

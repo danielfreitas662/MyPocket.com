@@ -38,11 +38,11 @@ namespace MyPocket.Application.Services
         throw new Exception(ex.Message, ex);
       }
     }
-    public decimal OutcomeByMonth(string UserId, DateTime Month)
+    public decimal ExpensesByMonth(string UserId, DateTime Month)
     {
       try
       {
-        var result = _repo.Transaction.Get(c => c.UserId == UserId && c.Date.Month == Month.Month && c.Date.Year == Month.Year && c.Category.Type == CategoryType.Outcome, include: c => c.Include(d => d.Category)).Sum(c => c.Amount);
+        var result = _repo.Transaction.Get(c => c.UserId == UserId && c.Date.Month == Month.Month && c.Date.Year == Month.Year && c.Category.Type == CategoryType.Expense, include: c => c.Include(d => d.Category)).Sum(c => c.Amount);
         return result;
       }
       catch (Exception ex)

@@ -11,25 +11,25 @@ namespace MyPocket.Tests.Application.Fixtures
       new CategoryDTO{
         Id = Guid.NewGuid().ToString(),
         Name = "Home Expenses",
-        Type = CategoryType.Outcome,
+        Type = CategoryType.Expense,
         UserId = UserFixtures.GetUsers()[0].Id
       },
       new CategoryDTO{
         Id = Guid.NewGuid().ToString(),
         Name = "Car Expenses",
-        Type = CategoryType.Outcome,
+        Type = CategoryType.Expense,
         UserId = UserFixtures.GetUsers()[0].Id
       },
       new CategoryDTO{
         Id = Guid.NewGuid().ToString(),
         Name = "Energy",
-        Type = CategoryType.Outcome,
+        Type = CategoryType.Expense,
         UserId = UserFixtures.GetUsers()[0].Id
       },
       new CategoryDTO{
         Id = Guid.NewGuid().ToString(),
         Name = "Water",
-        Type = CategoryType.Outcome,
+        Type = CategoryType.Expense,
         UserId = UserFixtures.GetUsers()[0].Id
       },
       new CategoryDTO{
@@ -43,25 +43,25 @@ namespace MyPocket.Tests.Application.Fixtures
       new Category{
         Id = Guid.NewGuid().ToString(),
         Name = "Home Expenses",
-        Type = CategoryType.Outcome,
+        Type = CategoryType.Expense,
         UserId = UserFixtures.GetUsers()[0].Id
       },
       new Category{
         Id = Guid.NewGuid().ToString(),
         Name = "Car Expenses",
-        Type = CategoryType.Outcome,
+        Type = CategoryType.Expense,
         UserId = UserFixtures.GetUsers()[0].Id
       },
       new Category{
         Id = Guid.NewGuid().ToString(),
         Name = "Energy",
-        Type = CategoryType.Outcome,
+        Type = CategoryType.Expense,
         UserId = UserFixtures.GetUsers()[0].Id
       },
       new Category{
         Id = Guid.NewGuid().ToString(),
         Name = "Water",
-        Type = CategoryType.Outcome,
+        Type = CategoryType.Expense,
         UserId = UserFixtures.GetUsers()[0].Id
       },
       new Category{

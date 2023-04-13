@@ -25,7 +25,7 @@ function AmountByCategoryChart({ month, type, title }: { month: string; type: Ca
     },
   };
   return (
-    <Card title={title} align="center" style={{ minWidth: 400 }}>
+    <Card title={title} align="center" style={{ minWidth: 400, minHeight: 300 }}>
       <ReactApexChart options={options} series={data} type="pie" height={500} width={400} />
     </Card>
   );

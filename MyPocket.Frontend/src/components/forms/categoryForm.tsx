@@ -56,7 +56,7 @@ function CategoryForm({ initialData }: CategoryFormProps) {
             {...register('type', { required: 'Required field' })}
             options={[
               { value: 0, label: 'Income' },
-              { value: 1, label: 'Outcome' },
+              { value: 1, label: 'Expense' },
             ]}
           />
         </FormItem>

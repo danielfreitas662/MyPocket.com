@@ -73,11 +73,11 @@ export const getIncomeByMonth = async (month: string) => {
     throw new Error(JSON.stringify(error));
   }
 };
-export const getOutcomeByMonth = async (month: string) => {
+export const getExpensesByMonth = async (month: string) => {
   try {
     const session = await getClientSession();
-    const res = await fetch(apiAddress + apiEndpoints.DASHBOARD.OUTCOME_BY_MONTH.endpoint + `/${month}`, {
-      method: apiEndpoints.DASHBOARD.OUTCOME_BY_MONTH.method,
+    const res = await fetch(apiAddress + apiEndpoints.DASHBOARD.EXPENSES_BY_MONTH.endpoint + `/${month}`, {
+      method: apiEndpoints.DASHBOARD.EXPENSES_BY_MONTH.method,
       headers: {
         // @ts-ignore
         Authorization: `Bearer ${session.token}`,

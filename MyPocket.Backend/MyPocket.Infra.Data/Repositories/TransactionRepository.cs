@@ -25,34 +25,34 @@ namespace MyPocket.Infra.Repository
     }
     public List<AmountByCategoryModel> AmountByCategoryByMonth(string userId, DateTime month, CategoryType type)
     {
-      var result = _context.Transactions.Include(c => c.Category).Where(c => c.UserId == userId).GroupBy(c => new { c.Category.Name }).Select(c => new AmountByCategoryModel
+      var result = _context.Transactions.Include(c => c.Category).Where(c => c.UserId == userId && c.Category.Type == type).GroupBy(c => new { c.Category.Name }).Select(c => new AmountByCategoryModel
       {
         Category = c.Key.Name,
-        Amount = c.Where(d => d.Date.Month == month.Month && d.Date.Year == month.Year && d.Category.Type == type).Sum(d => d.Amount)
+        Amount = c.Where(d => d.Date.Month == month.Month && d.Date.Year == month.Year).Sum(d => d.Amount)
       });
       return result.ToList();
     }
     public List<MonthTransaction> MonthTransactionAmount(string userId, DateTime month, CategoryType type)
     {
-      var result = _context.Transactions.Include(c => c.Category).Where(c => c.UserId == userId).GroupBy(c => new { c.Date.Month, c.Date.Year, c.Date.Day }).Select(c => new MonthTransaction
+      var result = _context.Transactions.Include(c => c.Category).Where(c => c.UserId == userId && c.Date.Month == month.Month && c.Date.Year == month.Year && c.Category.Type == type).GroupBy(c => new { c.Date.Month, c.Date.Year, c.Date.Day }).Select(c => new MonthTransaction
       {
         Date = new DateTime(c.Key.Year, c.Key.Month, c.Key.Day),
-        Amount = c.Where(d => d.Date.Month == month.Month && d.Date.Year == month.Year && d.Category.Type == type).Sum(d => d.Amount)
+        Amount = c.Sum(d => d.Amount)
       });
       return result.OrderBy(c => c.Date).ToList();
     }
     public List<ResultByMonth> ResultByMonth(string userId, DateTime month)
     {
-      DateTime start = month.ToUniversalTime().AddMonths(-3);
-      DateTime end = month.ToUniversalTime().AddMonths(3);
+      DateTime start = new DateTime(month.Year, month.Month, 1).AddMonths(-3).ToUniversalTime();
+      DateTime end = new DateTime(month.Year, month.Month, 1).AddMonths(4).AddDays(-1).ToUniversalTime();
       var result = _context.Transactions.Include(d => d.Category).Where(c => c.UserId == userId && c.Date >= start && c.Date <= end).GroupBy(c => new { c.Date.Month, c.Date.Year }).Select(c => new ResultByMonth
       {
         Date = new DateTime(c.Key.Year, c.Key.Month, 1),
         Income = c.Where(d => d.Category.Type == CategoryType.Income).Sum(d => d.Amount),
-        Outcome = c.Where(d => d.Category.Type == CategoryType.Outcome).Sum(d => d.Amount),
-        Result = c.Where(d => d.Category.Type == CategoryType.Income).Sum(d => d.Amount) - c.Where(d => d.Category.Type == CategoryType.Outcome).Sum(d => d.Amount)
+        Expense = c.Where(d => d.Category.Type == CategoryType.Expense).Sum(d => d.Amount),
+        Result = c.Where(d => d.Category.Type == CategoryType.Income).Sum(d => d.Amount) - c.Where(d => d.Category.Type == CategoryType.Expense).Sum(d => d.Amount)
       });
-      return result.ToList();
+      return result.OrderBy(c => c.Date).ToList();
     }
     public PaginationResult<TransactionWithRelated> Filter(PaginationRequest<TransactionWithRelated> filters, string userId)
     {

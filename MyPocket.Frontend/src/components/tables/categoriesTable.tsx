@@ -84,7 +84,7 @@ function CategoriasTable(props: PageSearchParams & ICategory) {
         filterType: 'string',
         filterValue: props.type,
       },
-      render: (v) => (v === CategoryType.Income ? 'Income' : 'Outcome'),
+      render: (v) => (v === CategoryType.Income ? 'Income' : 'Expense'),
     },
   ];
   return (

@@ -9,13 +9,13 @@ function Dashboard({ params: { month } }: { params: { month: string } }) {
   return (
     <Row gutter={[8, 8]} justifyContent="center">
       <Col>
-        <TransactionsByMonth month={month} type={1} title="Total Income" />
+        <TransactionsByMonth month={month} type={CategoryType.Income} title="Total Income" />
       </Col>
       <Col>
-        <TransactionsByMonth month={month} type={0} title="Total Outcome" />
+        <TransactionsByMonth month={month} type={CategoryType.Expense} title="Total Expenses" />
       </Col>
       <Col>
-        <AmountByCategoryChart month={month} type={CategoryType.Outcome} title="Expenses By Category" />
+        <AmountByCategoryChart month={month} type={CategoryType.Expense} title="Expenses By Category" />
       </Col>
       <Col>
         <AmountByCategoryChart month={month} type={CategoryType.Income} title="Income By Category" />

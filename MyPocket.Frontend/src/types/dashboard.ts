@@ -9,6 +9,6 @@ export interface TransactionsByMonth {
 export interface ResultsByMonth {
   date: string;
   income: number;
-  outcome: number;
+  expense: number;
   result: number;
 }

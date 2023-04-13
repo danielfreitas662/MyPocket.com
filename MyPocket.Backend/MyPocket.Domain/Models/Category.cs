@@ -4,7 +4,7 @@ namespace MyPocket.Domain.Models
   public enum CategoryType
   {
     Income = 0,
-    Outcome = 1
+    Expense = 1
   }
   [Table("Categories")]
   public class Category
