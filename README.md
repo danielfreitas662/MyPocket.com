@@ -23,8 +23,55 @@ The project was designed to have a backend and frontend running separatedly.
 
 `git clone https://github.com/danielfreitas662/MyPocket.com.git`
 
+2. Go to MyPocket.Backend folder and run the project
+
+`dotnet watch run --project MyPocket.API`
+
+The API should run on https://localhost:7220/
+The endpoints of the API will be available at the base address https://localhost:7220/api/
+
+3. Go to MuPocket.Frontend folder and run the project
+
+`npm run dev`
+
+The web application should run on http://localhost:3000/
+
 ## Main Technologies
 
 ### Backend
 
 Click [here](https://github.com/danielfreitas662/MyPocket.com/tree/main/MyPocket.Backend) to view backend code.
+
+#### Framework
+
+.NET 6 (c#)
+
+#### Database
+
+PostgreSQL
+
+### Frontend
+
+#### Framework
+
+Next.js 13 (experimental to this date)
+React.js (TypeScript)
+SASS
+
+#### Libraries
+
+I tried to implement everything I could to avoid using of external libraries.
+The only dependencies are:
+
+1. [appexcharts](https://github.com/apexcharts)
+   Plotting charts on screen for the dashboard
+2. [clsx](https://github.com/lukeed/clsx)
+   Conditionally insert classes on the components
+3. [jose](https://github.com/panva/jose)
+   Managing JWT
+4. [react-hook-form](https://github.com/react-hook-form/react-hook-form)
+   Managing forms
+5. [react-icons](https://github.com/react-icons/react-icons)
+   SVG
+6. [react-toastify](https://github.com/fkhadra/react-toastify)
+   Notifications popups
