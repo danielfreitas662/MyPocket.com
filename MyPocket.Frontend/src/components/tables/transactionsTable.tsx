@@ -7,7 +7,7 @@ import { FaEdit, FaTrash } from 'react-icons/fa';
 import { ToastContainer, toast } from 'react-toastify';
 import { PopConfirm, Table } from '@/components';
 import moment from 'moment';
-import { currencyFormat } from '@/utils/formaters';
+import { currencyFormat } from '@/utils/formatters';
 import { FilterResult, PageSearchParams } from '@/types/pagination';
 import { useRouter } from 'next/navigation';
 import { ColumnType } from '../table/tableTypes';

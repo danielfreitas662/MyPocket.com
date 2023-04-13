@@ -2,7 +2,7 @@
 import { Card } from '@/components';
 import { getTransactionsByMonth } from '@/services/api/dashboard';
 import { CategoryType } from '@/types/category';
-import { currencyFormat } from '@/utils/formaters';
+import { currencyFormat } from '@/utils/formatters';
 import { ApexOptions } from 'apexcharts';
 import { useEffect, useState } from 'react';
 import ReactApexChart from 'react-apexcharts';

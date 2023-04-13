@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import styles from './descriptions.module.scss';
+
 function Descriptions({ children }: { children: ReactNode }) {
   return <div className={styles.descriptions}>{children}</div>;
 }

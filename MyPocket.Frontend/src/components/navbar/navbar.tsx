@@ -9,7 +9,7 @@ import styles from './navbar.module.scss';
 import { AiOutlineMenu } from 'react-icons/ai';
 import clsx from 'clsx';
 
-function Navbar({ user }: { user: IUser }) {
+function Navbar({ user }: { user: IUser | null }) {
   const [visible, setVisible] = useState(false);
   const ref = useRef<any>();
   const PrivateNav = () => (
@@ -31,7 +31,7 @@ function Navbar({ user }: { user: IUser }) {
       </Link>
       <LogoutButton />
       <Link className={styles.link} href="/private/profile">
-        Hello, {user.firstName}!
+        Hello, {user?.firstName}!
       </Link>
     </nav>
   );

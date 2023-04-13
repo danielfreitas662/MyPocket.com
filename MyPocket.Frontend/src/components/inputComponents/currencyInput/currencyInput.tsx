@@ -2,7 +2,7 @@
 import clsx from 'clsx';
 import React, { InputHTMLAttributes, ReactNode, useEffect, useState } from 'react';
 import styles from './currencyInput.module.scss';
-import { currencyFormat, currencyNormalize } from '@/utils/formaters';
+import { currencyFormat, currencyNormalize } from '@/utils/formatters';
 
 interface EventHandler {
   target: any;

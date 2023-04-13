@@ -3,7 +3,7 @@ import TransactionForm from '@/components/forms/transactionForm';
 import { getAccounts } from '@/services/account';
 import { getCategories } from '@/services/category';
 import { getTransactionById } from '@/services/transaction';
-import { currencyFormat } from '@/utils/formaters';
+import { currencyFormat } from '@/utils/formatters';
 import { Suspense } from 'react';
 
 async function Transaction({ params }: { params: { id: string } }) {

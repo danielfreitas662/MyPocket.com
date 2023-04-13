@@ -1,7 +1,7 @@
 'use client';
 import { Card } from '@/components';
 import { getResultsByMonth } from '@/services/api/dashboard';
-import { currencyFormat } from '@/utils/formaters';
+import { currencyFormat } from '@/utils/formatters';
 import { ApexOptions } from 'apexcharts';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
