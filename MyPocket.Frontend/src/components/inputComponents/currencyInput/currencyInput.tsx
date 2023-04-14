@@ -61,8 +61,8 @@ const CurrencyInput = React.forwardRef(
       if (value) {
         setInternalValue(currencyFormat(value, 'pt-BR'));
       } else if (nodeValue) {
-        console.log(nodeValue);
-        setInternalValue(currencyFormat(nodeValue, 'pt-BR'));
+        if (Number(nodeValue)) setInternalValue(currencyFormat(nodeValue, 'pt-BR'));
+        else setInternalValue(nodeValue);
       }
     }, [nodeValue, value]);
     return (

@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 import Feedback from '../feedback/feedback';
 import { ITransaction } from '@/types/transaction';
 import { saveTransaction } from '@/services/api/transaction';
-import { ICategory } from '@/types/category';
+import { CategoryType, ICategory } from '@/types/category';
 import { IAccount } from '@/types/account';
 import moment from 'moment';
 import Button from '../button/button';
@@ -16,6 +16,7 @@ import CurrencyInput from '../inputComponents/currencyInput/currencyInput';
 import DatePicker from '../inputComponents/datePicker/datePicker';
 import Select from '../inputComponents/select/select';
 import TextInput from '../inputComponents/textinput/textInput';
+import { FaArrowDown, FaArrowUp } from 'react-icons/fa';
 
 interface TransactionFormProps {
   initialData?: Partial<ITransaction>;
@@ -29,9 +30,10 @@ function TransactionForm({ initialData, categories, accounts }: TransactionFormP
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<ITransaction>({
-    defaultValues: { ...initialData } || { description: '', amount: 10 },
+    defaultValues: initialData,
   });
   const handleaAdd = (values: Partial<ITransaction>) => {
     setLoading(true);
@@ -41,7 +43,7 @@ function TransactionForm({ initialData, categories, accounts }: TransactionFormP
         setLoading(false);
         setResult(res);
         router.prefetch('/private/transaction');
-        //!values.id && reset();
+        !values.id && reset();
       })
       .catch((res) => {
         setLoading(false);
@@ -76,7 +78,24 @@ function TransactionForm({ initialData, categories, accounts }: TransactionFormP
             allowClear
             placeholder="Category..."
             {...register('categoryId', { required: 'Required field' })}
-            options={categories.map((c) => ({ value: c.id, label: c.name }))}
+            renderItem={(item) => (
+              <div style={{ display: 'inline-flex', justifyContent: 'space-between', width: '100%', gap: '8px' }}>
+                <div>{item.label}</div>
+                <div>
+                  {categories.find((c) => c.id === item.value)?.type === CategoryType.Income ? (
+                    <FaArrowDown color="blue" />
+                  ) : (
+                    <FaArrowUp color="red" />
+                  )}
+                </div>
+              </div>
+            )}
+            options={categories
+              .sort((a, b) => a.type - b.type)
+              .map((c) => ({
+                value: c.id,
+                label: c.name,
+              }))}
           />
         </FormItem>
         <FormItem label="Account" error={errors['accountId']?.message as string}>

@@ -13,6 +13,10 @@ function Feedback({ type, message, dismissable }: FeedbackProps) {
   const [dismissed, setDismissed] = useState(false);
   useEffect(() => {
     setDismissed(false);
+    const timeout = setTimeout(() => {
+      setDismissed(true);
+    }, 3000);
+    return () => clearTimeout(timeout);
   }, [message, type]);
   return (
     <div

@@ -73,9 +73,9 @@
     z-index: 1000;
     border-radius: $border-radius;
     box-shadow: 1px 1px 2px lightgrey;
-    width: 'fit-content';
+    flex-direction: column;
     &.visible {
-      display: block;
+      display: flex;
       input {
         color: $light-color;
       }
@@ -85,7 +85,6 @@
       padding: $component-input-padding;
       word-break: normal;
       cursor: pointer;
-      width: 100%;
       border-bottom: 1px solid white;
       white-space: nowrap;
       &:last-child {

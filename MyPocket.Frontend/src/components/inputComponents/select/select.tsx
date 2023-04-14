@@ -21,12 +21,26 @@ export interface SelectProps extends InputHTMLAttributes<HTMLInputElement> {
   options?: SelectOption[];
   allowClear?: boolean;
   value?: any;
+  dataSource?: Record<string, any>[];
   onChange?: (event: EventHandler) => void;
+  renderItem?: (item: SelectOption) => ReactNode;
   onBlur?: (event: EventHandler) => void;
 }
 const Select = React.forwardRef(
   (
-    { icon, error, options, placeholder, name, value, onBlur, onChange, allowClear = false, id }: SelectProps,
+    {
+      icon,
+      error,
+      options,
+      placeholder,
+      name,
+      value,
+      onBlur,
+      onChange,
+      renderItem,
+      allowClear = false,
+      id,
+    }: SelectProps,
     ref: React.ForwardedRef<any>
   ) => {
     let nodeValue: string = '';
@@ -164,7 +178,6 @@ const Select = React.forwardRef(
               componentPosition[1] + optionsSize[1] <= windowSize[1]
                 ? componentPosition[1] + 32
                 : componentPosition[1] - optionsSize[1],
-            minWidth: componentRef.current?.getBoundingClientRect().width,
           }}
         >
           {options
@@ -200,7 +213,7 @@ const Select = React.forwardRef(
                   setLabel(c.label);
                 }}
               >
-                {c.label}
+                {(renderItem && renderItem(c)) || c.label}
               </div>
             ))}
           {options?.filter((c) => (filter ? c.label.toLocaleLowerCase().includes(filter.toLocaleLowerCase()) : true))
