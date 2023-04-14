@@ -9,11 +9,17 @@
   - [Backend](#backend)
     - [Framework](#framework)
     - [Database](#database)
+  - [Frontend](#frontend)
+    - [Framework](#Framework)
+    - [Libraries](#Libraries)
 - [Screensshots](#Screensshots)
 - [Custom Components](#Custom-Components)
-- [Description](#Description)
-- [Description](#Description)
-- [Description](#Description)
+  - [Input Components](#Input-Components)
+    - [DatePicker](#DatePicker)
+    - [TextInput](#TextInput)
+    - [Select Dropdown](#Select-Dropdown)
+    - [TextInput](#TextInput)
+    - [TextInput](#TextInput)
 
 ## Disclaimer
 
