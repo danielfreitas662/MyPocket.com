@@ -1,3 +1,9 @@
+## Table of contents
+
+- [Disclaimer](#Disclaimer)
+- [Description](#Description)
+- [Getting Started](#Getting-Started)
+
 ## Disclaimer
 
 This project was created for study and portfolio purposes.
@@ -51,6 +57,8 @@ Click [here](https://github.com/danielfreitas662/MyPocket.com/tree/main/MyPocket
 PostgreSQL
 
 ### Frontend
+
+Click [here](https://github.com/danielfreitas662/MyPocket.com/tree/main/MyPocket.Frontend) to view frontend code.
 
 #### Framework
 
