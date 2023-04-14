@@ -3,6 +3,13 @@
 - [Disclaimer](#Disclaimer)
 - [Description](#Description)
 - [Getting Started](#Getting-Started)
+- - [Project Architecture](#Project-Architecture)
+- [Main Technologies](#Main-Technologies)
+- [Screensshots](#Screensshots)
+- [Custom Components](#Custom-Components)
+- [Description](#Description)
+- [Description](#Description)
+- [Description](#Description)
 
 ## Disclaimer
 
