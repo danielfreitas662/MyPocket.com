@@ -79,7 +79,15 @@ function TransactionForm({ initialData, categories, accounts }: TransactionFormP
             placeholder="Category..."
             {...register('categoryId', { required: 'Required field' })}
             renderItem={(item) => (
-              <div style={{ display: 'inline-flex', justifyContent: 'space-between', width: '100%', gap: '8px' }}>
+              <div
+                style={{
+                  display: 'inline-flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  width: '100%',
+                  gap: '8px',
+                }}
+              >
                 <div>{item.label}</div>
                 <div>
                   {categories.find((c) => c.id === item.value)?.type === CategoryType.Income ? (
