@@ -139,27 +139,27 @@ Find bellow all the components created for input data, feedback, loading state a
 The component uses moment library to manage date value and format. The user can navigate throught the years and months and pick the date.
 It's possible to clear the value and set the value for today
 
-Component with placeholder and no value
-![datepickernovalue](images/datepickernovalue.png 'datepickernovalue')
+1. Component with placeholder and no value
+   ![datepickernovalue](images/datepickernovalue.png 'datepickernovalue')
 
-Component with value
-![datepicker](images/datepicker.png 'datepicker')
+2. Component with value
+   ![datepicker](images/datepicker.png 'datepicker')
 
-Component with calendar open when focus within
-![opendatepicker](images/opendatepicker.png 'opendatepicker')
+3. Component with calendar open when focus within
+   ![opendatepicker](images/opendatepicker.png 'opendatepicker')
 
 #### TextInput
 
 The component uses moment library to manage date value and format. All the properties from input component are available to be used
 
-Component with placeholder and no value
-![textinputplaceholder](images/textinputplaceholder.png 'textinputplaceholder')
+1. Component with placeholder and no value
+   ![textinputplaceholder](images/textinputplaceholder.png 'textinputplaceholder')
 
-Component with value
-![textinputvalue](images/textinputvalue.png 'textinputvalue')
+2. Component with value
+   ![textinputvalue](images/textinputvalue.png 'textinputvalue')
 
-Component with focus within
-![textinputfocus](images/textinputfocus.png 'textinputfocus')
+3. Component with focus within
+   ![textinputfocus](images/textinputfocus.png 'textinputfocus')
 
 #### Select Dropdown
 
@@ -167,20 +167,20 @@ The select component opens a dropdown menu when given focus. The user can type t
 It is possible to customize the option item label and clear value by clicking the cross on the right side of the component.
 It monitors screen size to check if the dropdown menu will fit bellow the component and renders above it if it doesn't fit.
 
-Component with placeholder and no value
-![selectplaceholder](images/selectplaceholder.png 'selectplaceholder')
+1. Component with placeholder and no value
+   ![selectplaceholder](images/selectplaceholder.png 'selectplaceholder')
 
-Component with dropdown open and no option selected
-![selectopen](images/selectopen.png 'selectopen')
+2. Component with dropdown open and no option selected
+   ![selectopen](images/selectopen.png 'selectopen')
 
-Component with dropdown open and option selected
-![selectvalueopen](images/selectvalueopen.png 'selectvalueopen')
+3. Component with dropdown open and option selected
+   ![selectvalueopen](images/selectvalueopen.png 'selectvalueopen')
 
-Component filter
-![selectfilter](images/selectfilter.png 'selectfilter')
+4. Component filter
+   ![selectfilter](images/selectfilter.png 'selectfilter')
 
-Component option hover
-![selecthover](images/selecthover.png 'selecthover')
+5. Component option hover
+   ![selecthover](images/selecthover.png 'selecthover')
 
-Component dropdown rendered above the field when no space bellow is detected
-![selectnospace](images/selectnospace.png 'selectnospace')
+6. Component dropdown rendered above the field when no space bellow is detected
+   ![selectnospace](images/selectnospace.png 'selectnospace')
