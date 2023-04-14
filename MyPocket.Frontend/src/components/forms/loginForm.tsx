@@ -1,7 +1,8 @@
 'use client';
-import { Button, Feedback, FormItem, TextInput } from '@/components';
+import { Button, Col, Feedback, FormItem, Row, TextInput } from '@/components';
 import { LoginModel } from '@/types/user';
 import { GetPattern } from '@/utils/patterns';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -39,7 +40,7 @@ function LoginForm() {
       });
   };
   return (
-    <form onSubmit={handleSubmit(finish)}>
+    <form onSubmit={handleSubmit(finish)} style={{ maxWidth: 400 }}>
       <FormItem label="E-mail" error={errors?.email?.message as string}>
         <TextInput
           {...register('email', {
@@ -57,9 +58,20 @@ function LoginForm() {
           })}
         />
       </FormItem>
-      <Button type="submit" disabled={loading}>
-        Login
-      </Button>
+      <Row justifyContent="center" gutter={[8, 8]} wrap={false}>
+        <Col span={12}>
+          <Button type="submit" disabled={loading}>
+            Login
+          </Button>
+        </Col>
+        <Col span={12}>
+          <Link href="/signup">Register</Link>
+        </Col>
+        <Col span={12}>
+          <Link href="/forgot">Forgot Password</Link>
+        </Col>
+      </Row>
+
       <Feedback type={!result?.success ? 'error' : 'success'} message={result?.message} />
     </form>
   );

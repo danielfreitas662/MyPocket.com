@@ -19,3 +19,9 @@ export interface SignInResult {
   success: boolean;
   message: string;
 }
+export interface ChangePasswordModel {
+  email: string;
+  oldPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+}

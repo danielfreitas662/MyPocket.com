@@ -20,6 +20,7 @@ import { Row, Col } from './row/row';
 import DatePicker from './inputComponents/datePicker/datePicker';
 import MonthPicker from './inputComponents/monthPicker/monthPicker';
 import Pagination from './pagination/pagination';
+import PublicLayout from './publicLayout/publicLayout';
 export {
   Button,
   Navbar,
@@ -44,4 +45,5 @@ export {
   Col,
   MonthPicker,
   Pagination,
+  PublicLayout,
 };

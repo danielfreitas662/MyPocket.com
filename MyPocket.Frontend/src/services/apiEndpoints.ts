@@ -19,6 +19,7 @@ const apiEndpoints: APIEndpoint = {
     GET_USER: { endpoint: '/User/GetUser', method: Method.GET },
     AUTHENTICATE: { endpoint: '/User/Authenticate', method: Method.POST },
     SIGNUP: { endpoint: '/User', method: Method.POST },
+    CHANGE_PASSWORD: { endpoint: '/User', method: Method.PATCH },
   },
   CATEGORY: {
     GET: { endpoint: '/Category', method: Method.GET },

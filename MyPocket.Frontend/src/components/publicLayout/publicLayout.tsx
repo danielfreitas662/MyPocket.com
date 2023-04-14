@@ -1,8 +1,8 @@
 import { ReactNode } from 'react';
 import PageTitle from '../pageTitle/pageTitle';
-import styles from './privateLayout.module.scss';
+import styles from './publicLayout.module.scss';
 
-function PrivateLayout({ children, title, extra }: { children: ReactNode; title: string; extra?: ReactNode }) {
+function PublicLayout({ children, title, extra }: { children: ReactNode; title: string; extra?: ReactNode }) {
   return (
     <div className={styles.body}>
       <PageTitle extra={extra}>{title}</PageTitle>
@@ -10,4 +10,4 @@ function PrivateLayout({ children, title, extra }: { children: ReactNode; title:
     </div>
   );
 }
-export default PrivateLayout;
+export default PublicLayout;
