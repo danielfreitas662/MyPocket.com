@@ -71,7 +71,6 @@ function LoginForm() {
           <Link href="/forgot">Forgot Password</Link>
         </Col>
       </Row>
-
       <Feedback type={!result?.success ? 'error' : 'success'} message={result?.message} />
     </form>
   );

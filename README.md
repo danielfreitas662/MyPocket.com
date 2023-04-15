@@ -209,3 +209,16 @@ It monitors screen size to check if the dropdown menu will fit bellow the compon
 
 6. Component dropdown rendered above the field when no space bellow is detected
    ![selectnospace](images/selectnospace.png 'selectnospace')
+
+### Feedback Components
+
+#### Feedback Message Box
+
+This component shows a message that can be styled as error, success or information. It has a timeout the dismiss the component in 3 seconds (it can be customized) or it can be manually dismissed.
+
+1. Success Theme
+   ![feedbacksuccess](images/feedbacksuccess.png 'feedbacksuccess')
+2. Info Theme
+   ![feedbackinfo](images/feedbackinfo.png 'feedbackinfo')
+3. Error Theme
+   ![feedbackerror](images/feedbackerror.png 'feedbackerror')

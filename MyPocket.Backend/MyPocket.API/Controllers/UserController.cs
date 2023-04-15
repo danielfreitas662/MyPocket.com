@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using MyPocket.Application.Interfaces;
 using MyPocket.Infra.Data.Context;
 using MyPocket.Application.DTO;
+using System.Configuration;
 
 namespace MyPocket.API.Controllers
 {
@@ -11,10 +12,13 @@ namespace MyPocket.API.Controllers
   [Authorize]
   public class UserController : ControllerBase
   {
+
     protected readonly IApplicationService _application;
-    public UserController(IApplicationService application)
+    protected readonly IConfiguration _config;
+    public UserController(IApplicationService application, IConfiguration config)
     {
       _application = application;
+      _config = config;
     }
     [HttpPost("Authenticate")]
     [AllowAnonymous]
@@ -52,7 +56,10 @@ namespace MyPocket.API.Controllers
     [AllowAnonymous]
     public async Task<ActionResult> ForgotPassword([FromBody] ForgotPasswordRequestModel data)
     {
-      await _application.User.ForgotPasswordAsync(data);
+      string token = await _application.User.ForgotPasswordAsync(data);
+      string domain = _config["domain"];
+      string body = $"<p>Click <a href=\"{domain}?token={token}\">here</a> to create e new password</p>";
+      await _application.EmailService.SendEmail(new List<string>() { data.Email }, "Password Reset Requested", body);
       return Ok("Instructions have been sent to the informed e-mail");
     }
     [HttpPost("ResetPassword")]

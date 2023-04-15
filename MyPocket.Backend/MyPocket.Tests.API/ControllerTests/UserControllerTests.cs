@@ -3,20 +3,20 @@ using Moq;
 using MyPocket.API.Controllers;
 using MyPocket.Tests.API.Fixtures;
 using Xunit;
-using FluentAssertions;
 using MyPocket.Application.Interfaces;
-using System.Collections.Generic;
 using MyPocket.Application.DTO;
-using System.Linq;
 using MyPocket.Infra.Data.Context;
-using System;
+using Microsoft.Extensions.Configuration;
+using System.Collections.Generic;
 
 namespace MyPocket.Tests.API;
 
 public class UserControllerTests
 {
   private Mock<IApplicationService> applicationServiceMock = new Mock<IApplicationService>();
+  private Mock<IConfiguration> configurationMock = new Mock<IConfiguration>();
   private Mock<IUserService> userServiceMock = new Mock<IUserService>();
+  private Mock<IEmailServices> emailServicesmock = new Mock<IEmailServices>();
   private UserData userIdentity;
   public UserControllerTests()
   {
@@ -44,7 +44,7 @@ public class UserControllerTests
       Token = "123"
     };
     var contextMock = new MockHttpContext();
-    UserController sut = new UserController(applicationServiceMock.Object);
+    UserController sut = new UserController(applicationServiceMock.Object, configurationMock.Object);
     sut.ControllerContext.HttpContext = contextMock.context;
     userServiceMock.Setup(x => x.AuthenticateAsync(data)).ReturnsAsync(() => loginResult);
     applicationServiceMock.Setup(x => x.User).Returns(userServiceMock.Object);
@@ -72,7 +72,7 @@ public class UserControllerTests
       Token = ""
     };
     var contextMock = new MockHttpContext();
-    UserController sut = new UserController(applicationServiceMock.Object);
+    UserController sut = new UserController(applicationServiceMock.Object, configurationMock.Object);
     sut.ControllerContext.HttpContext = contextMock.context;
     userServiceMock.Setup(x => x.AuthenticateAsync(data)).ReturnsAsync(() => loginResult);
     applicationServiceMock.Setup(x => x.User).Returns(userServiceMock.Object);
@@ -100,7 +100,7 @@ public class UserControllerTests
       Message = "Done",
     };
     var contextMock = new MockHttpContext();
-    UserController sut = new UserController(applicationServiceMock.Object);
+    UserController sut = new UserController(applicationServiceMock.Object, configurationMock.Object);
     sut.ControllerContext.HttpContext = contextMock.context;
     userServiceMock.Setup(x => x.ChangePasswordAsync(data)).ReturnsAsync(() => changePasswordResult);
     applicationServiceMock.Setup(x => x.User).Returns(userServiceMock.Object);
@@ -128,7 +128,7 @@ public class UserControllerTests
       Message = "Error",
     };
     var contextMock = new MockHttpContext();
-    UserController sut = new UserController(applicationServiceMock.Object);
+    UserController sut = new UserController(applicationServiceMock.Object, configurationMock.Object);
     sut.ControllerContext.HttpContext = contextMock.context;
     userServiceMock.Setup(x => x.ChangePasswordAsync(data)).ReturnsAsync(() => changePasswordResult);
     applicationServiceMock.Setup(x => x.User).Returns(userServiceMock.Object);
@@ -150,7 +150,7 @@ public class UserControllerTests
       Message = "Done",
     };
     var contextMock = new MockHttpContext();
-    UserController sut = new UserController(applicationServiceMock.Object);
+    UserController sut = new UserController(applicationServiceMock.Object, configurationMock.Object);
     sut.ControllerContext.HttpContext = contextMock.context;
     userServiceMock.Setup(x => x.RegisterAsync(userMock)).ReturnsAsync(() => registerResult);
     applicationServiceMock.Setup(x => x.User).Returns(userServiceMock.Object);
@@ -172,7 +172,7 @@ public class UserControllerTests
       Message = "Error",
     };
     var contextMock = new MockHttpContext();
-    UserController sut = new UserController(applicationServiceMock.Object);
+    UserController sut = new UserController(applicationServiceMock.Object, configurationMock.Object);
     sut.ControllerContext.HttpContext = contextMock.context;
     userServiceMock.Setup(x => x.RegisterAsync(userMock)).ReturnsAsync(() => registerResult);
     applicationServiceMock.Setup(x => x.User).Returns(userServiceMock.Object);
@@ -193,10 +193,19 @@ public class UserControllerTests
       Email = userMock.Email
     };
     var contextMock = new MockHttpContext();
-    UserController sut = new UserController(applicationServiceMock.Object);
+    UserController sut = new UserController(applicationServiceMock.Object, configurationMock.Object);
     sut.ControllerContext.HttpContext = contextMock.context;
-    userServiceMock.Setup(x => x.ForgotPasswordAsync(data));
+    string token = "";
+    string domain = "https://domain.com";
+    userServiceMock.Setup(x => x.ForgotPasswordAsync(data)).Callback(() =>
+    {
+      token = "123";
+    });
+    configurationMock.Setup(x => x["domain"]).Returns(domain);
+    string body = $"<p>Click <a href=\"{domain}?token={token}\">here</a> to create e new password</p>";
+    emailServicesmock.Setup(x => x.SendEmail(new List<string> { data.Email }, "Password Reset Requested", body));
     applicationServiceMock.Setup(x => x.User).Returns(userServiceMock.Object);
+    applicationServiceMock.Setup(x => x.EmailService).Returns(emailServicesmock.Object);
     // When
     var result = await sut.ForgotPassword(data);
     // Then
@@ -220,7 +229,7 @@ public class UserControllerTests
       Message = "Error",
     };
     var contextMock = new MockHttpContext();
-    UserController sut = new UserController(applicationServiceMock.Object);
+    UserController sut = new UserController(applicationServiceMock.Object, configurationMock.Object);
     sut.ControllerContext.HttpContext = contextMock.context;
     userServiceMock.Setup(x => x.ResetPasswordAsync(data)).ReturnsAsync(() => registerResult);
     applicationServiceMock.Setup(x => x.User).Returns(userServiceMock.Object);
@@ -247,7 +256,7 @@ public class UserControllerTests
       Message = "Done",
     };
     var contextMock = new MockHttpContext();
-    UserController sut = new UserController(applicationServiceMock.Object);
+    UserController sut = new UserController(applicationServiceMock.Object, configurationMock.Object);
     sut.ControllerContext.HttpContext = contextMock.context;
     userServiceMock.Setup(x => x.ResetPasswordAsync(data)).ReturnsAsync(() => registerResult);
     applicationServiceMock.Setup(x => x.User).Returns(userServiceMock.Object);

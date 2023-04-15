@@ -9,5 +9,6 @@ namespace MyPocket.Application.Interfaces
     ITransactionService Transaction { get; }
     IUserService User { get; }
     IDashboardService Dashboard { get; }
+    IEmailServices EmailService { get; set; }
   }
 }

@@ -18,6 +18,7 @@ namespace MyPocket.Application.Services
     public ITransactionService Transaction { get; private set; }
     public IBudgetService Budget { get; private set; }
     public IDashboardService Dashboard { get; private set; }
+    public IEmailServices EmailService { get; set; }
     public ApplicationService(IRepositories repo, SignInManager<User> signinManager, IConfiguration config, UserManager<User> userManager)
     {
       _repo = repo;
@@ -30,6 +31,7 @@ namespace MyPocket.Application.Services
       Transaction = new TransactionService(_repo);
       Budget = new BudgetService(_repo);
       Dashboard = new DashboardService(_repo);
+      EmailService = new EmailServices();
     }
   }
 }
