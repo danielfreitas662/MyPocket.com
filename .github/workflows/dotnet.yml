@@ -23,6 +23,6 @@ jobs:
     - name: Restore dependencies
       run: cd MyPocket.Backend && dotnet restore
     - name: Build
-      run: dotnet build --no-restore
+      run: cd MyPocket.Backend && dotnet build --no-restore
     - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: cd MyPocket.Backend && dotnet test --no-build --verbosity normal
