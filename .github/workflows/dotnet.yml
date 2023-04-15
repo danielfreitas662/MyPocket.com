@@ -20,10 +20,8 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 6.0.x
-    - name: Enter Backend follder
-      run: cd MyPocket.Backend
     - name: Restore dependencies
-      run: dotnet restore
+      run: cd MyPocket.Backend && dotnet restore
     - name: Build
       run: dotnet build --no-restore
     - name: Test
