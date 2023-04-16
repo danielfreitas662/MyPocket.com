@@ -108,5 +108,6 @@ const CurrencyInput = React.forwardRef(
     );
   }
 );
+CurrencyInput.displayName = 'CurrencyInput';
 
 export default CurrencyInput;

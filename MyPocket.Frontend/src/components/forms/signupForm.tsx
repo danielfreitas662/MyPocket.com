@@ -1,18 +1,16 @@
 'use client';
 
-import { Button, FormItem, TextInput } from '@/components';
+import { Button, Feedback, FormItem, TextInput } from '@/components';
 import { signup } from '@/services/api/auth';
 import { ApiRequest } from '@/types/apirequest';
-import { SignInModel, SignInResult } from '@/types/user';
+import { SignInModel } from '@/types/user';
 import { GetPattern } from '@/utils/patterns';
-import clsx from 'clsx';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import styles from './forms.module.scss';
 
 function SignupForm() {
-  const [result, setResult] = useState<ApiRequest<SignInResult | null>>();
+  const [result, setResult] = useState<ApiRequest<string>>();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const {
@@ -26,7 +24,7 @@ function SignupForm() {
       .then((res) => {
         setResult(res);
         setLoading(false);
-        router.push('/');
+        //router.push('/');
       })
       .catch((res) => {
         setLoading(false);
@@ -71,18 +69,8 @@ function SignupForm() {
       <Button type="submit" disabled={loading}>
         Sign Up
       </Button>
-      {result?.error && (
-        <div
-          className={clsx({
-            [styles.error]: true,
-            [styles.success]: result.error,
-          })}
-        >
-          {result.message}
-        </div>
-      )}
+      <Feedback message={result?.message as string} type={result?.error ? 'error' : 'success'} dismissable />
     </form>
   );
 }
 export default SignupForm;
-//onFinish={(values) => sigIn(values)}
