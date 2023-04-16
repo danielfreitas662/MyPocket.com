@@ -1,8 +1,6 @@
 import { ApiRequest } from '@/types/apirequest';
-import { ICategory } from '@/types/category';
 import { SignInModel, SignInResult } from '@/types/user';
 import apiEndpoints from '../apiEndpoints';
-import { getClientSession } from '../clientSession';
 const apiAddress: string = process.env.NEXT_PUBLIC_API_ADDRESS as string;
 export const signup = async (user: SignInModel) => {
   try {
@@ -14,21 +12,22 @@ export const signup = async (user: SignInModel) => {
       },
     });
     if (!res.ok) {
-      const result: ApiRequest<SignInResult | null> = {
+      const data: string = await res.text();
+      const result: ApiRequest<string> = {
         error: true,
         statusCode: res.status,
         statusText: res.statusText,
-        message: 'Something wrong happened',
-        data: null,
+        message: data,
+        data: '',
       };
       return result;
     }
-    const data: SignInResult = await res.json();
-    const result: ApiRequest<SignInResult | null> = {
+    const data: string = await res.text();
+    const result: ApiRequest<string> = {
       error: false,
       statusCode: res.status,
       statusText: res.statusText,
-      message: 'Account created. Proceed to login.',
+      message: data,
       data: data,
     };
     return result;

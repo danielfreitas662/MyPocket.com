@@ -1,0 +1,16 @@
+version: '3.9' # optional since v1.27.0
+services:
+  web_api:
+    image: mypocket-backend
+    container_name: mypocket-backend
+    ports:
+      - '7220:80'
+  postgres:
+    image: 'postgres'
+    container_name: postgres
+    ports: # not actually needed, because the two services are on the same network
+      - '5431:5432'
+    environment:
+      - POSTGRES_PASSWORD=1234
+      - ACCEPT_EULA=y
+      - SA_PASSWORD=A&VeryComplex123Password

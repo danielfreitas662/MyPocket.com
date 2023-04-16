@@ -11,10 +11,13 @@ interface FeedbackProps {
 }
 function Feedback({ type, message, dismissable }: FeedbackProps) {
   const [dismissed, setDismissed] = useState(false);
+  const [internalMessage, setInternalMessage] = useState(message);
   useEffect(() => {
+    setInternalMessage(message);
     setDismissed(false);
     const timeout = setTimeout(() => {
       setDismissed(true);
+      setInternalMessage('');
     }, 3000);
     return () => clearTimeout(timeout);
   }, [message, type]);
@@ -34,7 +37,7 @@ function Feedback({ type, message, dismissable }: FeedbackProps) {
         {type === 'info' && <FaInfoCircle />}
         {type === 'success' && <FaCheckCircle />}
       </div>
-      <div className={styles.message}>{message}</div>
+      <div className={styles.message}>{internalMessage}</div>
       <div className={styles.close} onClick={() => setDismissed(true)}>
         {dismissable && <FaPlus />}
       </div>

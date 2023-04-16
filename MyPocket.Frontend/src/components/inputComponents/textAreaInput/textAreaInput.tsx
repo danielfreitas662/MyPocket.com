@@ -23,5 +23,6 @@ const TextAreaInput = React.forwardRef(
     );
   }
 );
+TextAreaInput.displayName = 'TextAreaInput';
 
 export default TextAreaInput;

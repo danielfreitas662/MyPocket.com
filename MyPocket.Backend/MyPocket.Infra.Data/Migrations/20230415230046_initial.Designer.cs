@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MyPocket.Infra.Data.Migrations
 {
     [DbContext(typeof(MyPocketDBContext))]
-    [Migration("20230401134700_initial")]
+    [Migration("20230415230046_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

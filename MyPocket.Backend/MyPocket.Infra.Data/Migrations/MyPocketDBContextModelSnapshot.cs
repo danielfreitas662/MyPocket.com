@@ -8,7 +8,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace MyPocket.Infra.Migrations
+namespace MyPocket.Infra.Data.Migrations
 {
     [DbContext(typeof(MyPocketDBContext))]
     partial class MyPocketDBContextModelSnapshot : ModelSnapshot

@@ -14,9 +14,9 @@ function UnauthHome() {
         <div className={styles.description}>
           <div className={styles.title}>Manage your finances is easier than you think!</div>
           <div>
-            Welcome to MyPocket.com - the web application that makes managing your personal finances a breeze! With our
-            real-time dashboards and custom budgeting tools, you can take control of your finances and achieve your
-            financial goals.
+            {`Welcome to MyPocket.com - the web application that makes managing your personal finances a breeze! With
+              our real-time dashboards and custom budgeting tools, you can take control of your finances and achieve
+              your financial goals.`}
           </div>
           <Link href="/signup">
             <div className={styles.link}>Sign up for a free account</div>
@@ -81,8 +81,8 @@ function UnauthHome() {
             <div className={styles.item}>
               <div className={styles.title}>Customizable</div>
               <div className={styles.description}>
-                MyPocket.com can be customized to fit your unique financial situation. Whether you're a student, a small
-                business owner, or a retiree, our app has the tools you need to manage your money.
+                {`MyPocket.com can be customized to fit your unique financial situation. Whether you're a student, a small
+                business owner, or a retiree, our app has the tools you need to manage your money.`}
               </div>
             </div>
           </div>
