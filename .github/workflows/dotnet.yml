@@ -26,14 +26,6 @@ jobs:
       run: cd MyPocket.Backend && dotnet build --no-restore
     - name: Test
       run: cd MyPocket.Backend && dotnet test --no-build --verbosity normal
-      
-  build-container:
-    
-    name: Build Image
-    runs-on: ubuntu-latest
-
-   
-    steps:
 
     - name: Check out code
       uses: actions/checkout@v2
@@ -55,5 +47,5 @@ jobs:
         ECR_REPOSITORY: cwm/mypocket
         IMAGE_TAG: latest
       run: |
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        docker build -t $ECR_REPOSITORY .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
