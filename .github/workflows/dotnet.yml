@@ -47,5 +47,6 @@ jobs:
         ECR_REPOSITORY: cwm/mypocket
         IMAGE_TAG: latest
       run: |
+        cd MyPocket.Backend
         docker build -t $ECR_REPOSITORY:$IMAGE_TAG .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
