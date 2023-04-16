@@ -25,5 +25,6 @@ const TextInputMask = React.forwardRef(
     );
   }
 );
+TextInputMask.displayName = 'TextInpuMask';
 
 export default TextInputMask;
