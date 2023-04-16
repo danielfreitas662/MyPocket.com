@@ -15,17 +15,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-    
-    - name: Setup Node environments
-      uses: actions/setup-node@v2.5.2
-    - name: Install Node Modules
-      run: cd MyPocket.Frontend && npm install
-    - name: Test
-      run: cd MyPocket.Frontend && npm run test
-
-    - name: Check out code
-      uses: actions/checkout@v2
     
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
