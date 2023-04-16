@@ -47,5 +47,5 @@ jobs:
         ECR_REPOSITORY: cwm/mypocket
         IMAGE_TAG: latest
       run: |
-        docker build -t $ECR_REPOSITORY .
+        docker build -t $ECR_REPOSITORY:$IMAGE_TAG .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
