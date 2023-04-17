@@ -1,7 +1,6 @@
 import { ApiRequest } from '@/types/apirequest';
 import { ICategory } from '@/types/category';
 import apiEndpoints from './apiEndpoints';
-import { getSession } from './session';
 import { getClientSession } from './clientSession';
 
 const apiAddress: string = process.env.NEXT_PUBLIC_API_ADDRESS as string;
@@ -36,12 +35,18 @@ export const getCategories = async () => {
     };
     return result;
   } catch (error: any) {
-    throw new Error(JSON.stringify(error));
+    const result: ApiRequest<ICategory[]> = {
+      error: true,
+      statusCode: 0,
+      statusText: '',
+      message: '',
+      data: [],
+    };
+    return result;
   }
 };
-export const getCategoryById = async (id: string) => {
+export const getCategoryById = async (id: string, session: string | undefined) => {
   try {
-    const session = await getClientSession();
     const res = await fetch(apiAddress + apiEndpoints.CATEGORY.GET_BY_ID.endpoint + `/${id}`, {
       method: apiEndpoints.CATEGORY.GET_BY_ID.method,
       headers: {
@@ -69,6 +74,13 @@ export const getCategoryById = async (id: string) => {
     };
     return result;
   } catch (error: any) {
-    throw new Error(JSON.stringify(error));
+    const result: ApiRequest<ICategory | null> = {
+      error: true,
+      statusCode: 0,
+      statusText: '',
+      message: '',
+      data: null,
+    };
+    return result;
   }
 };

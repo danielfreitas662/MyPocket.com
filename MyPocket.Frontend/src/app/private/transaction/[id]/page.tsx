@@ -3,11 +3,13 @@ import TransactionForm from '@/components/forms/transactionForm';
 import { getAccounts } from '@/services/account';
 import { getCategories } from '@/services/category';
 import { getTransactionById } from '@/services/transaction';
-import { currencyFormat } from '@/utils/formatters';
+import { cookies } from 'next/headers';
 import { Suspense } from 'react';
 
 async function Transaction({ params }: { params: { id: string } }) {
-  const result = await getTransactionById(params?.id);
+  const session = cookies().get('session')?.value;
+  const result = await getTransactionById(params?.id, session);
+  console.log(result);
   const { data: categories } = await getCategories();
   const { data: accounts } = await getAccounts();
   return (

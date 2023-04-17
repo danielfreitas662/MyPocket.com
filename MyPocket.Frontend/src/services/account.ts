@@ -6,9 +6,8 @@ import { getClientSession } from './clientSession';
 
 const apiAddress: string = process.env.NEXT_PUBLIC_API_ADDRESS as string;
 
-export const getAccountById = async (id: string) => {
+export const getAccountById = async (id: string, session: string | undefined) => {
   try {
-    const session = await getClientSession();
     const res = await fetch(apiAddress + apiEndpoints.ACCOUNT.GET_BY_ID.endpoint + `/${id}`, {
       method: apiEndpoints.ACCOUNT.GET_BY_ID.method,
       headers: {
@@ -36,7 +35,14 @@ export const getAccountById = async (id: string) => {
     };
     return result;
   } catch (error: any) {
-    throw new Error(JSON.stringify(error));
+    const result: ApiRequest<IAccount | null> = {
+      error: true,
+      statusCode: 0,
+      statusText: '',
+      message: '',
+      data: null,
+    };
+    return result;
   }
 };
 export const getAccounts = async () => {
@@ -69,6 +75,13 @@ export const getAccounts = async () => {
     };
     return result;
   } catch (error: any) {
-    throw new Error(JSON.stringify(error));
+    const result: ApiRequest<IAccount[]> = {
+      error: true,
+      statusCode: 0,
+      statusText: '',
+      message: '',
+      data: [],
+    };
+    return result;
   }
 };

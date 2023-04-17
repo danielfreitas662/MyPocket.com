@@ -40,9 +40,8 @@ export const getTransactions = async () => {
     throw new Error(JSON.stringify(error));
   }
 };
-export const getTransactionById = async (id: string) => {
+export const getTransactionById = async (id: string, session: string | undefined) => {
   try {
-    const session = await getClientSession();
     const res = await fetch(apiAddress + apiEndpoints.TRANSACTION.GET_BY_ID.endpoint + `/${id}`, {
       method: apiEndpoints.TRANSACTION.GET_BY_ID.method,
       headers: {
@@ -70,6 +69,13 @@ export const getTransactionById = async (id: string) => {
     };
     return result;
   } catch (error: any) {
-    throw new Error(JSON.stringify(error));
+    const result: ApiRequest<ITransaction | null> = {
+      error: true,
+      statusCode: 0,
+      statusText: '',
+      message: '',
+      data: null,
+    };
+    return result;
   }
 };
