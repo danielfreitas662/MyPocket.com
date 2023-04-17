@@ -76,7 +76,6 @@ namespace MyPocket.Application.Services
           var claimsPrincipal = await _signInManager.CreateUserPrincipalAsync(findUser);
           await _signInManager.RefreshSignInAsync(findUser); */
           var token = BuildToken(findUser);
-          Console.WriteLine(token);
           return new LoginResultModel
           {
             Success = true,

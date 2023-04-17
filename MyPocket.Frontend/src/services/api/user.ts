@@ -32,7 +32,6 @@ export const authenticate = async (values: LoginModel) => {
 export const getUser = async () => {
   try {
     const token = await getClientSession();
-    console.log(token);
     const res = await fetch(process.env.NEXT_PUBLIC_API_ADDRESS + apiEndpoints.USER.GET_USER.endpoint, {
       method: apiEndpoints.USER.GET_USER.method,
       headers: {
