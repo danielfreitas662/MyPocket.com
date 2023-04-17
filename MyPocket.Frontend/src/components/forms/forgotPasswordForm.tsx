@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
+const localAddress: string = process.env.NEXT_PUBLIC_LOCAL_ADDRESS as string;
 function ForgotPasswordForm() {
   const router = useRouter();
   const [result, setResult] = useState<any>();
@@ -17,7 +18,7 @@ function ForgotPasswordForm() {
   } = useForm<LoginModel>();
   const finish = (values: any) => {
     setLoading(true);
-    fetch('/api/auth/authenticate', {
+    fetch(localAddress + 'api/auth/authenticate', {
       method: 'POST',
       body: JSON.stringify(values),
       headers: {
