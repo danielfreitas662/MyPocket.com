@@ -36,6 +36,8 @@ jobs:
 
       - name: Build, tag, and push image to Amazon ECR
         env:
+          CLUSTER_NAME: mypocket-frontend-cluster
+          SERVICE_NAME: mypocket-frontend-service
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: cwm/mypocket/frontend
           IMAGE_TAG: latest
@@ -44,3 +46,4 @@ jobs:
           docker build -t $ECR_REPOSITORY .
           docker tag $ECR_REPOSITORY:$IMAGE_TAG ${{ secrets.AWS_ECR_FRONTEND }}:$IMAGE_TAG
           docker push ${{ secrets.AWS_ECR_FRONTEND }}:$IMAGE_TAG
+          aws ecs update-service --cluster $CLUSTER_NAME --service $SERVICE_NAME --force-new-deployment

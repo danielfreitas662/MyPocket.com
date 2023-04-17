@@ -29,9 +29,9 @@ export const authenticate = async (values: LoginModel) => {
     return result;
   }
 };
-export const getUser = async () => {
+export const getUser = async (session?: string) => {
   try {
-    const token = await getClientSession();
+    const token = session || (await getClientSession());
     const res = await fetch(process.env.NEXT_PUBLIC_API_ADDRESS + apiEndpoints.USER.GET_USER.endpoint, {
       method: apiEndpoints.USER.GET_USER.method,
       headers: {
@@ -39,8 +39,11 @@ export const getUser = async () => {
         Authorization: `Bearer ${token}`,
       },
     });
-    const data: IUser = await res.json();
-    return data;
+    if (res.ok) {
+      const data: IUser = await res.json();
+      return data;
+    }
+    return null;
   } catch (error) {
     return null;
   }
