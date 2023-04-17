@@ -15,7 +15,7 @@ jobs:
 
     steps:
       - name: Setup Node Environment
-        uses: actions/setup-node@2.5.2
+        uses: actions/setup-node@lts
       - name: Install Modules
         run: cd MyPocket.Frontend && npm install
       - name: Build Next App
