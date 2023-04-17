@@ -13,7 +13,7 @@ export const getTransactions = async (filters: Filter<ITransaction>) => {
       body: JSON.stringify(filters),
       headers: {
         // @ts-ignore
-        Authorization: `Bearer ${session.token}`,
+        Authorization: `Bearer ${session}`,
         'content-type': 'application/json',
       },
     });
@@ -41,7 +41,18 @@ export const getTransactions = async (filters: Filter<ITransaction>) => {
     };
     return result;
   } catch (error: any) {
-    throw new Error(JSON.stringify(error));
+    const result: ApiRequest<FilterResult<ITransaction>> = {
+      error: true,
+      statusCode: 0,
+      statusText: '',
+      message: 'Something wrong happened',
+      data: {
+        results: [],
+        total: 0,
+        current: 1,
+      },
+    };
+    return result;
   }
 };
 export const saveTransaction = async (transaction: Partial<ITransaction>) => {
@@ -53,7 +64,7 @@ export const saveTransaction = async (transaction: Partial<ITransaction>) => {
       headers: {
         'content-type': 'application/json',
         // @ts-ignore
-        Authorization: `Bearer ${session?.token}`,
+        Authorization: `Bearer ${session}`,
       },
     });
     if (!res.ok) {
@@ -87,7 +98,7 @@ export const removeTransaction = async (id: string) => {
       headers: {
         'content-type': 'application/json',
         // @ts-ignore
-        Authorization: `Bearer ${session?.token}`,
+        Authorization: `Bearer ${session}`,
       },
     });
     if (!res.ok) {

@@ -12,7 +12,7 @@ export const getCategories = async (filters: Filter<ICategory>) => {
       cache: 'no-store',
       headers: {
         // @ts-ignore
-        Authorization: `Bearer ${session.token}`,
+        Authorization: `Bearer ${session}`,
         'content-type': 'application/json',
       },
       body: JSON.stringify(filters),
@@ -53,7 +53,7 @@ export const saveCategory = async (category: Partial<ICategory>) => {
       headers: {
         'content-type': 'application/json',
         // @ts-ignore
-        Authorization: `Bearer ${session?.token}`,
+        Authorization: `Bearer ${session}`,
       },
     });
     if (!res.ok) {

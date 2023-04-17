@@ -12,7 +12,7 @@ export const getAccounts = async (filters: Filter<IAccount>) => {
       cache: 'no-store',
       headers: {
         // @ts-ignore
-        Authorization: `Bearer ${session.token}`,
+        Authorization: `Bearer ${session}`,
         'content-type': 'application/json',
       },
       body: JSON.stringify(filters),
@@ -53,7 +53,7 @@ export const saveAccount = async (account: Partial<IAccount>) => {
       headers: {
         'content-type': 'application/json',
         // @ts-ignore
-        Authorization: `Bearer ${session?.token}`,
+        Authorization: `Bearer ${session}`,
       },
     });
     if (!res.ok) {
@@ -87,7 +87,7 @@ export const removeAccount = async (id: string) => {
       headers: {
         'content-type': 'application/json',
         // @ts-ignore
-        Authorization: `Bearer ${session?.token}`,
+        Authorization: `Bearer ${session}`,
       },
     });
     if (!res.ok) {

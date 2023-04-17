@@ -14,7 +14,7 @@ namespace MyPocket.Infra.Data.Context
     public MyPocketDBContext CreateDbContext(string[] args)
     {
       var optionsBuilder = new DbContextOptionsBuilder<MyPocketDBContext>();
-      optionsBuilder.UseNpgsql("Host=localhost; Database=mypocketDB2; Username=postgres; Password=daniel2;");
+      optionsBuilder.UseNpgsql("Host=mypocketdb.clux19hkotky.us-east-1.rds.amazonaws.com; Port=5432; Database=mypocketDB; Username=postgres; Password=*aP48104810;");
 
       return new MyPocketDBContext(optionsBuilder.Options);
     }
@@ -24,6 +24,8 @@ namespace MyPocket.Infra.Data.Context
     public MyPocketDBContext(DbContextOptions<MyPocketDBContext> options) : base(options)
     {
       Database.SetCommandTimeout(150000);
+      //Database.EnsureCreated();
+      //Database.Migrate();
     }
     public DbSet<Account> Accounts { get; set; }
     public DbSet<Category> Categories { get; set; }

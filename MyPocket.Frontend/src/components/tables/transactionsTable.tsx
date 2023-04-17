@@ -126,7 +126,7 @@ function TransactionsTable(props: PageSearchParams & ITransaction) {
         rowKey="id"
         dataSource={data.results}
         scroll={{ x: '100%', y: 'calc(100vh - 300px)' }}
-        loading={loading}
+        loading={true}
         sorter={{ field: props.field, order: props.order }}
         onChange={(filter, sorter, pagination) => {
           const query = objectToQueryString({ ...filter, ...sorter, ...pagination });

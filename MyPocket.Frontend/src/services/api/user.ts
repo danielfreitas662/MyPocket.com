@@ -1,9 +1,51 @@
-import { ChangePasswordModel } from '@/types/user';
+import { ChangePasswordModel, IUser, LoginModel, LoginResult } from '@/types/user';
 import { getClientSession } from '../clientSession';
 import apiEndpoints from '../apiEndpoints';
 import { ApiRequest } from '@/types/apirequest';
+import { setCookie } from '@/utils/cookies';
 
 const apiAddress: string = process.env.NEXT_PUBLIC_API_ADDRESS as string;
+export const authenticate = async (values: LoginModel) => {
+  try {
+    const res = await fetch(process.env.NEXT_PUBLIC_API_ADDRESS + apiEndpoints.USER.AUTHENTICATE.endpoint, {
+      method: apiEndpoints.USER.AUTHENTICATE.method,
+      body: JSON.stringify(values),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const data: LoginResult = await res.json();
+    if (data?.token) {
+      setCookie('session', data.token, 10);
+    }
+    return data;
+  } catch (error) {
+    const result: LoginResult = {
+      success: false,
+      message: 'Something wrong happened',
+      token: '',
+      user: null,
+    };
+    return result;
+  }
+};
+export const getUser = async () => {
+  try {
+    const token = await getClientSession();
+    console.log(token);
+    const res = await fetch(process.env.NEXT_PUBLIC_API_ADDRESS + apiEndpoints.USER.GET_USER.endpoint, {
+      method: apiEndpoints.USER.GET_USER.method,
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const data: IUser = await res.json();
+    return data;
+  } catch (error) {
+    return null;
+  }
+};
 export const changePassword = async (values: ChangePasswordModel) => {
   try {
     const session = await getClientSession();
