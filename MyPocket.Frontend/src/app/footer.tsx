@@ -3,7 +3,7 @@ import React from 'react';
 function Footer() {
   return (
     <footer className="footer">
-      <div className="footer-column">MyPocket.com</div>
+      <div className="footer-column">MyPocket</div>
       <div className="footer-column">
         <Link href="/about">About</Link>
         <Link href="/contact">Contact</Link>

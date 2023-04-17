@@ -45,6 +45,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-app.MapGet("/", () => "MyPocket.com API running");
+app.MapGet("/", () => "MyPocket API running");
 
 app.Run();
