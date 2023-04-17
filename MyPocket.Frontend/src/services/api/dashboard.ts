@@ -12,7 +12,7 @@ export const getAmountByCategory = async (month: string, type: CategoryType) => 
       method: apiEndpoints.DASHBOARD.AMOUNT_BY_CATEGORY.method,
       headers: {
         // @ts-ignore
-        Authorization: `Bearer ${session.token}`,
+        Authorization: `Bearer ${session}`,
       },
     });
     if (!res.ok) {
@@ -46,7 +46,7 @@ export const getIncomeByMonth = async (month: string) => {
       method: apiEndpoints.DASHBOARD.INCOME_BY_MONTH.method,
       headers: {
         // @ts-ignore
-        Authorization: `Bearer ${session.token}`,
+        Authorization: `Bearer ${session}`,
       },
     });
     if (!res.ok) {
@@ -80,7 +80,7 @@ export const getExpensesByMonth = async (month: string) => {
       method: apiEndpoints.DASHBOARD.EXPENSES_BY_MONTH.method,
       headers: {
         // @ts-ignore
-        Authorization: `Bearer ${session.token}`,
+        Authorization: `Bearer ${session}`,
       },
     });
     if (!res.ok) {
@@ -114,7 +114,7 @@ export const getTransactionsByMonth = async (month: string, type: CategoryType) 
       method: apiEndpoints.DASHBOARD.TRANSACTIONS_BY_MONTH.method,
       headers: {
         // @ts-ignore
-        Authorization: `Bearer ${session.token}`,
+        Authorization: `Bearer ${session}`,
       },
     });
     if (!res.ok) {
@@ -148,7 +148,7 @@ export const getResultsByMonth = async (month: string) => {
       method: apiEndpoints.DASHBOARD.RESULTS_BY_MONTH.method,
       headers: {
         // @ts-ignore
-        Authorization: `Bearer ${session.token}`,
+        Authorization: `Bearer ${session}`,
       },
     });
     if (!res.ok) {

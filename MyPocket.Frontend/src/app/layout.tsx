@@ -3,28 +3,29 @@ import '../styles/globals.scss';
 import { Inter } from 'next/font/google';
 import Footer from './footer';
 import { Navbar } from '@/components';
-import { getSession } from '@/services/session';
 import 'react-toastify/dist/ReactToastify.css';
+import { UserProvider } from '@/components/contexts/userContext';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const data = await getSession();
   return (
     <html lang="pt">
       <body>
-        <main className={inter.className + ' main'} style={{ ...inter.style }}>
-          <div className="header">
-            <div className="logo">
-              <Link href="/">
-                <span>MyPocket.com</span>
-              </Link>
+        <UserProvider>
+          <main className={inter.className + ' main'} style={{ ...inter.style }}>
+            <div className="header">
+              <div className="logo">
+                <Link href="/">
+                  <span>MyPocket.com</span>
+                </Link>
+              </div>
+              <Navbar />
             </div>
-            <Navbar user={data?.user} />
-          </div>
-          <div className="content">{children}</div>
-          <Footer />
-        </main>
+            <div className="content">{children}</div>
+            <Footer />
+          </main>
+        </UserProvider>
       </body>
     </html>
   );

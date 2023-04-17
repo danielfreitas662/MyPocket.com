@@ -2,16 +2,17 @@ import { ApiRequest } from '@/types/apirequest';
 import { ITransaction } from '@/types/transaction';
 import apiEndpoints from './apiEndpoints';
 import { getSession } from './session';
+import { getClientSession } from './clientSession';
 
 const apiAddress: string = process.env.NEXT_PUBLIC_API_ADDRESS as string;
 export const getTransactions = async () => {
   try {
-    const session = await getSession();
+    const session = await getClientSession();
     const res = await fetch(apiAddress + apiEndpoints.TRANSACTION.GET.endpoint, {
       method: apiEndpoints.TRANSACTION.GET.method,
       cache: 'no-store',
       headers: {
-        Authorization: `Bearer ${session.token}`,
+        Authorization: `Bearer ${session}`,
       },
     });
 
@@ -41,11 +42,11 @@ export const getTransactions = async () => {
 };
 export const getTransactionById = async (id: string) => {
   try {
-    const session = await getSession();
+    const session = await getClientSession();
     const res = await fetch(apiAddress + apiEndpoints.TRANSACTION.GET_BY_ID.endpoint + `/${id}`, {
       method: apiEndpoints.TRANSACTION.GET_BY_ID.method,
       headers: {
-        Authorization: `Bearer ${session.token}`,
+        Authorization: `Bearer ${session}`,
       },
     });
     if (!res.ok) {

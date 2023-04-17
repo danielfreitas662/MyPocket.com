@@ -38,7 +38,7 @@ if (app.Environment.IsDevelopment())
   app.UseSwagger();
   app.UseSwaggerUI();
 }
-app.UseCors(opt => opt.WithOrigins("http://localhost:3000").AllowAnyHeader().AllowAnyMethod());
+app.UseCors(opt => opt.WithOrigins("http://localhost:3000", "http://my-pocket.net", "https://my-pocket.net").AllowAnyHeader().AllowAnyMethod());
 app.UseHttpsRedirection();
 app.UseRouting();
 app.UseAuthentication();
