@@ -33,7 +33,6 @@ jobs:
         ECR_REPOSITORY: cwm/mypocket/frontend
         IMAGE_TAG: latest
       run: |
-        cd MyPocket.Frontend
         docker build -t $ECR_REPOSITORY .
         docker tag $ECR_REPOSITORY:$IMAGE_TAG ${{ secrets.AWS_ECR_FRONTEND }}:$IMAGE_TAG
         docker push ${{ secrets.AWS_ECR_FRONTEND }}:$IMAGE_TAG
