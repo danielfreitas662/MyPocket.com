@@ -1,3 +1,5 @@
+import { CookieSerializeOptions, serialize } from 'cookie';
+
 export function getCookie(cname: string) {
   let name = cname + '=';
   let decodedCookie = decodeURIComponent(document.cookie);
@@ -13,3 +15,11 @@ export function getCookie(cname: string) {
   }
   return '';
 }
+
+export const setCookie = (name: string, value: unknown, exdays: number) => {
+  const stringValue = typeof value === 'object' ? JSON.stringify(value) : String(value);
+  const d = new Date();
+  d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
+  let expires = 'expires=' + d.toUTCString();
+  document.cookie = name + '=' + stringValue + ';' + expires + ';path=/';
+};

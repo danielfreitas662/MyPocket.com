@@ -2,16 +2,17 @@ import { ApiRequest } from '@/types/apirequest';
 import { ICategory } from '@/types/category';
 import apiEndpoints from './apiEndpoints';
 import { getSession } from './session';
+import { getClientSession } from './clientSession';
 
 const apiAddress: string = process.env.NEXT_PUBLIC_API_ADDRESS as string;
 export const getCategories = async () => {
   try {
-    const session = await getSession();
+    const session = await getClientSession();
     const res = await fetch(apiAddress + apiEndpoints.CATEGORY.GET.endpoint, {
       method: apiEndpoints.CATEGORY.GET.method,
       cache: 'no-store',
       headers: {
-        Authorization: `Bearer ${session.token}`,
+        Authorization: `Bearer ${session}`,
       },
     });
     if (!res.ok) {
@@ -40,11 +41,11 @@ export const getCategories = async () => {
 };
 export const getCategoryById = async (id: string) => {
   try {
-    const session = await getSession();
+    const session = await getClientSession();
     const res = await fetch(apiAddress + apiEndpoints.CATEGORY.GET_BY_ID.endpoint + `/${id}`, {
       method: apiEndpoints.CATEGORY.GET_BY_ID.method,
       headers: {
-        Authorization: `Bearer ${session.token}`,
+        Authorization: `Bearer ${session}`,
       },
     });
     if (!res.ok) {

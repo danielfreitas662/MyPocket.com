@@ -128,7 +128,7 @@ namespace MyPocket.Infra.Repository
         {
           Results = results2.ToList(),
           Total = total,
-          Current = Convert.ToInt32(current)
+          Current = Convert.ToInt32(current) == 0 ? 1 : Convert.ToInt32(current)
         };
       }
       catch (Exception ex)

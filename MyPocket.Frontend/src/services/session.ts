@@ -1,10 +1,12 @@
 import { Session } from '@/types/session';
 import { cookies } from 'next/headers';
 
+const localAddress: string = process.env.NEXT_PUBLIC_LOCAL_ADDRESS as string;
+
 export async function getSession() {
   const session = cookies().get('session')?.value;
   const headers: HeadersInit = session ? { Session: session } : {};
-  const res = await fetch('http://localhost:3000/api/auth/me', {
+  const res = await fetch(localAddress + '/api/auth/me', {
     method: 'GET',
     cache: 'no-store',
     next: {
