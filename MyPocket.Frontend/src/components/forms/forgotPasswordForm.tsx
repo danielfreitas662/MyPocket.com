@@ -17,7 +17,7 @@ function ForgotPasswordForm() {
   } = useForm<LoginModel>();
   const finish = (values: any) => {
     setLoading(true);
-    fetch('http://localhost:3000/api/auth/authenticate', {
+    fetch('/api/auth/authenticate', {
       method: 'POST',
       body: JSON.stringify(values),
       headers: {
