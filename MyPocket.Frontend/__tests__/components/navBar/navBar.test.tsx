@@ -1,12 +1,23 @@
 import { Navbar } from '@/components';
+import { UserProvider, useUser } from '@/components/contexts/userContext';
 import '@testing-library/jest-dom';
 import { fireEvent, render, screen } from '@testing-library/react';
 
 jest.mock('next/navigation');
 
+const NavBarProvider = () => {
+  return (
+    <UserProvider>
+      <Navbar />
+    </UserProvider>
+  );
+};
 describe('navBar', () => {
   it('should render about, contact, signup and login links when no user provided', () => {
-    render(<Navbar user={null} />);
+    jest.mock('@/components/contexts/userContext', () => ({
+      useUser: () => ({ user: null }),
+    }));
+    render(<NavBarProvider />);
     const linkElements = screen.getAllByRole('link');
     expect(linkElements.length).toBe(4);
     const aboutLink = screen.getByText('About');
@@ -19,7 +30,10 @@ describe('navBar', () => {
     expect(loginLink).toBeInTheDocument();
   });
   it('should not render Dashboard, Transactions, Budgets, Accounts, Categories, Logout and Profile links when no user provided', () => {
-    render(<Navbar user={null} />);
+    jest.mock('@/components/contexts/userContext', () => ({
+      useUser: () => ({ user: null }),
+    }));
+    render(<NavBarProvider />);
     const linkElements = screen.getAllByRole('link');
     expect(linkElements.length).toBe(4);
     const dashboardLink = screen.queryByText('Dashboard');
@@ -38,7 +52,10 @@ describe('navBar', () => {
     expect(logoutLink).toBeNull();
   });
   it('should render Dashboard, Transactions, Budgets, Accounts, Categories, Logout and Profile links when user provided', () => {
-    render(<Navbar user={{ firstName: 'test', lastName: 'test', email: 'test@test.com' }} />);
+    jest.mock('@/components/contexts/userContext', () => ({
+      useUser: () => ({ user: { firstName: 'test', lastName: 'test', email: 'test@test.com' } }),
+    }));
+    render(<NavBarProvider />);
     const linkElements = screen.getAllByRole('link');
     expect(linkElements.length).toBe(14);
     const dashboardLink = screen.getAllByText('Dashboard');
@@ -57,7 +74,10 @@ describe('navBar', () => {
     expect(dashboardLink.length).toBe(2);
   });
   it('should not render about, contact, signup and login links when user provided', () => {
-    render(<Navbar user={{ firstName: 'test', lastName: 'test', email: 'test@test.com' }} />);
+    jest.mock('@/components/contexts/userContext', () => ({
+      useUser: () => ({ user: { firstName: 'test', lastName: 'test', email: 'test@test.com' } }),
+    }));
+    render(<NavBarProvider />);
     const linkElements = screen.getAllByRole('link');
     expect(linkElements.length).toBe(14);
     const aboutLink = screen.queryByText('About');
@@ -70,16 +90,22 @@ describe('navBar', () => {
     expect(loginLink).toBeNull();
   });
   it('should set class visible when click menu button', () => {
-    const { container } = render(<Navbar user={{ firstName: 'test', lastName: 'test', email: 'test@test.com' }} />);
+    jest.mock('@/components/contexts/userContext', () => ({
+      useUser: () => ({ user: { firstName: 'test', lastName: 'test', email: 'test@test.com' } }),
+    }));
+    const { container } = render(<NavBarProvider />);
     const menuButton = container.getElementsByClassName('menuButton')[0];
     fireEvent.click(menuButton);
     expect(menuButton).toHaveClass('visible');
   });
   it('should not have class visible when click menu twice', () => {
+    jest.mock('@/components/contexts/userContext', () => ({
+      useUser: () => ({ user: { firstName: 'test', lastName: 'test', email: 'test@test.com' } }),
+    }));
     const DivContainer = () => {
       return (
         <div>
-          <Navbar user={{ firstName: 'test', lastName: 'test', email: 'test@test.com' }} />
+          <NavBarProvider />
           <div data-testid="outside"></div>
         </div>
       );
@@ -93,10 +119,13 @@ describe('navBar', () => {
     expect(menuButton).not.toHaveClass('visible');
   });
   it('should not have class visible when click outside menu', () => {
+    jest.mock('@/components/contexts/userContext', () => ({
+      useUser: () => ({ user: { firstName: 'test', lastName: 'test', email: 'test@test.com' } }),
+    }));
     const DivContainer = () => {
       return (
         <div>
-          <Navbar user={{ firstName: 'test', lastName: 'test', email: 'test@test.com' }} />
+          <NavBarProvider />
           <div data-testid="outside"></div>
         </div>
       );

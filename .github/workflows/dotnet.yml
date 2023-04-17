@@ -5,49 +5,51 @@ name: .NET main branch
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ['main']
   pull_request:
-    branches: [ "main" ]
+    branches: ['main']
 
 jobs:
   build-and-test:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: 6.0.x
-    - name: Restore dependencies
-      run: cd MyPocket.Backend && dotnet restore
-    - name: Build
-      run: cd MyPocket.Backend && dotnet build --no-restore
-    - name: Test
-      run: cd MyPocket.Backend && dotnet test --no-build --verbosity normal
+      - uses: actions/checkout@v3
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 6.0.x
+      - name: Restore dependencies
+        run: cd MyPocket.Backend && dotnet restore
+      - name: Build
+        run: cd MyPocket.Backend && dotnet build --no-restore
+      - name: Test
+        run: cd MyPocket.Backend && dotnet test --no-build --verbosity normal
 
-    - name: Check out code
-      uses: actions/checkout@v2
-    
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: us-east-1
+      - name: Check out code
+        uses: actions/checkout@v2
 
-    - name: Login to Amazon ECR
-      id: login-ecr
-      uses: aws-actions/amazon-ecr-login@v1
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
 
-    - name: Build, tag, and push image to Amazon ECR
-      env:
-        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REPOSITORY: cwm/mypocket
-        IMAGE_TAG: latest
-      run: |
-        cd MyPocket.Backend
-        docker build -t $ECR_REPOSITORY .
-        docker tag $ECR_REPOSITORY:$IMAGE_TAG ${{ secrets.AWS_ECR_BACKEND }}:$IMAGE_TAG
-        docker push ${{ secrets.AWS_ECR_BACKEND }}:$IMAGE_TAG
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build, tag, and push image to Amazon ECR
+        env:
+          CLUSTER_NAME: mypocket-cluster
+          SERVICE_NAME: mypocket-api
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: cwm/mypocket
+          IMAGE_TAG: latest
+        run: |
+          cd MyPocket.Backend
+          docker build -t $ECR_REPOSITORY .
+          docker tag $ECR_REPOSITORY:$IMAGE_TAG ${{ secrets.AWS_ECR_BACKEND }}:$IMAGE_TAG
+          docker push ${{ secrets.AWS_ECR_BACKEND }}:$IMAGE_TAG
+          aws ecs update-service --cluster $CLUSTER_NAME --service $SERVICE_NAME --force-new-deployment

@@ -5,8 +5,9 @@ import { GetPattern } from '@/utils/patterns';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { useUser } from '../contexts/userContext';
+import { useRouter } from 'next/navigation';
 
-function LoginForm() {
+function LoginForm({ returnUrl }: { returnUrl?: string }) {
   const { login, loading, result } = useUser();
   const {
     handleSubmit,
@@ -14,7 +15,7 @@ function LoginForm() {
     formState: { errors },
   } = useForm<LoginModel>();
   return (
-    <form onSubmit={handleSubmit(login)} style={{ maxWidth: 400 }}>
+    <form onSubmit={handleSubmit((data) => login(data, returnUrl))} style={{ maxWidth: 400 }}>
       <FormItem label="E-mail" error={errors?.email?.message as string}>
         <TextInput
           {...register('email', {

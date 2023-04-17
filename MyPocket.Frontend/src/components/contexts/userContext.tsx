@@ -1,13 +1,13 @@
 'use client';
 import { authenticate, getUser } from '@/services/api/user';
 import { IUser, LoginModel, LoginResult } from '@/types/user';
+import { setCookie } from '@/utils/cookies';
 import { useRouter } from 'next/navigation';
-import { destroyCookie } from 'nookies';
 import React, { ReactNode, useEffect, useState } from 'react';
 
 interface UserContextProps {
   user: IUser | null;
-  login: (data: LoginModel) => void;
+  login: (data: LoginModel, returnUrl?: string) => void;
   logout: () => void;
   loading: boolean;
   result: LoginResult;
@@ -20,12 +20,12 @@ export function UserProvider({ children }: { children: ReactNode }) {
   const [result, setResult] = useState<LoginResult>({} as LoginResult);
   const router = useRouter();
   const logout = () => {
-    destroyCookie(null, 'session');
+    setCookie('session', null, 0);
     setUser(null);
     router.push('/');
     router.refresh();
   };
-  const login = (values: any) => {
+  const login = (values: LoginModel, returnUrl?: string) => {
     setLoading(true);
     authenticate(values)
       .then((res) => {
@@ -33,7 +33,9 @@ export function UserProvider({ children }: { children: ReactNode }) {
         setResult(res);
         if (res?.success) {
           setUser(res.user);
-          router.replace('/');
+          if (returnUrl) {
+            router.replace(returnUrl);
+          } else router.replace('/');
         }
       })
       .catch((res) => {

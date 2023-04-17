@@ -5,10 +5,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import styles from './navbar.module.scss';
 import { AiOutlineMenu } from 'react-icons/ai';
 import clsx from 'clsx';
-import { getUser } from '@/services/api/user';
-import { IUser } from '@/types/user';
-import { useRouter } from 'next/navigation';
-import { destroyCookie } from 'nookies';
 import { useUser } from '../contexts/userContext';
 
 function Navbar() {
