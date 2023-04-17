@@ -34,7 +34,7 @@ There is a dashboard where the user can get an overview of how the finances are 
 
 To see the app in action you can visit the production instance deployed in aws:
 
-http://my-pocket.net
+https://my-pocket.net
 
 The applications in running using containers.
 
