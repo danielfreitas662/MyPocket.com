@@ -17,7 +17,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             <div className="header">
               <div className="logo">
                 <Link href="/">
-                  <span>MyPocket.com</span>
+                  <span>MyPocket</span>
                 </Link>
               </div>
               <Navbar />
