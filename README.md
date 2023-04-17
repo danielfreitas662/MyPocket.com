@@ -32,6 +32,12 @@ MyPocket is a simple web application for managing personal finances.
 With the application the user can register and start importing the daily transactions and creating monthly budgets to control expenses.
 There is a dashboard where the user can get an overview of how the finances are going.
 
+To see the app in action you can visit the production instance deployed in aws:
+
+http://my-pocket.net
+
+The applications in running using containers.
+
 ![dashboard](images/dashboard.png 'dashboard')
 
 ## Getting Started
