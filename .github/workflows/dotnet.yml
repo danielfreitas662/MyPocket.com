@@ -4,14 +4,11 @@
 name: .NET main branch
 
 on:
-  push:
-    branches: ['main']
-    paths:
-      - 'MyPocket.Backend/**'
   pull_request:
     branches: ['main']
     paths:
       - 'MyPocket.Backend/**'
+    types: ['closed']
 
 jobs:
   build-and-test:
