@@ -1,20 +1,8 @@
 @import '../../styles/variables.scss';
 
-.body {
-  background-color: white;
-  padding: $container-padding;
-  gap: 20px 20px;
-  .description {
-    align-items: center;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    .image {
-      flex: 1 1 400px;
-      text-align: center;
-    }
-    .form {
-      flex: 1 1 400px;
-    }
-  }
+.description {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 }

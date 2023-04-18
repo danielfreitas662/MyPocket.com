@@ -15,7 +15,7 @@ function LoginForm({ returnUrl }: { returnUrl?: string }) {
     formState: { errors },
   } = useForm<LoginModel>();
   return (
-    <form onSubmit={handleSubmit((data) => login(data, returnUrl))} style={{ maxWidth: 400 }}>
+    <form onSubmit={handleSubmit((data) => login(data, returnUrl))}>
       <FormItem label="E-mail" error={errors?.email?.message as string}>
         <TextInput
           {...register('email', {

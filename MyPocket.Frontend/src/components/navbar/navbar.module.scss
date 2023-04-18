@@ -1,6 +1,6 @@
 @import '../../styles/variables.scss';
 @media screen and (min-width: 1060px) {
-  .header {
+  .nav {
     margin-bottom: 30px;
     .collapsedNav {
       display: none;
@@ -25,15 +25,15 @@
   }
 }
 
-@media screen and (max-width: 1060px) {
-  .header {
+@media screen and (max-width: 1059px) {
+  .nav {
     .expandedNav {
       display: none;
     }
     .collapsedNav {
       display: flex;
       z-index: 1000;
-      position: fixed;
+      position: absolute;
       justify-content: flex-start;
       top: 30px;
       right: 0px;
@@ -45,7 +45,7 @@
         border: 1px solid black;
         height: 20px;
       }
-      .privateNav {
+      .links {
         background-color: white;
         color: $primary-color;
         flex-direction: column;
