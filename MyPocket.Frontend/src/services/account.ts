@@ -45,13 +45,13 @@ export const getAccountById = async (id: string, session: string | undefined) =>
     return result;
   }
 };
-export const getAccounts = async () => {
+export const getAccounts = async (session: string | undefined) => {
   try {
-    const session = await getClientSession();
+    const token = session || (await getClientSession());
     const res = await fetch(apiAddress + apiEndpoints.ACCOUNT.GET.endpoint, {
       method: apiEndpoints.ACCOUNT.GET.method,
       headers: {
-        Authorization: `Bearer ${session}`,
+        Authorization: `Bearer ${token}`,
       },
     });
     if (!res.ok) {

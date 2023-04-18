@@ -9,9 +9,8 @@ import { Suspense } from 'react';
 async function Transaction({ params }: { params: { id: string } }) {
   const session = cookies().get('session')?.value;
   const result = await getTransactionById(params?.id, session);
-  console.log(result);
-  const { data: categories } = await getCategories();
-  const { data: accounts } = await getAccounts();
+  const { data: categories } = await getCategories(session);
+  const { data: accounts } = await getAccounts(session);
   return (
     <Suspense fallback={<Skeleton rows={10} />}>
       {!result.data ? (
