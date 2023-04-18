@@ -24,7 +24,7 @@ function SignupForm() {
       .then((res) => {
         setResult(res);
         setLoading(false);
-        //router.push('/');
+        router.push('/Login');
       })
       .catch((res) => {
         setLoading(false);
@@ -52,7 +52,7 @@ function SignupForm() {
           type="password"
           {...register('password', {
             required: 'Required field',
-            minLength: 8,
+            minLength: { value: 8, message: 'Passoword must have at least 8 characters' },
           })}
         />
       </FormItem>
@@ -61,7 +61,7 @@ function SignupForm() {
           type="password"
           {...register('confirmPassword', {
             required: 'Required field',
-            minLength: 8,
+            minLength: { value: 8, message: 'Passoword must have at least 8 characters' },
             validate: (value, values) => value == values.password || 'Passwords don`t match',
           })}
         />

@@ -12,7 +12,7 @@ function Navbar() {
   const [visible, setVisible] = useState(false);
   const ref = useRef<any>();
   const PrivateNav = () => (
-    <nav className={clsx({ [styles.privateNav]: true, [styles.visible]: visible })}>
+    <nav className={clsx({ [styles.links]: true, [styles.visible]: visible })}>
       <Link className={styles.link} href={`/private/dashboard/${moment().format('YYYY-MM-DD')}`}>
         Dashboard
       </Link>
@@ -36,6 +36,22 @@ function Navbar() {
       </Link>
     </nav>
   );
+  const PublicNav = () => (
+    <nav className={clsx({ [styles.links]: true, [styles.visible]: visible })}>
+      <Link className={styles.link} href="/about">
+        About
+      </Link>
+      <Link className={styles.link} href="/contact">
+        Contact
+      </Link>
+      <Link className={styles.link} href="/signup">
+        Signup
+      </Link>
+      <Link className={styles.link} href="/login">
+        Login
+      </Link>
+    </nav>
+  );
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (ref.current && !ref.current.contains(event.target)) {
@@ -46,40 +62,18 @@ function Navbar() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
   return (
-    <header className={styles.header} ref={ref}>
-      {!user && (
-        <nav className={styles.expandedNav}>
-          <Link className={styles.link} href="/about">
-            About
-          </Link>
-          <Link className={styles.link} href="/contact">
-            Contact
-          </Link>
-          <Link className={styles.link} href="/signup">
-            Signup
-          </Link>
-          <Link className={styles.link} href="/login">
-            Login
-          </Link>
-        </nav>
-      )}
-      {user && (
-        <div className={styles.expandedNav}>
-          <PrivateNav />
+    <div className={styles.nav} ref={ref}>
+      <div className={styles.expandedNav}>{user ? <PrivateNav /> : <PublicNav />}</div>
+      <div className={clsx({ [styles.collapsedNav]: true, [styles.visible]: visible })}>
+        <div
+          className={clsx({ [styles.menuButton]: true, [styles.visible]: visible })}
+          onClick={() => setVisible(!visible)}
+        >
+          <AiOutlineMenu />
         </div>
-      )}
-      {user && (
-        <div className={clsx({ [styles.collapsedNav]: true, [styles.visible]: visible })}>
-          <div
-            className={clsx({ [styles.menuButton]: true, [styles.visible]: visible })}
-            onClick={() => setVisible(!visible)}
-          >
-            <AiOutlineMenu />
-          </div>
-          <PrivateNav />
-        </div>
-      )}
-    </header>
+        {user ? <PrivateNav /> : <PublicNav />}
+      </div>
+    </div>
   );
 }
 
