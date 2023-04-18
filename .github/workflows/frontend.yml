@@ -4,14 +4,11 @@
 name: React main branch
 
 on:
-  push:
-    branches: ['main']
-    paths:
-      - 'MyPocket.Frontend/**'
   pull_request:
     branches: ['main']
     paths:
       - 'MyPocket.Frontend/**'
+    types: ['closed']
 
 jobs:
   build-and-test:
