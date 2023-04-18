@@ -91,6 +91,7 @@ const Select = React.forwardRef(
         setComponentPosition([nodePosition.x || 0, nodePosition.y || 0]);
       }
     }, [nodePosition, nodeOptionsSize]);
+    console.log(componentRef.current?.offsetWidth);
     return (
       <div
         className={styles.container}
@@ -178,6 +179,7 @@ const Select = React.forwardRef(
               componentPosition[1] + optionsSize[1] <= windowSize[1]
                 ? componentPosition[1] + 32
                 : componentPosition[1] - optionsSize[1],
+            minWidth: componentRef.current?.offsetWidth,
           }}
         >
           {options

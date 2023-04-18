@@ -4,14 +4,14 @@ import apiEndpoints from './apiEndpoints';
 import { getClientSession } from './clientSession';
 
 const apiAddress: string = process.env.NEXT_PUBLIC_API_ADDRESS as string;
-export const getCategories = async () => {
+export const getCategories = async (session?: string | undefined) => {
   try {
-    const session = await getClientSession();
+    const token = session || (await getClientSession());
     const res = await fetch(apiAddress + apiEndpoints.CATEGORY.GET.endpoint, {
       method: apiEndpoints.CATEGORY.GET.method,
       cache: 'no-store',
       headers: {
-        Authorization: `Bearer ${session}`,
+        Authorization: `Bearer ${token}`,
       },
     });
     if (!res.ok) {
