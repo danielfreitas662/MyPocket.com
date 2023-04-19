@@ -2,6 +2,9 @@ import { Button, PrivateLayout } from '@/components';
 import { ReactNode } from 'react';
 import { FaPlus } from 'react-icons/fa';
 
+export const metadata = {
+  title: 'MyPocket - Layout',
+};
 interface BudgetLayoutProps {
   children: ReactNode;
 }

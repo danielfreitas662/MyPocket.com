@@ -4,9 +4,6 @@ import { PageSearchParams } from '@/types/pagination';
 import { ITransaction } from '@/types/transaction';
 import { cookies } from 'next/headers';
 
-export const metadata = {
-  title: 'MyPocket - Transactions',
-};
 interface PageProps {
   searchParams: PageSearchParams & ITransaction;
 }

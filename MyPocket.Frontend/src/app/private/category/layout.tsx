@@ -1,8 +1,11 @@
 import { Button, ErrorBoundary, PrivateLayout } from '@/components';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { ReactNode } from 'react';
 import { FaPlus } from 'react-icons/fa';
+
+export const metadata = {
+  title: 'MyPocket - Categories',
+};
 interface CategoryLayoutProps {
   children: ReactNode;
 }

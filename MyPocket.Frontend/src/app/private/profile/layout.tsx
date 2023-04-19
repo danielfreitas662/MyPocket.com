@@ -1,5 +1,9 @@
 import { PrivateLayout } from '@/components';
 import { ReactNode } from 'react';
+
+export const metadata = {
+  title: 'MyPocket - Profile',
+};
 interface ProfileLayoutProps {
   children: ReactNode;
 }
