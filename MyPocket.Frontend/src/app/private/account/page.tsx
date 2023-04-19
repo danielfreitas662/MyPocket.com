@@ -4,9 +4,6 @@ import { IAccount } from '@/types/account';
 import { PageSearchParams } from '@/types/pagination';
 import { cookies } from 'next/headers';
 
-export const metadata = {
-  title: 'MyPocket - Accounts',
-};
 interface PageProps {
   searchParams: PageSearchParams & IAccount;
 }

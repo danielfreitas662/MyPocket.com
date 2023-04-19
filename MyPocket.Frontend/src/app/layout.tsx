@@ -6,6 +6,11 @@ import { Navbar } from '@/components';
 import 'react-toastify/dist/ReactToastify.css';
 import { UserProvider } from '@/components/contexts/userContext';
 
+export const metadata = {
+  title: 'My Pocket',
+  description: 'Personal Finances Management',
+  icons: { icon: [{ url: '/favicon.ico', type: 'image/svg+xml' }] },
+};
 const inter = Inter({ subsets: ['latin'] });
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {

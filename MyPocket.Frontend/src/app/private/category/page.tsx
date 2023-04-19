@@ -7,9 +7,6 @@ import { getCategories } from '@/services/api/category';
 import { Suspense } from 'react';
 import { Skeleton } from '@/components';
 
-export const metadata = {
-  title: 'MyPocket - Categories',
-};
 interface PageProps {
   searchParams: PageSearchParams & ICategory;
 }

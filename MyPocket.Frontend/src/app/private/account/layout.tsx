@@ -2,13 +2,13 @@ import { Button, PrivateLayout } from '@/components';
 import Link from 'next/link';
 import { ReactNode } from 'react';
 import { FaPlus } from 'react-icons/fa';
+export const metadata = {
+  title: 'MyPocket - Accounts',
+};
 interface AccountLayoutProps {
   children: ReactNode;
-  params: {
-    month: string;
-  };
 }
-export default function AccountLayout({ children, params }: AccountLayoutProps) {
+export default function AccountLayout({ children }: AccountLayoutProps) {
   return (
     <PrivateLayout
       title="Accounts"
