@@ -5,7 +5,6 @@ import { GetPattern } from '@/utils/patterns';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { useUser } from '../contexts/userContext';
-import { useRouter } from 'next/navigation';
 
 function LoginForm({ returnUrl }: { returnUrl?: string }) {
   const { login, loading, result } = useUser();
@@ -39,14 +38,18 @@ function LoginForm({ returnUrl }: { returnUrl?: string }) {
             Login
           </Button>
         </Col>
-        <Col span={12}>
-          <Link href="/signup">Register</Link>
+        <Col span={12} align="center">
+          <Link href="/signup" style={{ fontSize: 14 }}>
+            Register
+          </Link>
         </Col>
-        <Col span={12}>
-          <Link href="/forgot">Forgot Password</Link>
+        <Col span={12} align="right">
+          <Link href="/forgot" style={{ fontSize: 14 }}>
+            Forgot Password
+          </Link>
         </Col>
       </Row>
-      <Feedback type={!result?.success ? 'error' : 'success'} message={result?.message as string} />
+      <Feedback type={!result?.success ? 'error' : 'success'} message={result?.message as string} dismissable />
     </form>
   );
 }

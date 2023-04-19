@@ -1,25 +1,22 @@
 import React from 'react';
-import styles from './page.module.scss';
 import contact from '../../images/contact/contact.png';
 import Image from 'next/image';
 import { ContactForm } from '@/components/forms';
-import { FormProvider } from '@/components/form/form';
+import { Col, Row } from '@/components';
 
 export const metadata = {
   title: 'MyPocket - Contact',
 };
 function Contact() {
   return (
-    <div className={styles.text}>
-      <div className={styles.image}>
-        <Image src={contact} alt="contact" height={300} />
-      </div>
-      <div className={styles.form}>
-        <FormProvider>
-          <ContactForm />
-        </FormProvider>
-      </div>
-    </div>
+    <Row gutter={[10, 10]} justifyContent="center" alignItems="center" wrap>
+      <Col flex="1 1 400px" align="center">
+        <Image src={contact} alt="contact" width={300} />
+      </Col>
+      <Col flex="0 1 400px">
+        <ContactForm />
+      </Col>
+    </Row>
   );
 }
 

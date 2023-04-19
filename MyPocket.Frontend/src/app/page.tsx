@@ -1,5 +1,5 @@
-import UnauthHome from './home';
+import UnAuthHome from './home';
 
 export default function Home() {
-  return <UnauthHome />;
+  return <UnAuthHome />;
 }

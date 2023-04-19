@@ -4,16 +4,14 @@ import { SignupForm } from '@/components/forms';
 import { Col, Row } from '@/components';
 function Signup() {
   return (
-    <>
-      <Row justifyContent="center" wrap>
-        <Col span={12} align="center">
-          <Image src={signup} alt="signup" style={{ minWidth: 200 }} />
-        </Col>
-        <Col span={12}>
-          <SignupForm />
-        </Col>
-      </Row>
-    </>
+    <Row justifyContent="space-between" alignItems="center" wrap gutter={[10, 10]}>
+      <Col flex="1 1 400px" align="center">
+        <Image src={signup} width={200} alt="signup" />
+      </Col>
+      <Col flex="0 1 400px">
+        <SignupForm />
+      </Col>
+    </Row>
   );
 }
 
