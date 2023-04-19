@@ -7,7 +7,7 @@ import calendar from '../images/home/calendar.svg';
 import upload from '../images/home/upload.svg';
 import why from '../images/home/why.png';
 
-function UnauthHome() {
+function UnAuthHome() {
   return (
     <div className={styles.page}>
       <section className={styles.presentation}>
@@ -96,4 +96,4 @@ function UnauthHome() {
     </div>
   );
 }
-export default UnauthHome;
+export default UnAuthHome;
