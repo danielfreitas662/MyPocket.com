@@ -1,8 +1,8 @@
 'use client';
-import { getTransactions, removeTransaction } from '@/services/api/transaction';
+import { removeTransaction } from '@/services/api/transaction';
 import { ITransaction } from '@/types/transaction';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import { ToastContainer, toast } from 'react-toastify';
 import { PopConfirm, Table } from '@/components';
@@ -13,20 +13,19 @@ import { useRouter } from 'next/navigation';
 import { ColumnType } from '../table/tableTypes';
 import { objectToQueryString } from '@/utils/queryString';
 
-function TransactionsTable(props: PageSearchParams & ITransaction) {
-  const [data, setData] = useState<FilterResult<ITransaction>>({ current: props.current, total: 0, results: [] });
+interface TransactionsTableProps {
+  searchParams: PageSearchParams & ITransaction;
+  data: FilterResult<ITransaction>;
+}
+function TransactionsTable(props: TransactionsTableProps) {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const handleRemove = (id: string) => {
     setLoading(true);
     removeTransaction(id)
-      .then((res) => {
+      .then(() => {
         setLoading(false);
-        setData((pv) => ({
-          results: pv.results.filter((c) => c.id !== res.data),
-          total: pv.total - 1,
-          current: pv.current,
-        }));
+        router.refresh();
         toast.success('Transaction successfully removed!');
       })
       .catch((res) => {
@@ -34,30 +33,7 @@ function TransactionsTable(props: PageSearchParams & ITransaction) {
         toast.error(res);
       });
   };
-  useEffect(() => {
-    setLoading(true);
-    getTransactions({
-      filters: {
-        description: props.description,
-        amount: props.amount,
-        date: props.date,
-        category: props.category,
-        account: props.account,
-      } as ITransaction,
-      pagination: { current: props.current, pageSize: props.pageSize },
-      sorter: { field: props.field, order: props.order },
-    })
-      .then((res) => {
-        if (res.data.current != props.current) {
-          router.replace(`/private/transaction?${objectToQueryString({ ...props, current: res.data.current })}`);
-        }
-        setLoading(false);
-        setData(res.data);
-      })
-      .catch(() => {
-        setLoading(false);
-      });
-  }, [props]);
+
   const columns: ColumnType<ITransaction>[] = [
     {
       title: '',
@@ -80,7 +56,7 @@ function TransactionsTable(props: PageSearchParams & ITransaction) {
       dataIndex: 'date',
       filter: {
         filterType: 'date',
-        filterValue: props.date,
+        filterValue: props.searchParams.date,
       },
       render: (v: string) => moment(v).format('DD/MM/YYYY'),
     },
@@ -89,7 +65,7 @@ function TransactionsTable(props: PageSearchParams & ITransaction) {
       dataIndex: 'description',
       filter: {
         filterType: 'string',
-        filterValue: props.description,
+        filterValue: props.searchParams.description,
       },
     },
     {
@@ -99,7 +75,7 @@ function TransactionsTable(props: PageSearchParams & ITransaction) {
       render: (v: number) => currencyFormat(v, 'pt-BR'),
       filter: {
         filterType: 'string',
-        filterValue: props.amount,
+        filterValue: props.searchParams.amount,
       },
     },
     {
@@ -107,7 +83,7 @@ function TransactionsTable(props: PageSearchParams & ITransaction) {
       dataIndex: 'category',
       filter: {
         filterType: 'string',
-        filterValue: props.category,
+        filterValue: props.searchParams.category,
       },
     },
     {
@@ -115,7 +91,7 @@ function TransactionsTable(props: PageSearchParams & ITransaction) {
       dataIndex: 'account',
       filter: {
         filterType: 'string',
-        filterValue: props.account,
+        filterValue: props.searchParams.account,
       },
     },
   ];
@@ -124,19 +100,19 @@ function TransactionsTable(props: PageSearchParams & ITransaction) {
       <ToastContainer />
       <Table
         rowKey="id"
-        dataSource={data.results}
+        dataSource={props.data.results}
         scroll={{ x: '100%', y: 'calc(100vh - 300px)' }}
         loading={loading}
-        sorter={{ field: props.field, order: props.order }}
+        sorter={{ field: props.searchParams.field, order: props.searchParams.order }}
         onChange={(filter, sorter, pagination) => {
           const query = objectToQueryString({ ...filter, ...sorter, ...pagination });
           router.push(`/private/transaction?${query}`);
         }}
         pagination={{
-          total: data.total,
+          total: props.data.total,
           pageOptions: [10, 20, 50, 100],
-          pageSize: props.pageSize || 10,
-          current: props.current,
+          pageSize: props.searchParams.pageSize || 10,
+          current: props.searchParams.current,
         }}
         columns={columns}
       />

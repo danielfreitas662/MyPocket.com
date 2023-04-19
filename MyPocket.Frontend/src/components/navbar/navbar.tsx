@@ -61,6 +61,7 @@ function Navbar() {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+  if (loading) return <div />;
   return (
     <div className={styles.nav} ref={ref}>
       <div className={styles.expandedNav}>{user ? <PrivateNav /> : <PublicNav />}</div>

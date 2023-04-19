@@ -91,7 +91,6 @@ const Select = React.forwardRef(
         setComponentPosition([nodePosition.x || 0, nodePosition.y || 0]);
       }
     }, [nodePosition, nodeOptionsSize]);
-    console.log(componentRef.current?.offsetWidth);
     return (
       <div
         className={styles.container}

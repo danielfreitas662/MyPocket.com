@@ -1,7 +1,6 @@
 import { IAccount } from '@/types/account';
 import { ApiRequest } from '@/types/apirequest';
 import apiEndpoints from './apiEndpoints';
-import { getSession } from './session';
 import { getClientSession } from './clientSession';
 
 const apiAddress: string = process.env.NEXT_PUBLIC_API_ADDRESS as string;
@@ -15,7 +14,6 @@ export const getAccountById = async (id: string, session: string | undefined) =>
       },
     });
     if (!res.ok) {
-      //const text = await res.text();
       const result: ApiRequest<IAccount | null> = {
         error: true,
         statusCode: res.status,

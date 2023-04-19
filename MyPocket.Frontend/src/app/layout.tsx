@@ -14,14 +14,14 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <body>
         <UserProvider>
           <main className={inter.className + ' main'} style={{ ...inter.style }}>
-            <div className="header">
+            <header className="header">
               <div className="logo">
                 <Link href="/">
                   <span>MyPocket</span>
                 </Link>
               </div>
               <Navbar />
-            </div>
+            </header>
             <div className="content">{children}</div>
             <Footer />
           </main>

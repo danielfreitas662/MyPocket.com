@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import { ToastContainer, toast } from 'react-toastify';
 import { PopConfirm, Table } from '@/components';
@@ -9,10 +9,13 @@ import { useRouter } from 'next/navigation';
 import { ColumnType } from '../table/tableTypes';
 import { objectToQueryString } from '@/utils/queryString';
 import { IAccount } from '@/types/account';
-import { getAccounts, removeAccount } from '@/services/api/account';
+import { removeAccount } from '@/services/api/account';
+interface AccountsTableProps {
+  searchParams: PageSearchParams & IAccount;
+  data: FilterResult<IAccount>;
+}
 
-function AccountsTable(props: PageSearchParams & IAccount) {
-  const [data, setData] = useState<FilterResult<IAccount>>({ current: props.current, total: 0, results: [] });
+function AccountsTable({ searchParams, data }: AccountsTableProps) {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const handleRemove = (id: string) => {
@@ -20,11 +23,7 @@ function AccountsTable(props: PageSearchParams & IAccount) {
     removeAccount(id)
       .then((res) => {
         setLoading(false);
-        setData((pv) => ({
-          results: pv.results.filter((c) => c.id !== res.data),
-          total: pv.total - 1,
-          current: pv.current,
-        }));
+        router.refresh();
         toast.success('Account successfully removed!');
       })
       .catch((res) => {
@@ -32,26 +31,6 @@ function AccountsTable(props: PageSearchParams & IAccount) {
         toast.error(res);
       });
   };
-  useEffect(() => {
-    setLoading(true);
-    getAccounts({
-      filters: {
-        name: props.name,
-      } as IAccount,
-      pagination: { current: props.current, pageSize: props.pageSize },
-      sorter: { field: props.field, order: props.order },
-    })
-      .then((res) => {
-        if (res.data.current != props.current) {
-          router.replace(`/private/account?${objectToQueryString({ ...props, current: res.data.current })}`);
-        }
-        setLoading(false);
-        setData(res.data);
-      })
-      .catch(() => {
-        setLoading(false);
-      });
-  }, [props]);
   const columns: ColumnType<IAccount>[] = [
     {
       title: '',
@@ -74,7 +53,7 @@ function AccountsTable(props: PageSearchParams & IAccount) {
       dataIndex: 'name',
       filter: {
         filterType: 'string',
-        filterValue: props.name,
+        filterValue: searchParams.name,
       },
     },
   ];
@@ -86,7 +65,7 @@ function AccountsTable(props: PageSearchParams & IAccount) {
         dataSource={data.results}
         scroll={{ x: '100%', y: 'calc(100vh - 300px)' }}
         loading={loading}
-        sorter={{ field: props.field, order: props.order }}
+        sorter={{ field: searchParams.field, order: searchParams.order }}
         onChange={(filter, sorter, pagination) => {
           const query = objectToQueryString({ ...filter, ...sorter, ...pagination });
           router.push(`/private/account?${query}`);
@@ -94,8 +73,8 @@ function AccountsTable(props: PageSearchParams & IAccount) {
         pagination={{
           total: data.total,
           pageOptions: [10, 20, 50, 100],
-          pageSize: props.pageSize || 10,
-          current: props.current,
+          pageSize: searchParams.pageSize || 10,
+          current: searchParams.current,
         }}
         columns={columns}
       />
