@@ -4,9 +4,9 @@ import { Filter, FilterResult } from '@/types/pagination';
 import apiEndpoints from '../apiEndpoints';
 import { getClientSession } from '../clientSession';
 const apiAddress: string = process.env.NEXT_PUBLIC_API_ADDRESS as string;
-export const getTransactions = async (filters: Filter<ITransaction>) => {
+export const getTransactions = async (filters: Filter<ITransaction>, session?: string | undefined) => {
   try {
-    const session = await getClientSession();
+    const token = session || (await getClientSession());
     const res = await fetch(apiAddress + apiEndpoints.TRANSACTION.FILTER.endpoint, {
       method: apiEndpoints.TRANSACTION.FILTER.method,
       cache: 'no-store',

@@ -4,15 +4,15 @@ import apiEndpoints from '../apiEndpoints';
 import { getClientSession } from '../clientSession';
 import { Filter, FilterResult } from '@/types/pagination';
 const apiAddress: string = process.env.NEXT_PUBLIC_API_ADDRESS as string;
-export const getCategories = async (filters: Filter<ICategory>) => {
+export const getCategories = async (filters: Filter<ICategory>, session?: string | undefined) => {
   try {
-    const session = await getClientSession();
+    const token = session || (await getClientSession());
     const res = await fetch(apiAddress + apiEndpoints.CATEGORY.FILTER.endpoint, {
       method: apiEndpoints.CATEGORY.FILTER.method,
       cache: 'no-store',
       headers: {
         // @ts-ignore
-        Authorization: `Bearer ${session}`,
+        Authorization: `Bearer ${token}`,
         'content-type': 'application/json',
       },
       body: JSON.stringify(filters),

@@ -9,10 +9,13 @@ import { useRouter } from 'next/navigation';
 import { ColumnType } from '../table/tableTypes';
 import { objectToQueryString } from '@/utils/queryString';
 import { CategoryType, ICategory } from '@/types/category';
-import { removeCategory, getCategories } from '@/services/api/category';
+import { removeCategory } from '@/services/api/category';
 
-function CategoriasTable(props: PageSearchParams & ICategory) {
-  const [data, setData] = useState<FilterResult<ICategory>>({ current: props.current, total: 0, results: [] });
+interface CategoriesTableProps {
+  searchParams: PageSearchParams & ICategory;
+  data: FilterResult<ICategory>;
+}
+function CategoriasTable({ searchParams, data }: CategoriesTableProps) {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const handleRemove = (id: string) => {
@@ -20,11 +23,7 @@ function CategoriasTable(props: PageSearchParams & ICategory) {
     removeCategory(id)
       .then((res) => {
         setLoading(false);
-        setData((pv) => ({
-          results: pv.results.filter((c) => c.id !== res.data),
-          total: pv.total - 1,
-          current: pv.current,
-        }));
+        router.refresh();
         toast.success('Category successfully removed!');
       })
       .catch((res) => {
@@ -32,26 +31,6 @@ function CategoriasTable(props: PageSearchParams & ICategory) {
         toast.error(res);
       });
   };
-  useEffect(() => {
-    setLoading(true);
-    getCategories({
-      filters: {
-        name: props.name,
-      } as ICategory,
-      pagination: { current: props.current, pageSize: props.pageSize },
-      sorter: { field: props.field, order: props.order },
-    })
-      .then((res) => {
-        if (res.data.current != props.current) {
-          router.replace(`/private/category?${objectToQueryString({ ...props, current: res.data.current })}`);
-        }
-        setLoading(false);
-        setData(res.data);
-      })
-      .catch(() => {
-        setLoading(false);
-      });
-  }, [props]);
   const columns: ColumnType<ICategory>[] = [
     {
       title: '',
@@ -74,7 +53,7 @@ function CategoriasTable(props: PageSearchParams & ICategory) {
       dataIndex: 'name',
       filter: {
         filterType: 'string',
-        filterValue: props.name,
+        filterValue: searchParams.name,
       },
     },
     {
@@ -82,7 +61,7 @@ function CategoriasTable(props: PageSearchParams & ICategory) {
       dataIndex: 'type',
       filter: {
         filterType: 'string',
-        filterValue: props.type,
+        filterValue: searchParams.type,
       },
       render: (v) => (v === CategoryType.Income ? 'Income' : 'Expense'),
     },
@@ -95,7 +74,7 @@ function CategoriasTable(props: PageSearchParams & ICategory) {
         dataSource={data.results}
         scroll={{ x: '100%', y: 'calc(100vh - 300px)' }}
         loading={loading}
-        sorter={{ field: props.field, order: props.order }}
+        sorter={{ field: searchParams.field, order: searchParams.order }}
         onChange={(filter, sorter, pagination) => {
           const query = objectToQueryString({ ...filter, ...sorter, ...pagination });
           router.push(`/private/category?${query}`);
@@ -103,8 +82,8 @@ function CategoriasTable(props: PageSearchParams & ICategory) {
         pagination={{
           total: data.total,
           pageOptions: [10, 20, 50, 100],
-          pageSize: props.pageSize || 10,
-          current: props.current,
+          pageSize: searchParams.pageSize || 10,
+          current: searchParams.current,
         }}
         columns={columns}
       />
