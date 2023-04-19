@@ -13,5 +13,9 @@ namespace MyPocket.Application.Interfaces
     Task<BudgetDTO> UpdateAsync(UserData User, BudgetDTO account, BudgetDTO values);
     Task RemoveAsync(UserData user, BudgetDTO account);
     Task RemoveRangeAsync(UserData user, List<string> ids);
+    List<BudgetItemDTO> GetItems(string budgetId, string userId);
+    Task<BudgetItemDTO> AddItemAsync(BudgetItemDTO item, string userId);
+    Task<string> RemoveItemAsync(string itemId, string userId);
+    Task<BudgetItemDTO> UpdateItemAsync(BudgetItemDTO item, string userId);
   }
 }

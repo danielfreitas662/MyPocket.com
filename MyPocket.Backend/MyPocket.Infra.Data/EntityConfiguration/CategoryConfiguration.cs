@@ -13,7 +13,7 @@ namespace MyPocket.Infra.EntityConfiguration
           .WithOne(e => e.Category)
           .HasForeignKey(e => e.CategoryId)
           .IsRequired();
-      b.HasMany(e => e.Budgets)
+      b.HasMany(e => e.BudgetItems)
           .WithOne(e => e.Category)
           .HasForeignKey(e => e.CategoryId)
           .IsRequired();

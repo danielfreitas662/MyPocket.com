@@ -14,7 +14,7 @@ namespace MyPocket.Infra.Data.Context
     public MyPocketDBContext CreateDbContext(string[] args)
     {
       var optionsBuilder = new DbContextOptionsBuilder<MyPocketDBContext>();
-      optionsBuilder.UseNpgsql("Host=mypocketdb.clux19hkotky.us-east-1.rds.amazonaws.com; Port=5432; Database=mypocketDB; Username=postgres; Password=*aP48104810;");
+      optionsBuilder.UseNpgsql("Host=localhost; Database=mypocketDB; Username=postgres; Password=daniel2;");
 
       return new MyPocketDBContext(optionsBuilder.Options);
     }
@@ -30,6 +30,7 @@ namespace MyPocket.Infra.Data.Context
     public DbSet<Account> Accounts { get; set; }
     public DbSet<Category> Categories { get; set; }
     public DbSet<Budget> Budgets { get; set; }
+    public DbSet<BudgetItem> BudgetItems { get; set; }
     public DbSet<Transaction> Transactions { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -44,6 +45,7 @@ namespace MyPocket.Infra.Data.Context
       modelBuilder.ApplyConfiguration(new UserConfiguration());
       modelBuilder.ApplyConfiguration(new AccountConfiguration());
       modelBuilder.ApplyConfiguration(new BudgetConfiguration());
+      modelBuilder.ApplyConfiguration(new BudgetItemConfiguration());
       modelBuilder.ApplyConfiguration(new CategoryConfiguration());
       modelBuilder.ApplyConfiguration(new TransactionConfiguration());
       modelBuilder.ApplyConfiguration(new UserConfiguration());

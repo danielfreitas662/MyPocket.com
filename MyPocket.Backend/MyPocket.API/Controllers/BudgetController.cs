@@ -60,26 +60,103 @@ namespace MyPocket.API.Controllers
     [HttpDelete("{Id}")]
     public async Task<ActionResult> Remove([FromRoute] string Id)
     {
-      var user = HttpContext.User.Identity!.GetUserData();
-      var budget = await _application.Budget.GetByIdAsync(user.UserId, Id);
-      if (budget == null) return NotFound($"Budget Id: {Id} not found");
-      await _application.Budget.RemoveAsync(user, budget);
-      return Ok(Id);
+      try
+      {
+        var user = HttpContext.User.Identity!.GetUserData();
+        var budget = await _application.Budget.GetByIdAsync(user.UserId, Id);
+        if (budget == null) return NotFound($"Budget Id: {Id} not found");
+        await _application.Budget.RemoveAsync(user, budget);
+        return Ok(Id);
+      }
+      catch (Exception ex)
+      {
+        return BadRequest(ex);
+      }
     }
 
     [HttpDelete("RemoveRange")]
     public async Task<ActionResult> RemoveRange([FromBody] RemoveRangeModel data)
     {
-      var user = HttpContext.User.Identity!.GetUserData();
-      await _application.Budget.RemoveRangeAsync(user, data.Ids);
-      return Ok(data.Ids);
+      try
+      {
+        var user = HttpContext.User.Identity!.GetUserData();
+        await _application.Budget.RemoveRangeAsync(user, data.Ids);
+        return Ok(data.Ids);
+      }
+      catch (Exception ex)
+      {
+        return BadRequest(ex);
+      }
     }
     [HttpPost("Filter")]
     public ActionResult Filter([FromBody] PaginationRequest<BudgetDTO> data)
     {
-      var user = HttpContext.User.Identity!.GetUserData();
-      var result = _application.Budget.Filter(data, user);
-      return Ok(result);
+      try
+      {
+        var user = HttpContext.User.Identity!.GetUserData();
+        var result = _application.Budget.Filter(data, user);
+        return Ok(result);
+      }
+      catch (Exception ex)
+      {
+        return BadRequest(ex);
+      }
+    }
+    [HttpGet("GetItems/{budgetId}")]
+    public ActionResult GetItems([FromRoute] string budgetId)
+    {
+      try
+      {
+        var user = HttpContext.User.Identity!.GetUserData();
+        var result = _application.Budget.GetItems(budgetId, user.UserId);
+        return Ok(result);
+      }
+      catch (Exception ex)
+      {
+        return BadRequest(ex);
+      }
+    }
+    [HttpPost("AddItem")]
+    public async Task<ActionResult> AddItem([FromBody] BudgetItemDTO item)
+    {
+      try
+      {
+        var user = HttpContext.User.Identity!.GetUserData();
+        var newitem = await _application.Budget.AddItemAsync(item, user.UserId);
+        return Ok(newitem);
+      }
+      catch (Exception ex)
+      {
+        return BadRequest(ex);
+      }
+    }
+    [HttpPatch("UpdateItem")]
+    public async Task<ActionResult> UpdateItem([FromBody] BudgetItemDTO item)
+    {
+      try
+      {
+        var user = HttpContext.User.Identity!.GetUserData();
+        var updatedItem = await _application.Budget.UpdateItemAsync(item, user.UserId);
+        return Ok(updatedItem);
+      }
+      catch (Exception ex)
+      {
+        return BadRequest(ex);
+      }
+    }
+    [HttpDelete("RemoveItem/{id}")]
+    public async Task<ActionResult> RemoveItem([FromRoute] string id)
+    {
+      try
+      {
+        var user = HttpContext.User.Identity!.GetUserData();
+        var result = await _application.Budget.RemoveItemAsync(id, user.UserId);
+        return Ok(result);
+      }
+      catch (Exception ex)
+      {
+        return BadRequest(ex);
+      }
     }
   }
 }

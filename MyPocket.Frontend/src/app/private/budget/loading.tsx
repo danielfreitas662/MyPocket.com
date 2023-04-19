@@ -1,4 +1,4 @@
 import { Skeleton } from '@/components';
-export default function AboutLoading() {
+export default function BudgetLoading() {
   return <Skeleton rows={10} />;
 }

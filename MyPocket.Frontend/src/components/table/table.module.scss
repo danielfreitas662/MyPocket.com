@@ -100,9 +100,10 @@
             }
             .filterBox {
               display: none;
+              position: fixed;
+              z-index: 10000;
               flex-direction: column;
               gap: 10px 10px;
-              position: absolute;
               background-color: white;
               box-shadow: 1px 1px 4px grey;
               border-radius: $border-radius;

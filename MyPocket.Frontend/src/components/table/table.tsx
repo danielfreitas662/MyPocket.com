@@ -38,7 +38,7 @@ function Table({
     <div className={styles.all}>
       <div
         className={clsx({ [styles.tableWrapper]: true })}
-        style={{ maxHeight: scroll?.y, maxWidth: scroll?.x, overflowY: 'scroll' }}
+        style={{ maxHeight: scroll?.y, width: '100%', overflow: 'scroll', overflowX: 'scroll' }}
       >
         <div className={clsx({ [styles.spinnerMask]: true, [styles.loading]: loading })}>
           <div className={styles.spinner} />
@@ -57,7 +57,7 @@ function Table({
             setFilter: setFilterValue,
           }}
         >
-          <table>
+          <table style={{ width: '100%', minWidth: scroll?.x, overflowX: 'scroll' }}>
             <TableHeader />
             <TableBody />
           </table>
