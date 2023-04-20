@@ -5,6 +5,7 @@ import Footer from './footer';
 import { Navbar } from '@/components';
 import 'react-toastify/dist/ReactToastify.css';
 import { UserProvider } from '@/components/contexts/userContext';
+import React from 'react';
 
 export const metadata = {
   title: 'My Pocket',

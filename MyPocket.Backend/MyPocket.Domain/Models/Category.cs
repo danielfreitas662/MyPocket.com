@@ -14,7 +14,7 @@ namespace MyPocket.Domain.Models
     public string UserId { get; set; }
     public CategoryType Type { get; set; }
     public User User { get; set; }
-    public ICollection<Budget> Budgets { get; set; }
+    public ICollection<BudgetItem> BudgetItems { get; set; }
     public ICollection<Transaction> Transactions { get; set; }
   }
   public class CategoryWithRelated

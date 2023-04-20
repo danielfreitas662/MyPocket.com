@@ -9,6 +9,7 @@ namespace MyPocket.Infra.Repository
     protected readonly MyPocketDBContext _context;
     private IDbContextTransaction? _transaction;
     public IBudgetRepository Budget { get; private set; }
+    public IBudgetItemRepository BudgetItem { get; private set; }
 
     public ICategoryRepository Category { get; private set; }
 
@@ -24,6 +25,7 @@ namespace MyPocket.Infra.Repository
       Transaction = new TransactionRepository(_context);
       Category = new CategoryRepository(_context);
       User = new UserRepository(_context);
+      BudgetItem = new BudgetItemRepository(_context);
     }
 
     public async Task<int> SaveAsync()

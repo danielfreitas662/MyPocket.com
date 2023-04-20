@@ -24,7 +24,7 @@ function SignupForm() {
       .then((res) => {
         setResult(res);
         setLoading(false);
-        router.push('/Login');
+        router.push('/login');
       })
       .catch((res) => {
         setLoading(false);

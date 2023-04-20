@@ -101,7 +101,7 @@ function TransactionsTable(props: TransactionsTableProps) {
       <Table
         rowKey="id"
         dataSource={props.data.results}
-        scroll={{ x: '100%', y: 'calc(100vh - 300px)' }}
+        scroll={{ x: 700, y: 'calc(100vh - 300px)' }}
         loading={loading}
         sorter={{ field: props.searchParams.field, order: props.searchParams.order }}
         onChange={(filter, sorter, pagination) => {

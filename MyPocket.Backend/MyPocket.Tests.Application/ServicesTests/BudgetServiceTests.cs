@@ -37,13 +37,10 @@ public class BudgetServiceTests
     {
       Amount = 1000,
       Month = DateTime.Today,
-      CategoryId = categorieMock.Id,
     };
     var budget = new Budget
     {
-      Amount = 1000,
       Month = DateTime.Today,
-      CategoryId = categorieMock.Id,
       Id = Guid.NewGuid().ToString()
     };
     categoryRepo.Setup(x => x.GetSingleAsync(It.IsAny<Expression<Func<Category, bool>>>(), null)).ReturnsAsync(() => categorieMock);
@@ -65,13 +62,10 @@ public class BudgetServiceTests
     {
       Amount = 1000,
       Month = DateTime.Today,
-      CategoryId = CategoryFixtures.GetCategories()[0].Id,
     };
     var budget = new Budget
     {
-      Amount = 1000,
       Month = DateTime.Today,
-      CategoryId = CategoryFixtures.GetCategories()[0].Id,
       Id = Guid.NewGuid().ToString()
     };
     budgetRepo.Setup(x => x.Add(It.IsAny<Budget>())).Returns(budget);

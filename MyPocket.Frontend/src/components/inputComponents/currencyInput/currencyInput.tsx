@@ -12,8 +12,8 @@ export interface CurrencyInputProps extends InputHTMLAttributes<HTMLInputElement
   icon?: ReactNode;
   error?: string;
   value?: number;
-  onChange: (event: EventHandler) => void;
-  onBlur: (event: EventHandler) => void;
+  onChange?: (event: EventHandler) => void;
+  onBlur?: (event: EventHandler) => void;
   name?: string;
   decimalSeparator?: string;
   thousandsSeparator?: string;

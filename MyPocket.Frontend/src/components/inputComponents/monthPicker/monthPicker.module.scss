@@ -1,6 +1,7 @@
 @import '../../../styles/variables.scss';
 .wrapper {
   position: relative;
+  font-size: $font-size-medium;
   .component {
     border-radius: $border-radius;
     border: 1px solid $primary-color;
@@ -8,6 +9,7 @@
     display: inline-flex;
     align-items: ce;
     gap: 8px;
+
     &.visible {
       border: 2px solid $primary-color;
     }

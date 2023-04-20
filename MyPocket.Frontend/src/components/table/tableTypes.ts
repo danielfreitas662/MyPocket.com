@@ -56,13 +56,13 @@ export interface TableProps {
     y: number | string;
   };
   sorter?: Sorter;
-  loading: boolean;
+  loading?: boolean;
   onChange?: (
     filter: RecordType,
     sorter: Sorter,
     currentPagination: Omit<PaginationProps, 'total' | 'setCurrentPagination'>
   ) => void;
-  pagination: Partial<PaginationProps>;
+  pagination: Partial<PaginationProps> | false;
 }
 
 export interface FilterProps {

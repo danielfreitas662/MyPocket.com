@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 
 namespace MyPocket.Domain.Interfaces
@@ -12,5 +13,6 @@ namespace MyPocket.Domain.Interfaces
     void Remove(T entity);
     void RemoveRange(List<T> entities);
     void Update(T entity, object values);
+    void SetState(T entity, EntityState state);
   }
 }
