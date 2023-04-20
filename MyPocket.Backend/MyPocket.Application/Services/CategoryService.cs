@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using MyPocket.Application.DTO;
 using MyPocket.Application.Interfaces;
 using MyPocket.Domain.Interfaces;
@@ -128,6 +129,35 @@ namespace MyPocket.Application.Services
         _repo.Category.Update(entity, values);
         await _repo.SaveAsync();
         return values;
+      }
+      catch (Exception ex)
+      {
+        throw new Exception(ex.Message, ex);
+      }
+    }
+    public List<CategoryExpenseBudgetDTO> GetExpensesAndBudgets(DateTime month, string userId)
+    {
+      try
+      {
+        var categories = _repo.Category.Get(c => c.UserId == userId && c.Type == CategoryType.Expense && c.Transactions.Any(d => d.Date.Month == month.Month && d.Date.Year == month.Year), include: c => c.Include(d => d.Transactions)).Select(c => new CategoryExpensesDTO
+        {
+          Id = c.Id,
+          Category = c.Name,
+          Expenses = c.Transactions.Sum(d => d.Amount)
+        });
+        var budgets = _repo.BudgetItem.Get(c => c.Budget.UserId == userId && c.Budget.Month.Month == month.Month && c.Budget.Month.Year == month.Year, include: c => c.Include(d => d.Budget)).Select(c => new BudgetItemDTO
+        {
+          CategoryId = c.CategoryId,
+          Amount = c.Amount
+        });
+        List<CategoryExpenseBudgetDTO> result = categories.Select(c => new CategoryExpenseBudgetDTO
+        {
+          Id = c.Id,
+          Category = c.Category,
+          Expenses = c.Expenses,
+          Budget = budgets.Where(d => d.CategoryId == c.Id).Sum(d => d.Amount.Value)
+        }).ToList();
+        return result;
       }
       catch (Exception ex)
       {

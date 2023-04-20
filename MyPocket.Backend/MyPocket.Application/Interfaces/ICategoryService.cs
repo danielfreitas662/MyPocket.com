@@ -13,5 +13,6 @@ namespace MyPocket.Application.Interfaces
     Task<CategoryDTO> UpdateAsync(UserData User, CategoryDTO account, CategoryDTO values);
     Task RemoveAsync(UserData user, CategoryDTO account);
     Task RemoveRangeAsync(UserData user, List<string> ids);
+    List<CategoryExpenseBudgetDTO> GetExpensesAndBudgets(DateTime month, string userId);
   }
 }

@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { MouseEvent, useState } from 'react';
+import { useState } from 'react';
 import Button from '../button/button';
 import FormItem from '../form/formItem';
 import { IBudget, IBudgetItem } from '@/types/budget';
@@ -12,13 +12,12 @@ import { Col, Row } from '../row/row';
 import { ToastContainer, toast } from 'react-toastify';
 import Select from '../inputComponents/select/select';
 import { CategoryType, ICategory } from '@/types/category';
-import { FaArrowDown, FaArrowUp, FaEdit, FaPlus, FaSave, FaStop, FaStopCircle, FaTrash } from 'react-icons/fa';
+import { FaArrowDown, FaArrowUp, FaEdit, FaPlus, FaSave, FaTrash } from 'react-icons/fa';
 import { useForm } from 'react-hook-form';
 import CurrencyInput from '../inputComponents/currencyInput/currencyInput';
 import Table from '../table/table';
 import { ColumnType } from '../table/tableTypes';
 import { currencyFormat } from '@/utils/formatters';
-import Link from 'next/link';
 import PopConfirm from '../popconfirm/popConfirm';
 
 interface BudgetFormProps {
@@ -53,6 +52,9 @@ function BudgetForm({ initialData, categories = [] }: BudgetFormProps) {
         router.push(`/private/budget/${res.data?.entity.id}`);
       }
     });
+  };
+  const updateBudget = (newMonth: moment.Moment) => {
+    saveBudget({ month: newMonth.utc().toISOString(), id: initialData?.id });
   };
   const handleAddCategory = (data: IBudgetItem) => {
     if (!loading) {
@@ -150,7 +152,10 @@ function BudgetForm({ initialData, categories = [] }: BudgetFormProps) {
             <MonthPicker
               placeholder="Month..."
               value={(month && moment(month, 'MMM-YYYY')) || null}
-              onChange={(e) => (e.target.value ? setMonth(e.target.value?.format('MMM-YYYY')) : setMonth(null))}
+              onChange={(e) => {
+                e.target.value ? setMonth(e.target.value?.format('MMM-YYYY')) : setMonth(null);
+                updateBudget(moment(e.target.value));
+              }}
             />
           </FormItem>
           {!initialData?.id && (
