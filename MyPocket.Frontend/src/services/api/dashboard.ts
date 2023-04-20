@@ -1,6 +1,6 @@
 import { ApiRequest } from '@/types/apirequest';
 import { CategoryType } from '@/types/category';
-import { AmountByCategory, ResultsByMonth, TransactionsByMonth } from '@/types/dashboard';
+import { AmountByCategory, CategoryExpenses, ResultsByMonth, TransactionsByMonth } from '@/types/dashboard';
 import apiEndpoints from '../apiEndpoints';
 import { getClientSession } from '../clientSession';
 
@@ -164,6 +164,41 @@ export const getResultsByMonth = async (month: string) => {
     }
     const data: ResultsByMonth[] = await res.json();
     const result: ApiRequest<ResultsByMonth[]> = {
+      error: false,
+      statusCode: res.status,
+      statusText: res.statusText,
+      message: '',
+      data: data,
+    };
+    return result;
+  } catch (error: any) {
+    throw new Error(JSON.stringify(error));
+  }
+};
+export const getCategoryExpenses = async (month: string) => {
+  try {
+    const session = await getClientSession();
+    const res = await fetch(apiAddress + apiEndpoints.DASHBOARD.CATEGORY_EXPENSES.endpoint + `/${month}`, {
+      method: apiEndpoints.DASHBOARD.CATEGORY_EXPENSES.method,
+      headers: {
+        // @ts-ignore
+        'content-type': 'application/json',
+        Authorization: `Bearer ${session}`,
+      },
+    });
+    if (!res.ok) {
+      //const text = await res.text();
+      const result: ApiRequest<CategoryExpenses[]> = {
+        error: true,
+        statusCode: res.status,
+        statusText: res.statusText,
+        message: '',
+        data: [],
+      };
+      return result;
+    }
+    const data: CategoryExpenses[] = await res.json();
+    const result: ApiRequest<CategoryExpenses[]> = {
       error: false,
       statusCode: res.status,
       statusText: res.statusText,

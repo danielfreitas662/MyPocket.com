@@ -59,6 +59,7 @@ const apiEndpoints: APIEndpoint = {
     EXPENSES_BY_MONTH: { endpoint: '/Transaction/ExpensesByMonth', method: Method.GET },
     TRANSACTIONS_BY_MONTH: { endpoint: '/Transaction/TransactionsByMonth', method: Method.GET },
     RESULTS_BY_MONTH: { endpoint: '/Transaction/ResultsByMonth', method: Method.GET },
+    CATEGORY_EXPENSES: { endpoint: '/Category/CategoriesExpenses', method: Method.GET },
   },
 };
 export default apiEndpoints;

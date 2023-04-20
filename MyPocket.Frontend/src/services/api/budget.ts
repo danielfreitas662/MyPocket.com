@@ -5,6 +5,7 @@ import { getClientSession } from '../clientSession';
 import { Filter, FilterResult } from '@/types/pagination';
 import { AddOrUpdateResult } from '@/types/api';
 const apiAddress: string = process.env.NEXT_PUBLIC_API_ADDRESS as string;
+
 export const getBudgets = async (filters: Filter<IBudget>, session: string | undefined) => {
   try {
     const token = session || (await getClientSession());

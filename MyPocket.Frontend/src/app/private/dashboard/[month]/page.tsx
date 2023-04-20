@@ -4,6 +4,7 @@ import AmountByCategoryChart from './chart.amountByCategory';
 import ResultByMonth from './chart.resultByMonth';
 import TransactionsByMonth from './chart.transactionsByMonth';
 import { CategoryType } from '@/types/category';
+import CategoryExpensesByMonth from './chart.categoryExpenseByMonth';
 
 function Dashboard({ params: { month } }: { params: { month: string } }) {
   return (
@@ -23,6 +24,9 @@ function Dashboard({ params: { month } }: { params: { month: string } }) {
         </Col>
         <Col flex="1 0 400px">
           <ResultByMonth month={month} title="Result by Month" />
+        </Col>
+        <Col flex="1 0 400px">
+          <CategoryExpensesByMonth month={month} title="Expenses by Category" />
         </Col>
       </Row>
     </div>

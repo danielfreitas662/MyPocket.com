@@ -12,3 +12,9 @@ export interface ResultsByMonth {
   expense: number;
   result: number;
 }
+export interface CategoryExpenses {
+  id: string;
+  category: string;
+  expenses: number;
+  budget: number;
+}
