@@ -20,10 +20,12 @@ namespace MyPocket.API.Controllers
     [HttpGet]
     public ActionResult GetAll()
     {
+
       var user = HttpContext.User.Identity!.GetUserData();
       var budgets = _application.Budget.GetAll(user.UserId);
       return Ok(budgets);
     }
+
     [HttpGet("{Id}")]
     public async Task<ActionResult<BudgetDTO>> GetById([FromRoute] string Id)
     {
@@ -89,7 +91,7 @@ namespace MyPocket.API.Controllers
       }
     }
     [HttpPost("Filter")]
-    public ActionResult Filter([FromBody] PaginationRequest<BudgetDTO> data)
+    public ActionResult Filter([FromBody] PaginationRequest<BudgetWithRelated> data)
     {
       try
       {
@@ -122,6 +124,21 @@ namespace MyPocket.API.Controllers
       try
       {
         var user = HttpContext.User.Identity!.GetUserData();
+        var items = _application.Budget.GetItems(item.BudgetId, user.UserId);
+        if (items.Any(c => c.CategoryId == item.CategoryId))
+        {
+          return BadRequest("Item already included");
+        }
+        var category = await _application.Category.GetByIdAsync(user.UserId, item.CategoryId);
+        if (category == null)
+        {
+          return NotFound("Invalid category");
+        }
+        var budget = await _application.Budget.GetByIdAsync(user.UserId, item.BudgetId);
+        if (budget == null)
+        {
+          return NotFound("Invalid budget");
+        }
         var newitem = await _application.Budget.AddItemAsync(item, user.UserId);
         return Ok(newitem);
       }
@@ -136,6 +153,12 @@ namespace MyPocket.API.Controllers
       try
       {
         var user = HttpContext.User.Identity!.GetUserData();
+        var itemFound = await _application.Budget.GetItemAsync(item.Id, user.UserId);
+        if (itemFound == null) return NotFound("Item not found");
+        var category = await _application.Category.GetByIdAsync(item.CategoryId, user.UserId);
+        if (category == null) return NotFound("Invalid category");
+        var budget = await _application.Budget.GetByIdAsync(item.BudgetId, user.UserId);
+        if (budget == null) return NotFound("Invalid budget");
         var updatedItem = await _application.Budget.UpdateItemAsync(item, user.UserId);
         return Ok(updatedItem);
       }
@@ -150,6 +173,8 @@ namespace MyPocket.API.Controllers
       try
       {
         var user = HttpContext.User.Identity!.GetUserData();
+        var item = await _application.Budget.GetItemAsync(id, user.UserId);
+        if (item == null) return NotFound("Item not found");
         var result = await _application.Budget.RemoveItemAsync(id, user.UserId);
         return Ok(result);
       }

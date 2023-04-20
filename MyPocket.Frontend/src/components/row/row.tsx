@@ -19,7 +19,14 @@ function Row({ children, gutter, wrap = false, justifyContent = 'center', alignI
   return (
     <div
       className={styles.row}
-      style={{ width: '100%', gap: gap, justifyContent, flexWrap: !wrap ? 'nowrap' : 'wrap', alignItems }}
+      style={{
+        display: 'flex',
+        width: '100%',
+        gap: gap,
+        justifyContent,
+        flexWrap: !wrap ? 'nowrap' : 'wrap',
+        alignItems,
+      }}
     >
       {children}
     </div>

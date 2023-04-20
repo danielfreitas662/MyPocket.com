@@ -5,6 +5,7 @@
   .select {
     display: inline-flex;
     width: 100%;
+    gap: 5px;
     align-items: center;
     border: 1px solid $primary-color;
     padding: $component-input-padding;
@@ -18,6 +19,7 @@
     }
     .icon {
       color: $primary-color;
+      font-size: $font-size-medium;
     }
     &.error {
       border: 1px solid $error-color;
@@ -25,6 +27,7 @@
     .clear {
       transform: rotate(45deg);
       cursor: pointer;
+      font-size: $font-size-medium;
     }
     select {
       // A reset of styles, including removing the default dropdown arrow

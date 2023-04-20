@@ -10,6 +10,8 @@ import { ColumnType } from '../table/tableTypes';
 import { objectToQueryString } from '@/utils/queryString';
 import { IBudget } from '@/types/budget';
 import { removeBudget } from '@/services/api/budget';
+import { currencyFormat } from '@/utils/formatters';
+import moment from 'moment';
 interface BudgetsTableProps {
   searchParams: PageSearchParams & IBudget;
   data: FilterResult<IBudget>;
@@ -55,6 +57,7 @@ function BudgetsTable({ searchParams, data }: BudgetsTableProps) {
         filterType: 'string',
         filterValue: searchParams.month,
       },
+      render: (v) => moment(v).format('MMM-YYYY'),
     },
     {
       title: 'Amount',
@@ -63,6 +66,7 @@ function BudgetsTable({ searchParams, data }: BudgetsTableProps) {
         filterType: 'string',
         filterValue: searchParams.amount,
       },
+      render: (v) => currencyFormat(v, 'pt-BR'),
     },
   ];
   return (

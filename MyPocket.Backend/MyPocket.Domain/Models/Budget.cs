@@ -21,4 +21,10 @@ namespace MyPocket.Domain.Models
     public Budget Budget { get; set; }
 
   }
+  public class BudgetWithRelated
+  {
+    public string? Id { get; set; }
+    public DateTime? Month { get; set; }
+    public decimal? Amount { get; set; }
+  }
 }

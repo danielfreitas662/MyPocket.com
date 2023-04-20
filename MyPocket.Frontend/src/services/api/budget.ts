@@ -1,8 +1,9 @@
 import { ApiRequest } from '@/types/apirequest';
-import { IBudget } from '@/types/budget';
+import { IBudget, IBudgetItem } from '@/types/budget';
 import apiEndpoints from '../apiEndpoints';
 import { getClientSession } from '../clientSession';
 import { Filter, FilterResult } from '@/types/pagination';
+import { AddOrUpdateResult } from '@/types/api';
 const apiAddress: string = process.env.NEXT_PUBLIC_API_ADDRESS as string;
 export const getBudgets = async (filters: Filter<IBudget>, session: string | undefined) => {
   try {
@@ -46,10 +47,13 @@ export const getBudgets = async (filters: Filter<IBudget>, session: string | und
 };
 export const getBudgetById = async (id: string, session: string | undefined) => {
   try {
+    const token = session || (await getClientSession());
     const res = await fetch(apiAddress + apiEndpoints.BUDGET.GET_BY_ID.endpoint + `/${id}`, {
       method: apiEndpoints.BUDGET.GET_BY_ID.method,
+      cache: 'no-cache',
       headers: {
-        Authorization: `Bearer ${session}`,
+        'content-type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
     });
     if (!res.ok) {
@@ -90,12 +94,11 @@ export const saveBudget = async (budget: Partial<IBudget>) => {
       body: JSON.stringify(budget),
       headers: {
         'content-type': 'application/json',
-        // @ts-ignore
         Authorization: `Bearer ${session}`,
       },
     });
     if (!res.ok) {
-      const result: ApiRequest<IBudget | null> = {
+      const result: ApiRequest<AddOrUpdateResult<IBudget> | null> = {
         error: true,
         statusCode: res.status,
         statusText: res.statusText,
@@ -104,8 +107,77 @@ export const saveBudget = async (budget: Partial<IBudget>) => {
       };
       return result;
     }
-    const data: IBudget = await res.json();
-    const result: ApiRequest<IBudget | null> = {
+    const data: AddOrUpdateResult<IBudget> = await res.json();
+    const result: ApiRequest<AddOrUpdateResult<IBudget>> = {
+      error: false,
+      statusCode: res.status,
+      statusText: res.statusText,
+      message: 'Budget successfully saved',
+      data: data,
+    };
+    return result;
+  } catch (error: any) {
+    throw new Error(JSON.stringify(error));
+  }
+};
+export const removeBudgetItem = async (id: string, session?: string | undefined) => {
+  try {
+    const token = session || (await getClientSession());
+    const res = await fetch(apiAddress + apiEndpoints.BUDGET.REMOVE_ITEM.endpoint + `/${id}`, {
+      method: apiEndpoints.BUDGET.REMOVE_ITEM.method,
+      headers: {
+        'content-type': 'application/json',
+        // @ts-ignore
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (!res.ok) {
+      const result: ApiRequest<string | null> = {
+        error: true,
+        statusCode: res.status,
+        statusText: res.statusText,
+        message: 'Something wrong happened',
+        data: null,
+      };
+      return result;
+    }
+    const data: string = await res.json();
+    const result: ApiRequest<string> = {
+      error: false,
+      statusCode: res.status,
+      statusText: res.statusText,
+      message: 'Budget successfully removed',
+      data: data,
+    };
+    return result;
+  } catch (error: any) {
+    throw new Error(JSON.stringify(error));
+  }
+};
+export const addBudgetItem = async (item: Partial<IBudgetItem>) => {
+  try {
+    const session = await getClientSession();
+    const res = await fetch(apiAddress + apiEndpoints.BUDGET.ADD_ITEM.endpoint, {
+      method: apiEndpoints.BUDGET.ADD_ITEM.method,
+      body: JSON.stringify(item),
+      headers: {
+        'content-type': 'application/json',
+        Authorization: `Bearer ${session}`,
+      },
+    });
+    const data: string = await res.text();
+    if (!res.ok) {
+      const result: ApiRequest<string | null> = {
+        error: true,
+        statusCode: res.status,
+        statusText: res.statusText,
+        message: data,
+        data: null,
+      };
+      return result;
+    }
+
+    const result: ApiRequest<string | null> = {
       error: false,
       statusCode: res.status,
       statusText: res.statusText,

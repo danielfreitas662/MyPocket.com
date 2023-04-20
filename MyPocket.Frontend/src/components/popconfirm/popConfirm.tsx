@@ -1,12 +1,12 @@
 'use client';
 import clsx from 'clsx';
-import React, { ReactNode, useEffect, useRef, useState } from 'react';
+import React, { MouseEvent, ReactNode, useEffect, useRef, useState } from 'react';
 import Button from '../button/button';
 import styles from './popConfirm.module.scss';
 
 interface PopConfirmProps {
   children: ReactNode;
-  onConfirm: () => void;
+  onConfirm: (event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => void;
   title?: string;
 }
 function PopConfirm({ children, onConfirm, title }: PopConfirmProps) {
@@ -16,15 +16,15 @@ function PopConfirm({ children, onConfirm, title }: PopConfirmProps) {
   const handleChildrenClick = () => {
     setVisible(true);
   };
-  const handleConfirm = () => {
+  const handleConfirm = (event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => {
     setVisible(false);
-    onConfirm && onConfirm();
+    onConfirm && onConfirm(event);
   };
   const handleCancelClick = () => {
     setVisible(false);
   };
   useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
+    function handleClickOutside(event: globalThis.MouseEvent) {
       if (componentRef.current && !componentRef.current.contains(event.target)) {
         setVisible(false);
       }
@@ -33,7 +33,7 @@ function PopConfirm({ children, onConfirm, title }: PopConfirmProps) {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
   useEffect(() => {
-    const handleMouseMove = (event: MouseEvent) => {
+    const handleMouseMove = (event: globalThis.MouseEvent) => {
       !visible && setMousePos({ x: event.clientX, y: event.clientY });
     };
     window.addEventListener('mousedown', handleMouseMove);
@@ -53,7 +53,7 @@ function PopConfirm({ children, onConfirm, title }: PopConfirmProps) {
           <Button theme="secondary" onClick={handleCancelClick}>
             Cancel
           </Button>
-          <Button onClick={handleConfirm}>Ok</Button>
+          <Button onClick={(e) => handleConfirm(e)}>Ok</Button>
         </div>
       </div>
       <div onClick={handleChildrenClick}>{children}</div>

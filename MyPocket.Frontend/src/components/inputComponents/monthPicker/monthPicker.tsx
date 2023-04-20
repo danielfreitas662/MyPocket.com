@@ -14,16 +14,17 @@ interface EventHandler {
 }
 
 interface MonthPickerProps {
-  value?: moment.Moment;
+  value?: moment.Moment | null;
   name?: string;
   ref?: any;
   id?: string;
+  placeholder?: string;
   onChange?: (event: EventHandler) => void;
 }
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-function MonthPicker({ value, onChange, ref, name, id }: MonthPickerProps) {
+function MonthPicker({ value, placeholder, onChange, ref, name, id }: MonthPickerProps) {
   const [visible, setVisible] = useState(false);
-  const [internalValue, setInternalValue] = useState<moment.Moment | null>(value || null);
+  const [internalValue, setInternalValue] = useState<moment.Moment | null>((value?.isValid() && value) || null);
   const [year, setYear] = useState<number>(moment().year());
   const wrapperRef = useRef<any>();
   useEffect(() => {
@@ -43,7 +44,7 @@ function MonthPicker({ value, onChange, ref, name, id }: MonthPickerProps) {
         ref={ref}
       >
         <input style={{ display: 'none' }} id={id} />
-        <div>{value?.format('MMM-YYYY') || internalValue?.format('MMM-YYYY')}</div>
+        <div>{value?.format('MMM-YYYY') || internalValue?.format('MMM-YYYY') || placeholder}</div>
         <div>
           <FaCalendar />
         </div>

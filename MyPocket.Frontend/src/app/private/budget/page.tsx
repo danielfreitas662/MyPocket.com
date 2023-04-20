@@ -9,7 +9,7 @@ import { getBudgets } from '@/services/api/budget';
 interface PageProps {
   searchParams: PageSearchParams & IBudget;
 }
-async function Category({ searchParams }: PageProps) {
+async function Budget({ searchParams }: PageProps) {
   const session = cookies().get('session')?.value;
   const { data } = await getBudgets(
     {
@@ -27,4 +27,4 @@ async function Category({ searchParams }: PageProps) {
     </Suspense>
   );
 }
-export default Category;
+export default Budget;

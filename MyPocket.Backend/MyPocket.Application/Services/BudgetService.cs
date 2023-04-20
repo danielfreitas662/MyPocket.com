@@ -22,13 +22,16 @@ namespace MyPocket.Application.Services
         var newBudget = _repo.Budget.Add(new Budget
         {
           Id = Guid.NewGuid().ToString(),
-          Month = budget.Month
+          Month = budget.Month,
+          UserId = user.UserId
         });
         await _repo.SaveAsync();
 
         return new BudgetDTO
         {
           Month = newBudget.Month,
+          Amount = 0,
+          Items = new List<BudgetItemDTO>(),
           Id = newBudget.Id,
         };
       }
@@ -38,9 +41,17 @@ namespace MyPocket.Application.Services
       }
     }
 
-    public PaginationResult<BudgetDTO> Filter(PaginationRequest<BudgetDTO> data, UserData user)
+    public PaginationResult<BudgetWithRelated> Filter(PaginationRequest<BudgetWithRelated> data, UserData user)
     {
-      throw new NotImplementedException();
+      try
+      {
+        var result = _repo.Budget.Filter(data, user.UserId);
+        return result;
+      }
+      catch (Exception ex)
+      {
+        throw new Exception(ex.Message, ex);
+      }
     }
 
     public List<BudgetDTO> GetAll(string UserId)
@@ -73,7 +84,7 @@ namespace MyPocket.Application.Services
       try
       {
         var result = await _repo.Budget.GetSingleAsync(c => c.Id == Id && c.UserId == UserId, include: c => c.Include(d => d.Items).ThenInclude(d => d.Category));
-        if (result == null) return null;
+        if (result == null) throw new NullReferenceException("Budget not found");
         return new BudgetDTO
         {
           Amount = result.Items.Sum(c => c.Amount),
@@ -83,9 +94,10 @@ namespace MyPocket.Application.Services
           {
             Id = c.Id,
             Amount = c.Amount,
+            BudgetId = c.BudgetId,
             Category = c.Category.Name,
             CategoryId = c.CategoryId
-          }).ToList()
+          })
         };
       }
       catch (Exception ex)
@@ -137,6 +149,26 @@ namespace MyPocket.Application.Services
         throw new Exception(ex.Message, ex);
       }
     }
+    public async Task<BudgetItemDTO?> GetItemAsync(string itemId, string userId)
+    {
+      try
+      {
+        var result = await _repo.BudgetItem.GetSingleAsync(c => c.Id == itemId && c.Budget.UserId == userId, include: c => c.Include(d => d.Category).Include(d => d.Budget));
+        if (result == null) return null;
+        return new BudgetItemDTO
+        {
+          Amount = result.Amount,
+          BudgetId = result.BudgetId,
+          Category = result.Category.Name,
+          Month = result.Budget.Month,
+          Id = result.Id
+        };
+      }
+      catch (Exception ex)
+      {
+        throw new Exception(ex.Message, ex);
+      }
+    }
     public List<BudgetItemDTO> GetItems(string budgetId, string userId)
     {
       try
@@ -146,6 +178,7 @@ namespace MyPocket.Application.Services
           Amount = c.Amount,
           BudgetId = c.BudgetId,
           Category = c.Category.Name,
+          CategoryId = c.CategoryId,
           Month = c.Budget.Month,
           Id = c.Id
         }).ToList();
@@ -164,10 +197,12 @@ namespace MyPocket.Application.Services
         if (budget == null) throw new NullReferenceException("Invalid budget");
         var category = await _repo.Category.GetSingleAsync(c => c.Id == item.CategoryId);
         if (category == null) throw new NullReferenceException("Invalid category");
+        var existeCategory = await _repo.BudgetItem.GetSingleAsync(c => c.Id == item.CategoryId && c.BudgetId == item.BudgetId);
+        if (existeCategory != null) throw new Exception("Category already included");
         var newItem = _repo.BudgetItem.Add(new BudgetItem
         {
           Id = Guid.NewGuid().ToString(),
-          Amount = item.Amount,
+          Amount = item.Amount.Value,
           CategoryId = item.CategoryId,
           Category = category,
           Budget = budget,
@@ -214,7 +249,7 @@ namespace MyPocket.Application.Services
         if (category == null) throw new NullReferenceException("Invalid category");
         var budget = await _repo.Budget.GetSingleAsync(c => c.Id == item.BudgetId && c.UserId == userId);
         if (budget == null) throw new NullReferenceException("Invalid budget");
-        itemFind.Amount = item.Amount;
+        itemFind.Amount = item.Amount.Value;
         itemFind.CategoryId = item.CategoryId;
         itemFind.Category = category;
         _repo.BudgetItem.SetState(itemFind, EntityState.Modified);
