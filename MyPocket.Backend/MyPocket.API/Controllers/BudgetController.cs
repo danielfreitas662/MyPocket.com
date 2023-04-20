@@ -155,9 +155,9 @@ namespace MyPocket.API.Controllers
         var user = HttpContext.User.Identity!.GetUserData();
         var itemFound = await _application.Budget.GetItemAsync(item.Id, user.UserId);
         if (itemFound == null) return NotFound("Item not found");
-        var category = await _application.Category.GetByIdAsync(item.CategoryId, user.UserId);
+        var category = await _application.Category.GetByIdAsync( user.UserId, item.CategoryId);
         if (category == null) return NotFound("Invalid category");
-        var budget = await _application.Budget.GetByIdAsync(item.BudgetId, user.UserId);
+        var budget = await _application.Budget.GetByIdAsync(user.UserId, item.BudgetId);
         if (budget == null) return NotFound("Invalid budget");
         var updatedItem = await _application.Budget.UpdateItemAsync(item, user.UserId);
         return Ok(updatedItem);

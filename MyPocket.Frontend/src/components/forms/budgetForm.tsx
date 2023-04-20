@@ -5,7 +5,7 @@ import { MouseEvent, useState } from 'react';
 import Button from '../button/button';
 import FormItem from '../form/formItem';
 import { IBudget, IBudgetItem } from '@/types/budget';
-import { addBudgetItem, removeBudgetItem, saveBudget } from '@/services/api/budget';
+import { addBudgetItem, removeBudgetItem, saveBudget, updateBudgetItem } from '@/services/api/budget';
 import MonthPicker from '../inputComponents/monthPicker/monthPicker';
 import moment from 'moment';
 import { Col, Row } from '../row/row';
@@ -71,9 +71,7 @@ function BudgetForm({ initialData, categories = [] }: BudgetFormProps) {
         });
     }
   };
-  const handleRemoveItem = (id: string, e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => {
-    console.log('remove');
-    e.preventDefault();
+  const handleRemoveItem = (id: string) => {
     setLoading(true);
     removeBudgetItem(id).then((res) => {
       setLoading(false);
@@ -83,7 +81,17 @@ function BudgetForm({ initialData, categories = [] }: BudgetFormProps) {
       router.refresh();
     });
   };
-  const handleUpdateItem = (id: string) => {};
+  const handleUpdateItem = (values: IBudgetItem) => {
+    setLoading(true);
+    updateBudgetItem({ ...values, amount: valueEdit }).then((res) => {
+      if (!res.error) {
+        toast.success(res.message, { toastId: 'sucesss' });
+      } else toast.error(res.message);
+      setLoading(false);
+      setitemEdit(null);
+      router.refresh();
+    });
+  };
   const columns: ColumnType<IBudgetItem>[] = [
     {
       title: '',
@@ -93,7 +101,13 @@ function BudgetForm({ initialData, categories = [] }: BudgetFormProps) {
         <div style={{ display: 'flex', gap: '5px 5px' }}>
           {itemEdit !== v && (
             <>
-              <FaEdit onClick={() => setitemEdit(v)} style={{ cursor: 'pointer' }} />
+              <FaEdit
+                onClick={() => {
+                  setitemEdit(v);
+                  setValueEdit(row.amount);
+                }}
+                style={{ cursor: 'pointer' }}
+              />
             </>
           )}
           {itemEdit === v && (
@@ -102,11 +116,10 @@ function BudgetForm({ initialData, categories = [] }: BudgetFormProps) {
                 style={{ transform: 'rotate(45deg)', cursor: 'pointer' }}
                 onClick={() => {
                   setitemEdit(null);
-                  setValueEdit(row.amount);
                 }}
               />
-              <FaSave style={{ cursor: 'pointer' }} onClick={() => handleUpdateItem(v)} />
-              <PopConfirm title="Are you sure?" onConfirm={(e) => handleRemoveItem(v, e)}>
+              <FaSave style={{ cursor: 'pointer' }} onClick={() => handleUpdateItem(row)} />
+              <PopConfirm title="Are you sure?" onConfirm={() => handleRemoveItem(v)}>
                 <FaTrash style={{ cursor: 'pointer' }} />
               </PopConfirm>
             </>
@@ -130,6 +143,7 @@ function BudgetForm({ initialData, categories = [] }: BudgetFormProps) {
   ];
   return (
     <>
+      <ToastContainer />
       <Row justifyContent="center" gutter={[10, 10]} wrap>
         <Col flex="1 1 300px">
           <FormItem label="Month">
@@ -193,7 +207,14 @@ function BudgetForm({ initialData, categories = [] }: BudgetFormProps) {
         </Col>
         {initialData?.id && (
           <Col span={14}>
-            <Table dataSource={initialData.items} rowKey="id" columns={columns} pagination={false} loading={loading} />
+            <Table
+              dataSource={initialData.items}
+              rowKey="id"
+              columns={columns}
+              pagination={false}
+              loading={loading}
+              scroll={{ x: '100%', y: 800 }}
+            />
           </Col>
         )}
       </Row>

@@ -154,6 +154,41 @@ export const removeBudgetItem = async (id: string, session?: string | undefined)
     throw new Error(JSON.stringify(error));
   }
 };
+export const updateBudgetItem = async (values: IBudgetItem, session?: string | undefined) => {
+  try {
+    const token = session || (await getClientSession());
+    const res = await fetch(apiAddress + apiEndpoints.BUDGET.UPDATE_ITEM.endpoint, {
+      method: apiEndpoints.BUDGET.UPDATE_ITEM.method,
+      body: JSON.stringify(values),
+      headers: {
+        'content-type': 'application/json',
+        // @ts-ignore
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (!res.ok) {
+      const result: ApiRequest<IBudgetItem | null> = {
+        error: true,
+        statusCode: res.status,
+        statusText: res.statusText,
+        message: 'Something wrong happened',
+        data: null,
+      };
+      return result;
+    }
+    const data: IBudgetItem = await res.json();
+    const result: ApiRequest<IBudgetItem> = {
+      error: false,
+      statusCode: res.status,
+      statusText: res.statusText,
+      message: 'Budget successfully updated',
+      data: data,
+    };
+    return result;
+  } catch (error: any) {
+    throw new Error(JSON.stringify(error));
+  }
+};
 export const addBudgetItem = async (item: Partial<IBudgetItem>) => {
   try {
     const session = await getClientSession();
