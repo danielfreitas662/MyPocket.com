@@ -34,6 +34,14 @@ namespace MyPocket.API.Controllers
       if (budget == null) return NotFound($"Budget Id: {Id} not found");
       return Ok(budget);
     }
+    [HttpGet("Month/{month}")]
+    public async Task<ActionResult> GetByMonth([FromRoute] DateTime month)
+    {
+      Console.WriteLine(month);
+      var user = HttpContext.User.Identity!.GetUserData();
+      var budget = await _application.Budget.GetByMonthAsync(month, user.UserId);
+      return Ok(budget);
+    }
     [HttpPost]
     public async Task<ActionResult> AddOrUpdate([FromBody] BudgetDTO budget)
     {
@@ -155,7 +163,7 @@ namespace MyPocket.API.Controllers
         var user = HttpContext.User.Identity!.GetUserData();
         var itemFound = await _application.Budget.GetItemAsync(item.Id, user.UserId);
         if (itemFound == null) return NotFound("Item not found");
-        var category = await _application.Category.GetByIdAsync( user.UserId, item.CategoryId);
+        var category = await _application.Category.GetByIdAsync(user.UserId, item.CategoryId);
         if (category == null) return NotFound("Invalid category");
         var budget = await _application.Budget.GetByIdAsync(user.UserId, item.BudgetId);
         if (budget == null) return NotFound("Invalid budget");

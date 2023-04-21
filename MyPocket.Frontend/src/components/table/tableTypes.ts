@@ -63,6 +63,7 @@ export interface TableProps {
     currentPagination: Omit<PaginationProps, 'total' | 'setCurrentPagination'>
   ) => void;
   pagination: Partial<PaginationProps> | false;
+  summary?: (data: RecordType[]) => ReactNode;
 }
 
 export interface FilterProps {

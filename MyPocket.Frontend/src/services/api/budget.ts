@@ -87,6 +87,47 @@ export const getBudgetById = async (id: string, session: string | undefined) => 
     return result;
   }
 };
+export const getBudgetByMonth = async (month: string, session?: string | undefined) => {
+  try {
+    const token = session || (await getClientSession());
+    const res = await fetch(apiAddress + apiEndpoints.BUDGET.GET_BY_MONTH.endpoint + `/${month}`, {
+      method: apiEndpoints.BUDGET.GET_BY_MONTH.method,
+      cache: 'no-cache',
+      headers: {
+        'content-type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (!res.ok) {
+      const result: ApiRequest<IBudget | null> = {
+        error: true,
+        statusCode: res.status,
+        statusText: res.statusText,
+        message: '',
+        data: null,
+      };
+      return result;
+    }
+    const data: IBudget = await res.json();
+    const result: ApiRequest<IBudget | null> = {
+      error: false,
+      statusCode: res.status,
+      statusText: res.statusText,
+      message: '',
+      data: data,
+    };
+    return result;
+  } catch (error: any) {
+    const result: ApiRequest<IBudget | null> = {
+      error: true,
+      statusCode: 0,
+      statusText: '',
+      message: '',
+      data: null,
+    };
+    return result;
+  }
+};
 export const saveBudget = async (budget: Partial<IBudget>) => {
   try {
     const session = await getClientSession();

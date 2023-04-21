@@ -81,6 +81,7 @@ function TransactionsTable(props: TransactionsTableProps) {
     {
       title: 'Category',
       dataIndex: 'category',
+      sorter: true,
       filter: {
         filterType: 'string',
         filterValue: props.searchParams.category,
@@ -89,6 +90,7 @@ function TransactionsTable(props: TransactionsTableProps) {
     {
       title: 'Account',
       dataIndex: 'account',
+      sorter: true,
       filter: {
         filterType: 'string',
         filterValue: props.searchParams.account,

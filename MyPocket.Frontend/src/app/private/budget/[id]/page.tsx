@@ -1,5 +1,5 @@
 import { Skeleton } from '@/components';
-import BudgetForm from '@/components/forms/budgetForm';
+import BudgetForm from '@/components/forms/budget/budgetForm';
 import { getBudgetById } from '@/services/api/budget';
 import { getCategories } from '@/services/category';
 import { cookies } from 'next/headers';

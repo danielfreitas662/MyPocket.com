@@ -26,5 +26,6 @@ namespace MyPocket.Domain.Models
     public string? Id { get; set; }
     public DateTime? Month { get; set; }
     public decimal? Amount { get; set; }
+    public decimal? Actual { get; set; }
   }
 }

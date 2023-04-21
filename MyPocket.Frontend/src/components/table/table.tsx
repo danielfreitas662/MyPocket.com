@@ -4,9 +4,10 @@ import React, { useEffect, useState } from 'react';
 import styles from './table.module.scss';
 import Pagination, { PaginationProps } from '../pagination/pagination';
 import { RecordType, Sorter, TableProps } from './tableTypes';
-import { TableContext } from './ tableContext';
+import { TableContext } from './tableContext';
 import TableHeader from './tableHeader';
 import TableBody from './tableBody';
+import Summary from './tableFooter';
 
 function Table({
   dataSource = [],
@@ -16,6 +17,7 @@ function Table({
   scroll,
   rowKey,
   pagination,
+  summary,
   onChange = () => null,
 }: TableProps) {
   const [currentSorter, setCurrentSorter] = useState<Sorter>(sorter || { order: null, field: null });
@@ -32,8 +34,17 @@ function Table({
     setFilterValue(columns.reduce((a, b) => ({ ...a, [b.dataIndex]: b.filter?.filterValue }), {}));
   }, []);
   useEffect(() => {
-    setData(dataSource);
-  }, [dataSource]);
+    if (currentSorter.field) {
+      const columnSorter = columns.find((c) => c.dataIndex === currentSorter.field)?.sorter;
+      if (typeof columnSorter !== 'boolean' && columnSorter) {
+        const sortedData = [...dataSource].sort((a, b) =>
+          currentSorter.order === 'asc' ? columnSorter(a, b) : columnSorter(b, a)
+        );
+        setData(sortedData);
+      } else setData(dataSource);
+    } else setData(dataSource);
+  }, [dataSource, currentSorter]);
+
   return (
     <div className={styles.all}>
       <div
@@ -60,6 +71,7 @@ function Table({
           <table style={{ width: '100%', minWidth: scroll?.x, overflowX: 'scroll' }}>
             <TableHeader />
             <TableBody />
+            {summary && summary(data)}
           </table>
         </TableContext.Provider>
       </div>
@@ -75,5 +87,5 @@ function Table({
     </div>
   );
 }
-
+Table.Summary = Summary;
 export default Table;

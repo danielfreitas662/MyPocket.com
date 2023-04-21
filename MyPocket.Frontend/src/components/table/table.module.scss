@@ -67,9 +67,11 @@
             background-color: white;
             top: 0;
             border: 1px solid $light-color;
-            cursor: pointer;
             padding: $component-general-padding;
             text-align: left;
+            &.sorter {
+              cursor: pointer;
+            }
             &.alignLeft {
               text-align: left;
             }
@@ -92,6 +94,7 @@
                 display: inline-flex;
                 gap: 8px;
                 .filter {
+                  cursor: pointer;
                   &.active {
                     color: $primary-color;
                   }
@@ -147,6 +150,13 @@
             &.alignCenter {
               text-align: center;
             }
+          }
+        }
+      }
+      tfoot {
+        tr {
+          td {
+            padding: $component-general-padding;
           }
         }
       }
