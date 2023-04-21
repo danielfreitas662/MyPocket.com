@@ -21,6 +21,7 @@ async function Budget({ searchParams }: PageProps) {
     },
     session
   );
+  console.log(data);
   return (
     <Suspense fallback={<Skeleton rows={10} />}>
       <BudgetsTable searchParams={searchParams} data={data} />

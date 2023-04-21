@@ -4,7 +4,7 @@ import React from 'react';
 import clsx from 'clsx';
 import Button from '../button/button';
 import TextInput from '../inputComponents/textinput/textInput';
-import { TableContext } from './ tableContext';
+import { TableContext } from './tableContext';
 import styles from './table.module.scss';
 import { FaArrowDown, FaArrowUp, FaFilter } from 'react-icons/fa';
 import DatePicker from '../inputComponents/datePicker/datePicker';
@@ -27,11 +27,11 @@ function TableHeader() {
                 [styles.alignLeft]: c.align === 'left',
                 [styles.alignRight]: c.align === 'right',
                 [styles.alignCenter]: c.align === 'center',
+                [styles.sorter]: (typeof c.sorter === 'boolean' && c.sorter === true) || c.sorter,
               })}
-            >
-              <div
-                className={styles.header}
-                onClick={() => {
+              onClick={() => {
+                console.log(c.sorter);
+                if ((typeof c.sorter === 'boolean' && c.sorter === true) || c.sorter) {
                   const newSorter: () => Sorter = () => {
                     if (currentSorter.field === c.dataIndex) {
                       if (currentSorter.order === 'asc') return { field: currentSorter.field, order: 'desc' };
@@ -43,7 +43,13 @@ function TableHeader() {
                   };
                   setCurrentSorter(newSorter());
                   onChange && onChange(filter, newSorter(), currentPagination);
-                }}
+                }
+              }}
+            >
+              <div
+                className={clsx({
+                  [styles.header]: true,
+                })}
               >
                 <div className={styles.headerTitle}>{c.title}</div>
                 <div className={styles.headerSorter}>

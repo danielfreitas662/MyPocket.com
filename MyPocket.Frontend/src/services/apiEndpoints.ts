@@ -31,6 +31,7 @@ const apiEndpoints: APIEndpoint = {
   BUDGET: {
     GET: { endpoint: '/Budget', method: Method.GET },
     GET_BY_ID: { endpoint: '/Budget', method: Method.GET },
+    GET_BY_MONTH: { endpoint: '/Budget/Month', method: Method.GET },
     FILTER: { endpoint: '/Budget/Filter', method: Method.POST },
     ADD: { endpoint: '/Budget', method: Method.POST },
     REMOVE: { endpoint: '/Budget', method: Method.DELETE },

@@ -18,5 +18,6 @@ namespace MyPocket.Application.Interfaces
     Task<BudgetItemDTO> AddItemAsync(BudgetItemDTO item, string userId);
     Task<string> RemoveItemAsync(string itemId, string userId);
     Task<BudgetItemDTO> UpdateItemAsync(BudgetItemDTO item, string userId);
+    Task<BudgetDTO> GetByMonthAsync(DateTime month, string userId);
   }
 }

@@ -78,6 +78,32 @@ namespace MyPocket.Application.Services
         throw new Exception(ex.Message, ex);
       }
     }
+    public async Task<BudgetDTO> GetByMonthAsync(DateTime month, string userId)
+    {
+      try
+      {
+        Console.WriteLine(month);
+        var result = await _repo.Budget.GetSingleAsync(c => c.Month.Month == month.Month && c.Month.Year == month.Year && c.UserId == userId, include: c => c.Include(d => d.Items).ThenInclude(d => d.Category));
+        return new BudgetDTO
+        {
+          Amount = result.Items.Sum(c => c.Amount),
+          Month = result.Month,
+          Id = result.Id,
+          Items = result.Items.Select(c => new BudgetItemDTO
+          {
+            Id = c.Id,
+            Amount = c.Amount,
+            BudgetId = c.BudgetId,
+            Category = c.Category.Name,
+            CategoryId = c.CategoryId
+          })
+        };
+      }
+      catch (Exception ex)
+      {
+        throw new Exception(ex.Message, ex);
+      }
+    }
 
     public async Task<BudgetDTO?> GetByIdAsync(string UserId, string Id)
     {

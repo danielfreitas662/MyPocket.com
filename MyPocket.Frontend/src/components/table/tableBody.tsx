@@ -1,5 +1,5 @@
 import React from 'react';
-import { TableContext } from './ tableContext';
+import { TableContext } from './tableContext';
 import { FaDatabase } from 'react-icons/fa';
 import styles from './table.module.scss';
 import clsx from 'clsx';
