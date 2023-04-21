@@ -34,7 +34,13 @@ namespace MyPocket.Infra.Repository
             if (filters.Sorter.Order == "asc") results = results.OrderBy(c => c.Items.Sum(d => d.Amount));
             else results = results.OrderByDescending(c => c.Items.Sum(d => d.Amount));
           }
+          if (filters.Sorter.Field == "actual")
+          {
+            if (filters.Sorter.Order == "asc") results = results.OrderBy(c => c.Items.SelectMany(d => d.Category.Transactions).Sum(d => d.Amount));
+            else results = results.OrderByDescending(c => c.Items.SelectMany(d => d.Category.Transactions).Sum(d => d.Amount));
+          }
         }
+        else results = results.OrderByDescending(c => c.Month);
         var total = results.Count();
         var pages = Math.Ceiling(Convert.ToDouble(total) / filters.Pagination.PageSize);
         var current = filters.Pagination.Current > pages ? pages : filters.Pagination.Current;
@@ -43,6 +49,7 @@ namespace MyPocket.Infra.Repository
           Id = c.Id,
           Month = c.Month,
           Amount = c.Items.Sum(d => d.Amount),
+          Actual = c.Items.SelectMany(d => d.Category.Transactions).Sum(d => d.Amount),
         });
         return new PaginationResult<BudgetWithRelated>
         {

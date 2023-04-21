@@ -3,6 +3,7 @@ export interface IBudget {
   month: string;
   amount?: number;
   items?: IBudgetItem[];
+  actual?: number;
 }
 export interface IBudgetItem {
   id: string;

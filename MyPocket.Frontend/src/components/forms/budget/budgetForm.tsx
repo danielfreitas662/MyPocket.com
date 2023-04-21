@@ -19,33 +19,10 @@ interface BudgetFormProps {
   categories?: ICategory[];
 }
 function BudgetForm({ initialData, categories = [] }: BudgetFormProps) {
-  const [loading, setLoading] = useState(false);
-
   const [month, setMonth] = useState<string | null>(
     (moment(initialData?.month).isValid() && moment(initialData?.month).format('MMM-YYYY')) || null
   );
   const router = useRouter();
-  const customId = 'custom-id-yes';
-  const handleNext = () => {
-    if (!month) {
-      toast.warn('Select the budget month!', { toastId: customId });
-      return;
-    }
-    setLoading(true);
-    saveBudget({ month: moment(month, 'MMM-YYYY').utc().format('YYYY-MM') })
-      .then((res) => {
-        setLoading(false);
-        if (res.error) {
-          toast.error(res.message, { toastId: 'error' });
-        } else {
-          router.replace(`/private/budget/${res.data?.entity.id}`);
-        }
-      })
-      .catch((res) => {
-        console.log(res);
-        router.replace('/private/budget/new');
-      });
-  };
   const updateBudget = async (newMonth: moment.Moment) => {
     const { data } = await getBudgetByMonth(newMonth.utc().format());
     if (!data) {
@@ -72,12 +49,13 @@ function BudgetForm({ initialData, categories = [] }: BudgetFormProps) {
               }}
             />
           </FormItem>
-          {!initialData?.id && (
-            <Button disabled={loading} onClick={handleNext}>
-              Next
-            </Button>
+          {initialData?.id && (
+            <BudgetItemForm
+              budgetId={initialData.id}
+              categories={categories}
+              addedCategories={initialData.items || []}
+            />
           )}
-          {initialData?.id && <BudgetItemForm budgetId={initialData.id} categories={categories} />}
         </Col>
         {initialData?.id && (
           <Col span={14}>

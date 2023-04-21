@@ -82,7 +82,6 @@ namespace MyPocket.Application.Services
     {
       try
       {
-        Console.WriteLine(month);
         var result = await _repo.Budget.GetSingleAsync(c => c.Month.Month == month.Month && c.Month.Year == month.Year && c.UserId == userId, include: c => c.Include(d => d.Items).ThenInclude(d => d.Category));
         return new BudgetDTO
         {

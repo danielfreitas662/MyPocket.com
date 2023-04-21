@@ -9,7 +9,15 @@ import { useForm } from 'react-hook-form';
 import { FaArrowDown, FaArrowUp, FaPlus } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 
-function BudgetItemForm({ categories, budgetId }: { categories: ICategory[]; budgetId: string }) {
+function BudgetItemForm({
+  categories,
+  budgetId,
+  addedCategories = [],
+}: {
+  categories: ICategory[];
+  budgetId: string;
+  addedCategories: IBudgetItem[];
+}) {
   const [loading, setLoading] = useState(false);
   const {
     register,
@@ -62,6 +70,7 @@ function BudgetItemForm({ categories, budgetId }: { categories: ICategory[]; bud
             </div>
           )}
           options={categories
+            .filter((c) => c.type === CategoryType.Expense && !addedCategories.map((d) => d.id).includes(c.id))
             .sort((a, b) => a.type - b.type)
             .map((c) => ({
               value: c.id,

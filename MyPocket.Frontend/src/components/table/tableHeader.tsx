@@ -30,7 +30,6 @@ function TableHeader() {
                 [styles.sorter]: (typeof c.sorter === 'boolean' && c.sorter === true) || c.sorter,
               })}
               onClick={() => {
-                console.log(c.sorter);
                 if ((typeof c.sorter === 'boolean' && c.sorter === true) || c.sorter) {
                   const newSorter: () => Sorter = () => {
                     if (currentSorter.field === c.dataIndex) {

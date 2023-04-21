@@ -53,6 +53,7 @@ function BudgetsTable({ searchParams, data }: BudgetsTableProps) {
     {
       title: 'Month',
       dataIndex: 'month',
+      sorter: true,
       filter: {
         filterType: 'string',
         filterValue: searchParams.month,
@@ -62,9 +63,20 @@ function BudgetsTable({ searchParams, data }: BudgetsTableProps) {
     {
       title: 'Amount',
       dataIndex: 'amount',
+      sorter: true,
       filter: {
         filterType: 'string',
         filterValue: searchParams.amount,
+      },
+      render: (v) => currencyFormat(v, 'pt-BR'),
+    },
+    {
+      title: 'Actual',
+      dataIndex: 'actual',
+      sorter: true,
+      filter: {
+        filterType: 'string',
+        filterValue: searchParams.actual,
       },
       render: (v) => currencyFormat(v, 'pt-BR'),
     },

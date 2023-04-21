@@ -41,7 +41,7 @@ function Table({
           currentSorter.order === 'asc' ? columnSorter(a, b) : columnSorter(b, a)
         );
         setData(sortedData);
-      }
+      } else setData(dataSource);
     } else setData(dataSource);
   }, [dataSource, currentSorter]);
 

@@ -112,6 +112,7 @@ namespace MyPocket.Infra.Repository
             else results = results.OrderByDescending(c => c.Description);
           }
         }
+        else results = results.OrderByDescending(c => c.Date);
         var total = results.Count();
         var pages = Math.Ceiling(Convert.ToDouble(total) / filters.Pagination.PageSize);
         var current = filters.Pagination.Current > pages ? pages : filters.Pagination.Current;

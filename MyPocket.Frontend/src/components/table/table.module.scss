@@ -94,6 +94,7 @@
                 display: inline-flex;
                 gap: 8px;
                 .filter {
+                  cursor: pointer;
                   &.active {
                     color: $primary-color;
                   }

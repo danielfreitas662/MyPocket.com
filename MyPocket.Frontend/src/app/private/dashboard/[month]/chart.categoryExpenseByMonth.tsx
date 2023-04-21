@@ -30,7 +30,6 @@ function CategoryExpensesByMonth({ month, title }: { month: string; title: strin
       ]);
     });
   }, []);
-  console.log(series);
   const options: ApexOptions = {
     xaxis: {
       labels: {
