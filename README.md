@@ -17,9 +17,16 @@
   - [Input Components](#Input-Components)
     - [DatePicker](#DatePicker)
     - [TextInput](#TextInput)
+    - [CurrencyInput](#CurrencyInput)
     - [Select Dropdown](#Select-Dropdown)
-    - [TextInput](#TextInput)
-    - [TextInput](#TextInput)
+  - [Feedback Components](#Feedback-Components)
+    - [Feedback Message Box](#Feedback-Message-Box)
+    - [PopConfirm](#PopConfirm)
+  - [Data Display Components](#Data-Display-Components)
+    - [Card](#Card)
+    - [Descriptions](#Descriptions)
+    - [PageTitle](#PageTitle)
+    - [Table](#Table)
 
 ## Disclaimer
 
@@ -192,6 +199,12 @@ The component uses moment library to manage date value and format. All the prope
 3. Component with focus within
    ![textinputfocus](images/textinputfocus.png 'textinputfocus')
 
+#### CurrencyInput
+
+The component masks input applying currency symbol, thousand and decimal separator. The output and input is always a raw number.
+It has all the same propperties from the TextInput component.
+![currencyinput](images/currencyinput.png 'currencyinput')
+
 #### Select Dropdown
 
 The select component opens a dropdown menu when given focus. The user can type to filter the options.
@@ -228,3 +241,39 @@ This component shows a message that can be styled as error, success or informati
    ![feedbackinfo](images/feedbackinfo.png 'feedbackinfo')
 3. Error Theme
    ![feedbackerror](images/feedbackerror.png 'feedbackerror')
+
+#### PopConfirm
+
+This component lets you wrap a button and override its onClick event. This way the user can have a confirmation box when click on the button.
+![popconfirm](images/popconfirm.png 'popconfirm')
+
+### Data Display Components
+
+#### Card
+
+![card](images/card.png 'card')
+
+#### Descriptions
+
+![descriptions](images/descriptions.png 'descriptions')
+
+#### PageTitle
+
+Displays a back button, title and extras
+
+![pagetitle](images/pagetitle.png 'pagetitle')
+
+#### Table
+
+The component render a table element and supoport several functionalities.
+
+1. Pagination
+2. Sort columns by clicking header column
+3. Filter columns
+4. Horizontal and vertical scroll
+5. Summary (footer)
+6. onChange event to capture pagination, filters and sorters
+
+![table](images/pagetitle.png 'table')
+![tablefilter](images/pagetitle.png 'tablefilter')
+![tablesummary](images/tablesummary.png 'tablesummary')
