@@ -7,34 +7,35 @@ import { AiOutlineMenu } from 'react-icons/ai';
 import clsx from 'clsx';
 import { useUser } from '../contexts/userContext';
 import { IUser } from '@/types/user';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 
 function Navbar({ user }: { user: IUser | null }) {
+  const locale = useLocale();
   const t = useTranslations('Navbar');
   const { loading, logout } = useUser();
   const [visible, setVisible] = useState(false);
   const ref = useRef<any>();
   const PrivateNav = () => (
     <nav className={clsx({ [styles.links]: true, [styles.visible]: visible })}>
-      <Link className={styles.link} href={`/private/dashboard/${moment().format('YYYY-MM-DD')}`} locale="en-US">
+      <Link className={styles.link} href={`${locale}/private/dashboard/${moment().format('YYYY-MM-DD')}`}>
         {t('dashboard')}
       </Link>
-      <Link className={styles.link} href="/private/transaction" locale="en-US">
+      <Link className={styles.link} href={`${locale}/private/transaction`} locale="en-US">
         {t('transactions')}
       </Link>
-      <Link className={styles.link} href="/private/budget">
+      <Link className={styles.link} href={`${locale}/private/budget`}>
         {t('budgets')}
       </Link>
-      <Link className={styles.link} href="/private/account">
+      <Link className={styles.link} href={`${locale}/private/account`}>
         {t('accounts')}
       </Link>
-      <Link className={styles.link} href="/private/category">
+      <Link className={styles.link} href={`${locale}/private/category`}>
         {t('categories')}
       </Link>
       <Link href="#" onClick={() => logout()} className={styles.link}>
         {t('logout')}
       </Link>
-      <Link className={styles.link} href="/private/profile">
+      <Link className={styles.link} href={`${locale}/private/profile`}>
         {t('hello', { name: user?.firstName })}
       </Link>
     </nav>

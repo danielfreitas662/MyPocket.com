@@ -1,5 +1,6 @@
 import { Button } from '@/components';
 import PrivateLayout from '@/components/privateLayout/privateLayout';
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { ReactNode } from 'react';
 import { FaPlus } from 'react-icons/fa';
@@ -10,12 +11,13 @@ interface TransactionLayoutProps {
   children: ReactNode;
 }
 export default function TransactionLayout({ children }: TransactionLayoutProps) {
+  const t = useTranslations('Transactions');
   return (
     <PrivateLayout
-      title="Transactions"
+      title={t('title')}
       extra={
         <Link href="/private/transaction/new">
-          <Button icon={<FaPlus />}>New Transaction</Button>
+          <Button icon={<FaPlus />}>{t('newTransaction')}</Button>
         </Link>
       }
     >

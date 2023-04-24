@@ -1,4 +1,4 @@
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import UnAuthHome from './home';
 
 export default function Home() {

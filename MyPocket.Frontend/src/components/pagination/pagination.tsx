@@ -4,6 +4,7 @@ import React, { SetStateAction, useEffect, useState } from 'react';
 import { FaBackward, FaForward } from 'react-icons/fa';
 import Select from '../inputComponents/select/select';
 import styles from './pagination.module.scss';
+import { useTranslations } from 'next-intl';
 
 export interface PaginationProps {
   current?: number;
@@ -37,6 +38,7 @@ function Pagination({
     setPages(tempPages);
     if (tempPages.length < current) setCurrentPagination({ current: 1, pageSize, pageOptions });
   }, [total, pageSize]);
+  const t = useTranslations('Table');
   return (
     <div className={styles.pagination}>
       <div className={styles.pages}>
@@ -98,7 +100,7 @@ function Pagination({
         {pages.length > 0 && (
           <Select
             value={pageSize}
-            options={pageOptions.map((c) => ({ value: c, label: `${c} per page` }))}
+            options={pageOptions.map((c) => ({ value: c, label: t('pagination.perPage', { value: c }) }))}
             onChange={(e) => {
               setCurrentPagination({ pageSize: e.target.value, pageOptions, current });
               onChange && onChange({ pageOptions, pageSize: e.target.value, current });
@@ -106,7 +108,9 @@ function Pagination({
           />
         )}
       </div>
-      {total > 0 && <div className={styles.text}>{`Showing ${pageData.length} of ${total} entries`}</div>}
+      {total > 0 && (
+        <div className={styles.text}>{t('pagination.entries', { amount: pageData.length, total: total })}</div>
+      )}
     </div>
   );
 }

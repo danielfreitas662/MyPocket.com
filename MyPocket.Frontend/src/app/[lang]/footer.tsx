@@ -3,6 +3,7 @@ import Link from 'next/link';
 import React from 'react';
 function Footer() {
   const t = useTranslations('Home');
+
   return (
     <footer className="footer">
       <div className="footer-column">MyPocket</div>

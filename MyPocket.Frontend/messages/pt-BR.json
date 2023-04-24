@@ -120,7 +120,55 @@
       "result": "Resultado"
     },
     "chart6": {
-      "title": "Despesas por Categoria"
+      "title": "Despesas por Categoria",
+      "expenses": "Despesas",
+      "budget": "Orçamento"
+    }
+  },
+  "Table": {
+    "filter": {
+      "search": "Buscar...",
+      "cancel": "Cancelar",
+      "clear": "Limpar",
+      "filter": "Filtrar"
+    },
+    "pagination": {
+      "perPage": "{value} por página",
+      "entries": "Mostrando {amount} de {total} itens"
+    },
+    "empty": "Sem dados"
+  },
+  "PopConfirm": {
+    "ok": "Ok",
+    "cancel": "Cancelar"
+  },
+  "Transactions": {
+    "title": "Lançamentos",
+    "newTransaction": "Novo Lançamento",
+    "successRemove": "Lançamento removido com sucesso!",
+    "confirm": {
+      "title": "Está certo disso?"
+    },
+    "TransactionsTable": {
+      "date": "Data",
+      "description": "Descrição",
+      "amount": "Valor",
+      "category": "Categoria",
+      "account": "Conta"
+    }
+  },
+  "Categories": {
+    "title": "Categorias",
+    "newCategory": "Nova Categoria",
+    "successRemove": "Categoria removida com sucesso!",
+    "confirm": {
+      "title": "Está certo disso?"
+    },
+    "categoriesTable": {
+      "name": "Nome",
+      "type": "Tipo",
+      "income": "Receitas",
+      "expenses": "Despesas"
     }
   }
 }

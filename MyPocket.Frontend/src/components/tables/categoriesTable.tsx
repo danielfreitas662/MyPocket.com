@@ -10,6 +10,7 @@ import { ColumnType } from '../table/tableTypes';
 import { objectToQueryString } from '@/utils/queryString';
 import { CategoryType, ICategory } from '@/types/category';
 import { removeCategory } from '@/services/api/category';
+import { useTranslations } from 'next-intl';
 
 interface CategoriesTableProps {
   searchParams: PageSearchParams & ICategory;
@@ -18,13 +19,14 @@ interface CategoriesTableProps {
 function CategoriasTable({ searchParams, data }: CategoriesTableProps) {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const t = useTranslations('Categories');
   const handleRemove = (id: string) => {
     setLoading(true);
     removeCategory(id)
       .then((res) => {
         setLoading(false);
         router.refresh();
-        toast.success('Category successfully removed!');
+        toast.success(t('successRemove'));
       })
       .catch((res) => {
         setLoading(false);
@@ -42,14 +44,14 @@ function CategoriasTable({ searchParams, data }: CategoriesTableProps) {
           <Link href={`/private/category/${v}`}>
             <FaEdit />
           </Link>
-          <PopConfirm title="Are you sure?" onConfirm={() => handleRemove(v)}>
+          <PopConfirm title={t('confirm.title')} onConfirm={() => handleRemove(v)}>
             <FaTrash style={{ cursor: 'pointer' }} />
           </PopConfirm>
         </div>
       ),
     },
     {
-      title: 'Name',
+      title: t('categoriesTable.name'),
       dataIndex: 'name',
       filter: {
         filterType: 'string',
@@ -57,13 +59,13 @@ function CategoriasTable({ searchParams, data }: CategoriesTableProps) {
       },
     },
     {
-      title: 'Categoty Type',
+      title: t('categoriesTable.type'),
       dataIndex: 'type',
       filter: {
         filterType: 'string',
         filterValue: searchParams.type,
       },
-      render: (v) => (v === CategoryType.Income ? 'Income' : 'Expense'),
+      render: (v) => (v === CategoryType.Income ? t('categoriesTable.income') : t('categoriesTable.expenses')),
     },
   ];
   return (

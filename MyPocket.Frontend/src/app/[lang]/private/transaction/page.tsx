@@ -10,7 +10,6 @@ interface PageProps {
 }
 async function Transaction({ searchParams, params }: PageProps) {
   const session = cookies().get('session')?.value;
-  console.log(params);
   const { data } = await getTransactions(
     {
       filters: {

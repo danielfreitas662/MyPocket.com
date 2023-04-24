@@ -4,22 +4,25 @@ import { getCategoryExpenses, getResultsByMonth } from '@/services/api/dashboard
 import { currencyFormat } from '@/utils/formatters';
 import { ApexOptions } from 'apexcharts';
 import moment from 'moment';
+import { useLocale, useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
 
 function CategoryExpensesByMonth({ month, title }: { month: string; title: string }) {
   const [series, setSeries] = useState<ApexAxisChartSeries>([]);
+  const t = useTranslations('Dashboard');
+  const locale = useLocale();
   useEffect(() => {
     getCategoryExpenses(moment(month).utc().format('YYYY-MM-DD')).then((res) => {
       setSeries([
         {
-          name: 'Expenses',
+          name: t('chart6.expenses'),
           data: res?.data.map((c) => ({
             x: c.category,
             y: c.expenses,
             goals: [
               {
-                name: 'Budget',
+                name: t('chart6.budget'),
                 value: c.budget,
                 strokeWidth: 5,
                 strokeColor: '#775DD0',
@@ -33,7 +36,7 @@ function CategoryExpensesByMonth({ month, title }: { month: string; title: strin
   const options: ApexOptions = {
     xaxis: {
       labels: {
-        formatter: (val) => currencyFormat(Number(val), 'pt-BR'),
+        formatter: (val) => currencyFormat(Number(val), locale),
       },
     },
     grid: { show: true },
@@ -47,13 +50,13 @@ function CategoryExpensesByMonth({ month, title }: { month: string; title: strin
     },
     tooltip: {
       y: {
-        formatter: (val) => currencyFormat(val, 'pt-BR'),
+        formatter: (val) => currencyFormat(val, locale),
       },
     },
     legend: {
       show: true,
       showForSingleSeries: true,
-      customLegendItems: ['Expenses', 'Budget'],
+      customLegendItems: [t('chart6.expenses'), t('chart6.budget')],
     },
     responsive: [
       {

@@ -3,9 +3,11 @@ import { TableContext } from './tableContext';
 import { FaDatabase } from 'react-icons/fa';
 import styles from './table.module.scss';
 import clsx from 'clsx';
+import { useTranslations } from 'next-intl';
 
 function TableBody() {
   const { columns, dataSource, rowKey } = React.useContext(TableContext);
+  const t = useTranslations('Table');
   return (
     <tbody>
       {dataSource.length === 0 && (
@@ -15,7 +17,7 @@ function TableBody() {
               <div>
                 <FaDatabase />
               </div>
-              <div>No Data</div>
+              <div>{t('empty')}</div>
             </div>
           </td>
         </tr>

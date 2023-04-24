@@ -6,10 +6,11 @@ import { Navbar } from '@/components';
 import 'react-toastify/dist/ReactToastify.css';
 import { UserProvider } from '@/components/contexts/userContext';
 import React from 'react';
-import { NextIntlClientProvider, useLocale, useTranslations } from 'next-intl';
+import { NextIntlClientProvider, useLocale } from 'next-intl';
 import { notFound } from 'next/navigation';
 import { getUser } from '@/services/api/user';
 import { cookies } from 'next/headers';
+import LocaleSwitcher from '@/components/navbar/localeSwitcher';
 
 export const metadata = {
   title: 'My Pocket',
@@ -25,18 +26,14 @@ export default async function RootLayout({
   children: React.ReactNode;
   params: { lang: string };
 }) {
+  const currentLocale = params.lang;
   const session = cookies().get('session')?.value;
   const user = await getUser(session);
-  const locale = useLocale();
-
-  const messages = (await import(`../../../messages/${locale}.json`)).default;
-  if (params.lang !== locale) {
-    notFound();
-  }
+  const messages = (await import(`../../../messages/${currentLocale}.json`)).default;
   return (
-    <html lang={locale}>
+    <html lang={currentLocale}>
       <body>
-        <NextIntlClientProvider locale={locale} messages={messages}>
+        <NextIntlClientProvider locale={currentLocale} messages={messages}>
           <UserProvider>
             <main className={inter.className + ' main'} style={{ ...inter.style }}>
               <header className="header">
@@ -45,6 +42,7 @@ export default async function RootLayout({
                     <span>MyPocket</span>
                   </Link>
                 </div>
+                <LocaleSwitcher currentLocale={currentLocale} />
                 <Navbar user={user} />
               </header>
               <div className="content">{children}</div>

@@ -1,4 +1,5 @@
 import { Button, ErrorBoundary, PrivateLayout } from '@/components';
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { ReactNode } from 'react';
 import { FaPlus } from 'react-icons/fa';
@@ -10,12 +11,13 @@ interface CategoryLayoutProps {
   children: ReactNode;
 }
 export default function CategoryLayout({ children }: CategoryLayoutProps) {
+  const t = useTranslations('Categories');
   return (
     <PrivateLayout
-      title="Categories"
+      title={t('title')}
       extra={
         <Link href="/private/category/new">
-          <Button icon={<FaPlus />}>New Category</Button>
+          <Button icon={<FaPlus />}>{t('newCategory')}</Button>
         </Link>
       }
     >
