@@ -5,9 +5,11 @@ import { GetPattern } from '@/utils/patterns';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { useUser } from '../contexts/userContext';
+import { useTranslations } from 'next-intl';
 
 function LoginForm({ returnUrl }: { returnUrl?: string }) {
   const { login, loading, result } = useUser();
+  const t = useTranslations('Login');
   const {
     handleSubmit,
     register,
@@ -18,34 +20,34 @@ function LoginForm({ returnUrl }: { returnUrl?: string }) {
       <FormItem label="E-mail" error={errors?.email?.message as string}>
         <TextInput
           {...register('email', {
-            required: 'Required field',
-            pattern: { value: GetPattern('email'), message: 'Incorrect e-mail format' },
+            required: t('requiredField'),
+            pattern: { value: GetPattern('email'), message: t('incorrectFormat') },
           })}
         />
       </FormItem>
-      <FormItem label="Password" error={errors?.password?.message as string}>
+      <FormItem label={t('password')} error={errors?.password?.message as string}>
         <TextInput
           type="password"
           error={errors?.password?.message as string}
           {...register('password', {
-            required: 'Required field',
+            required: t('requiredField'),
           })}
         />
       </FormItem>
       <Row justifyContent="center" gutter={[8, 8]} wrap={false}>
         <Col span={12}>
           <Button type="submit" disabled={loading}>
-            Login
+            {t('buttons.login')}
           </Button>
         </Col>
         <Col span={12} align="center">
           <Link href="/signup" style={{ fontSize: 14 }}>
-            Register
+            {t('buttons.register')}
           </Link>
         </Col>
         <Col span={12} align="right">
           <Link href="/forgot" style={{ fontSize: 14 }}>
-            Forgot Password
+            {t('buttons.forgot')}
           </Link>
         </Col>
       </Row>
