@@ -149,12 +149,14 @@
     "confirm": {
       "title": "Está certo disso?"
     },
-    "TransactionsTable": {
+    "save": "Salvar",
+    "fields": {
       "date": "Data",
       "description": "Descrição",
       "amount": "Valor",
       "category": "Categoria",
-      "account": "Conta"
+      "account": "Conta",
+      "requiredField": "Campo obrigatório"
     }
   },
   "Categories": {
@@ -164,11 +166,44 @@
     "confirm": {
       "title": "Está certo disso?"
     },
-    "categoriesTable": {
+    "save": "Salvar",
+    "fields": {
       "name": "Nome",
       "type": "Tipo",
       "income": "Receitas",
-      "expenses": "Despesas"
+      "expenses": "Despesas",
+      "requiredField": "Campo obrigatório"
+    }
+  },
+  "Accounts": {
+    "title": "Contas",
+    "newAccount": "Nova Conta",
+    "successRemove": "Conta removida com sucesso!",
+    "confirm": {
+      "title": "Está certo disso?"
+    },
+    "save": "Salvar",
+    "fields": {
+      "name": "Nome",
+      "requiredField": "Campo obrigatório"
+    }
+  },
+  "Budgets": {
+    "title": "Orçamentos",
+    "newBudget": "Novo Orçamento",
+    "successRemove": "Orçamento removido com sucesso!",
+    "confirm": {
+      "title": "Está certo disso?"
+    },
+    "save": "Salvar",
+    "addBudgetItem": "Item",
+    "fields": {
+      "month": "Mês",
+      "amount": "Valor",
+      "category": "Categoria",
+      "actual": "Realizado",
+      "requiredField": "Campo obrigatório",
+      "zero": "Valor não pode ser zero"
     }
   }
 }

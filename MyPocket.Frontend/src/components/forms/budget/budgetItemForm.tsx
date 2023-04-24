@@ -3,6 +3,7 @@ import FormItem from '@/components/form/formItem';
 import { addBudgetItem } from '@/services/api/budget';
 import { IBudgetItem } from '@/types/budget';
 import { CategoryType, ICategory } from '@/types/category';
+import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -25,6 +26,7 @@ function BudgetItemForm({
     formState: { errors },
   } = useForm<IBudgetItem>();
   const router = useRouter();
+  const t = useTranslations('Budgets');
   const handleAddCategory = (data: IBudgetItem) => {
     if (!loading) {
       setLoading(true);
@@ -44,11 +46,11 @@ function BudgetItemForm({
   };
   return (
     <form onSubmit={handleSubmit(handleAddCategory)}>
-      <FormItem label="Category" error={errors['categoryId']?.message as string}>
+      <FormItem label={t('fields.category')} error={errors['categoryId']?.message as string}>
         <Select
           allowClear
-          placeholder="Category..."
-          {...register('categoryId', { required: 'Required field' })}
+          placeholder={t('fields.category')}
+          {...register('categoryId', { required: t('fields.category') })}
           renderItem={(item) => (
             <div
               style={{
@@ -78,16 +80,16 @@ function BudgetItemForm({
             }))}
         />
       </FormItem>
-      <FormItem label="Amount" error={errors['amount']?.message as string}>
+      <FormItem label={t('fields.amount')} error={errors['amount']?.message as string}>
         <CurrencyInput
           {...register('amount', {
-            required: { value: true, message: 'Required field' },
-            validate: (val) => val !== 0 || 'Value must be greater than zero',
+            required: { value: true, message: t('fields.requiredField') },
+            validate: (val) => val !== 0 || t('fields.zero'),
           })}
         />
       </FormItem>
       <Button type="submit" icon={<FaPlus />}>
-        Budget Item
+        {t('addBudgetItem')}
       </Button>
     </form>
   );

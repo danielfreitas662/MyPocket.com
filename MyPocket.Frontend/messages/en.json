@@ -151,12 +151,14 @@
     "confirm": {
       "title": "Are you sure?"
     },
-    "TransactionsTable": {
+    "save": "Save",
+    "fields": {
       "date": "Date",
       "description": "Description",
       "amount": "Amount",
       "category": "Category",
-      "account": "Account"
+      "account": "Account",
+      "requiredField": "Required field"
     }
   },
   "Categories": {
@@ -166,11 +168,44 @@
     "confirm": {
       "title": "Are you sure?"
     },
-    "categoriesTable": {
+    "save": "Save",
+    "fields": {
       "name": "Name",
       "type": "Category Type",
       "income": "Income",
-      "expenses": "Expenses"
+      "expenses": "Expenses",
+      "requiredField": "Required field"
+    }
+  },
+  "Accounts": {
+    "title": "Accounts",
+    "newAccount": "New Account",
+    "successRemove": "Account successfully removed!",
+    "confirm": {
+      "title": "Are you sure?"
+    },
+    "save": "Save",
+    "fields": {
+      "name": "Name",
+      "requiredField": "Required field"
+    }
+  },
+  "Budgets": {
+    "title": "Budgets",
+    "newBudget": "New Budget",
+    "successRemove": "Budget successfully removed!",
+    "confirm": {
+      "title": "Are you sure?"
+    },
+    "save": "Save",
+    "addBudgetItem": "Budget Item",
+    "fields": {
+      "month": "Month",
+      "category": "Category",
+      "amount": "Amount",
+      "actual": "Actual",
+      "requiredField": "Required field",
+      "zero": "Value must be greater than zero"
     }
   }
 }

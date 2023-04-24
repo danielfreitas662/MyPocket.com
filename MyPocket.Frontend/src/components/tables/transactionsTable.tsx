@@ -55,7 +55,7 @@ function TransactionsTable(props: TransactionsTableProps) {
       ),
     },
     {
-      title: t('TransactionsTable.date'),
+      title: t('fields.date'),
       dataIndex: 'date',
       filter: {
         filterType: 'date',
@@ -65,7 +65,7 @@ function TransactionsTable(props: TransactionsTableProps) {
       render: (v: string) => moment(v).format('DD/MM/YYYY'),
     },
     {
-      title: t('TransactionsTable.description'),
+      title: t('fields.description'),
       dataIndex: 'description',
       filter: {
         filterType: 'string',
@@ -74,7 +74,7 @@ function TransactionsTable(props: TransactionsTableProps) {
       sorter: true,
     },
     {
-      title: t('TransactionsTable.amount'),
+      title: t('fields.amount'),
       dataIndex: 'amount',
       align: 'right',
       render: (v: number) => currencyFormat(v, locale),
@@ -85,7 +85,7 @@ function TransactionsTable(props: TransactionsTableProps) {
       sorter: true,
     },
     {
-      title: t('TransactionsTable.category'),
+      title: t('fields.category'),
       dataIndex: 'category',
       sorter: true,
       filter: {
@@ -94,7 +94,7 @@ function TransactionsTable(props: TransactionsTableProps) {
       },
     },
     {
-      title: t('TransactionsTable.account'),
+      title: t('fields.account'),
       dataIndex: 'account',
       sorter: true,
       filter: {

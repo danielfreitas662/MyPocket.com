@@ -10,6 +10,7 @@ import Button from '../button/button';
 import Feedback from '../feedback/feedback';
 import FormItem from '../form/formItem';
 import TextInput from '../inputComponents/textinput/textInput';
+import { useTranslations } from 'next-intl';
 
 interface AccountFormProps {
   initialData?: Partial<IAccount>;
@@ -18,6 +19,7 @@ function AccountForm({ initialData }: AccountFormProps) {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<ApiRequest<IAccount | null>>({} as ApiRequest<IAccount>);
   const router = useRouter();
+  const t = useTranslations('Accounts');
   const {
     register,
     reset,
@@ -46,11 +48,11 @@ function AccountForm({ initialData }: AccountFormProps) {
         <FormItem label="Id" hidden>
           <input {...register('id', { required: false })} />
         </FormItem>
-        <FormItem label="Name" error={errors['name']?.message as string}>
-          <TextInput placeholder="Name..." {...register('name', { required: 'Required field' })} />
+        <FormItem label={t('fields.name')} error={errors['name']?.message as string}>
+          <TextInput placeholder={t('fields.name')} {...register('name', { required: t('fields.requiredField') })} />
         </FormItem>
         <Button type="submit" disabled={loading}>
-          Save
+          {t('save')}
         </Button>
         <Feedback type={result?.error ? 'error' : 'success'} message={result?.message} dismissable />
       </form>

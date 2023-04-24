@@ -17,6 +17,7 @@ import DatePicker from '../inputComponents/datePicker/datePicker';
 import Select from '../inputComponents/select/select';
 import TextInput from '../inputComponents/textinput/textInput';
 import { FaArrowDown, FaArrowUp } from 'react-icons/fa';
+import { useTranslations } from 'next-intl';
 
 interface TransactionFormProps {
   initialData?: Partial<ITransaction>;
@@ -27,6 +28,7 @@ function TransactionForm({ initialData, categories, accounts }: TransactionFormP
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<ApiRequest<ITransaction | null>>({} as ApiRequest<ITransaction>);
   const router = useRouter();
+  const t = useTranslations('Transactions');
   const {
     register,
     handleSubmit,
@@ -56,28 +58,31 @@ function TransactionForm({ initialData, categories, accounts }: TransactionFormP
         <FormItem label="Id" hidden>
           <input {...register('id', { required: false })} />
         </FormItem>
-        <FormItem label="Description" error={errors['description']?.message as string}>
-          <TextInput placeholder="Description..." {...register('description', { required: 'Required field' })} />
+        <FormItem label={t('fields.description')} error={errors['description']?.message as string}>
+          <TextInput
+            placeholder={t('fields.description')}
+            {...register('description', { required: t('fields.requiredField') })}
+          />
         </FormItem>
-        <FormItem label="Amount" error={errors['amount']?.message as string}>
+        <FormItem label={t('fields.amount')} error={errors['amount']?.message as string}>
           <CurrencyInput
-            placeholder="Amount..."
+            placeholder={t('fields.amount')}
             {...register('amount', {
-              required: 'Required field',
+              required: t('fields.requiredField'),
               validate: (val) => {
                 return val !== 0 || 'Amount cannot be zero';
               },
             })}
           />
         </FormItem>
-        <FormItem label="Date" error={errors['date']?.message as string}>
-          <DatePicker {...register('date', { required: 'Required field' })} placeholder="Date..." />
+        <FormItem label={t('fields.date')} error={errors['date']?.message as string}>
+          <DatePicker {...register('date', { required: t('fields.requiredField') })} placeholder={t('fields.date')} />
         </FormItem>
-        <FormItem label="Category" error={errors['categoryId']?.message as string}>
+        <FormItem label={t('fields.category')} error={errors['categoryId']?.message as string}>
           <Select
             allowClear
-            placeholder="Category..."
-            {...register('categoryId', { required: 'Required field' })}
+            placeholder={t('fields.category')}
+            {...register('categoryId', { required: t('fields.requiredField') })}
             renderItem={(item) => (
               <div
                 style={{
@@ -106,16 +111,16 @@ function TransactionForm({ initialData, categories, accounts }: TransactionFormP
               }))}
           />
         </FormItem>
-        <FormItem label="Account" error={errors['accountId']?.message as string}>
+        <FormItem label={t('fields.account')} error={errors['accountId']?.message as string}>
           <Select
             allowClear
-            placeholder="Account..."
-            {...register('accountId', { required: 'Required field' })}
+            placeholder={t('fields.account')}
+            {...register('accountId', { required: t('fields.requiredField') })}
             options={accounts.map((c) => ({ value: c.id, label: c.name }))}
           />
         </FormItem>
         <Button type="submit" disabled={loading}>
-          Save
+          {t('save')}
         </Button>
         <Feedback type={result?.error ? 'error' : 'success'} message={result?.message} dismissable />
       </form>

@@ -51,7 +51,7 @@ function CategoriasTable({ searchParams, data }: CategoriesTableProps) {
       ),
     },
     {
-      title: t('categoriesTable.name'),
+      title: t('fields.name'),
       dataIndex: 'name',
       filter: {
         filterType: 'string',
@@ -59,13 +59,13 @@ function CategoriasTable({ searchParams, data }: CategoriesTableProps) {
       },
     },
     {
-      title: t('categoriesTable.type'),
+      title: t('fields.type'),
       dataIndex: 'type',
       filter: {
         filterType: 'string',
         filterValue: searchParams.type,
       },
-      render: (v) => (v === CategoryType.Income ? t('categoriesTable.income') : t('categoriesTable.expenses')),
+      render: (v) => (v === CategoryType.Income ? t('fields.income') : t('fields.expenses')),
     },
   ];
   return (

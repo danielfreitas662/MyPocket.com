@@ -10,6 +10,7 @@ import { ColumnType } from '../table/tableTypes';
 import { objectToQueryString } from '@/utils/queryString';
 import { IAccount } from '@/types/account';
 import { removeAccount } from '@/services/api/account';
+import { useTranslations } from 'next-intl';
 interface AccountsTableProps {
   searchParams: PageSearchParams & IAccount;
   data: FilterResult<IAccount>;
@@ -18,13 +19,14 @@ interface AccountsTableProps {
 function AccountsTable({ searchParams, data }: AccountsTableProps) {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const t = useTranslations('Accounts');
   const handleRemove = (id: string) => {
     setLoading(true);
     removeAccount(id)
       .then((res) => {
         setLoading(false);
         router.refresh();
-        toast.success('Account successfully removed!');
+        toast.success(t('successRemove'));
       })
       .catch((res) => {
         setLoading(false);
@@ -42,14 +44,14 @@ function AccountsTable({ searchParams, data }: AccountsTableProps) {
           <Link href={`/private/account/${v}`}>
             <FaEdit />
           </Link>
-          <PopConfirm title="Are you sure?" onConfirm={() => handleRemove(v)}>
+          <PopConfirm title={t('confirm.title')} onConfirm={() => handleRemove(v)}>
             <FaTrash style={{ cursor: 'pointer' }} />
           </PopConfirm>
         </div>
       ),
     },
     {
-      title: 'Name',
+      title: t('fields.name'),
       dataIndex: 'name',
       filter: {
         filterType: 'string',
