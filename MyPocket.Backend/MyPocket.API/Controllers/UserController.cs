@@ -4,6 +4,7 @@ using MyPocket.Application.Interfaces;
 using MyPocket.Infra.Data.Context;
 using MyPocket.Application.DTO;
 using System.Configuration;
+using Microsoft.Extensions.Localization;
 
 namespace MyPocket.API.Controllers
 {
@@ -15,10 +16,12 @@ namespace MyPocket.API.Controllers
 
     protected readonly IApplicationService _application;
     protected readonly IConfiguration _config;
-    public UserController(IApplicationService application, IConfiguration config)
+    private readonly IStringLocalizer<UserController> _localizer;
+    public UserController(IApplicationService application, IConfiguration config, IStringLocalizer<UserController> localizer)
     {
       _application = application;
       _config = config;
+      _localizer = localizer;
     }
     [HttpPost("Authenticate")]
     [AllowAnonymous]
@@ -58,9 +61,9 @@ namespace MyPocket.API.Controllers
     {
       string token = await _application.User.ForgotPasswordAsync(data);
       string domain = _config["domain"];
-      string body = $"<p>Click <a href=\"{domain}?token={token}\">here</a> to create e new password</p>";
-      await _application.EmailService.SendEmail(new List<string>() { data.Email }, "Password Reset Requested", body);
-      return Ok("Instructions have been sent to the informed e-mail");
+      string body = $"<p>{_localizer["Click"].Value} <a href=\"{domain}?token={token}\">{_localizer["here"].Value}</a> {_localizer["to create e new password"].Value}</p>";
+      await _application.EmailService.SendEmail(new List<string>() { data.Email }, _localizer["Password Reset Requested"].Value, body);
+      return Ok(_localizer["Instructions have been sent to the informed e-mail"].Value);
     }
     [HttpPost("ResetPassword")]
     [AllowAnonymous]

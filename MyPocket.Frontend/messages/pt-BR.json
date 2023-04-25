@@ -205,5 +205,10 @@
       "requiredField": "Campo obrigatório",
       "zero": "Valor não pode ser zero"
     }
+  },
+  "API": {
+    "error": "Algo de errado aconteceu.",
+    "removed": "{entity} removido com sucesso!",
+    "saved": "{entity} salva com sucesso!"
   }
 }

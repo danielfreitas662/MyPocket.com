@@ -4,6 +4,7 @@ using MyPocket.Application.Interfaces;
 using MyPocket.Infra.Data.Context;
 using MyPocket.Application.DTO;
 using MyPocket.Domain.Models;
+using Microsoft.Extensions.Localization;
 
 namespace MyPocket.API.Controllers
 {
@@ -13,9 +14,11 @@ namespace MyPocket.API.Controllers
   public class TransactionController : ControllerBase
   {
     protected readonly IApplicationService _application;
-    public TransactionController(IApplicationService application)
+    private readonly IStringLocalizer<TransactionController> _localizer;
+    public TransactionController(IApplicationService application, IStringLocalizer<TransactionController> localizer)
     {
       _application = application;
+      _localizer = localizer;
     }
     [HttpGet]
     public ActionResult GetAll()
@@ -29,7 +32,7 @@ namespace MyPocket.API.Controllers
     {
       var user = HttpContext.User.Identity!.GetUserData();
       var transaction = await _application.Transaction.GetByIdAsync(user.UserId, Id);
-      if (transaction == null) return NotFound($"Transaction Id: {Id} not found");
+      if (transaction == null) return NotFound(string.Format(_localizer["Transaction Id: {0} not found"].Value, Id));
       return Ok(transaction);
     }
     [HttpPost]
@@ -48,7 +51,7 @@ namespace MyPocket.API.Controllers
       else
       {
         var findTransaction = await _application.Transaction.GetByIdAsync(user.UserId, transaction.Id);
-        if (findTransaction == null) return NotFound($"Transaction Id: {transaction.Id} not found");
+        if (findTransaction == null) return NotFound(string.Format(_localizer["Transaction Id: {0} not found"].Value, findTransaction.Id));
         var updatedTransaction = await _application.Transaction.UpdateAsync(user, findTransaction, transaction);
         return Ok(new AddOrUpdateResult<TransactionDTO>
         {
@@ -62,7 +65,7 @@ namespace MyPocket.API.Controllers
     {
       var user = HttpContext.User.Identity!.GetUserData();
       var transaction = await _application.Transaction.GetByIdAsync(user.UserId, Id);
-      if (transaction == null) return NotFound($"Transaction Id: {Id} not found");
+      if (transaction == null) return NotFound(string.Format(_localizer["Transaction Id: {0} not found"].Value, Id));
       await _application.Transaction.RemoveAsync(user, transaction);
       return Ok(Id);
     }

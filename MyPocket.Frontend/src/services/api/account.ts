@@ -3,17 +3,20 @@ import { IAccount } from '@/types/account';
 import apiEndpoints from '../apiEndpoints';
 import { getClientSession } from '../clientSession';
 import { Filter, FilterResult } from '@/types/pagination';
+import { useLocale, useTranslations } from 'next-intl';
 const apiAddress: string = process.env.NEXT_PUBLIC_API_ADDRESS as string;
 export const getAccounts = async (filters: Filter<IAccount>, session: string | undefined) => {
   try {
     const token = session || (await getClientSession());
+
+    const locale = useLocale();
     const res = await fetch(apiAddress + apiEndpoints.ACCOUNT.FILTER.endpoint, {
       method: apiEndpoints.ACCOUNT.FILTER.method,
       cache: 'no-store',
       headers: {
-        // @ts-ignore
         Authorization: `Bearer ${token}`,
         'content-type': 'application/json',
+        'Accept-Language': locale,
       },
       body: JSON.stringify(filters),
     });
@@ -47,13 +50,15 @@ export const getAccounts = async (filters: Filter<IAccount>, session: string | u
 export const saveAccount = async (account: Partial<IAccount>) => {
   try {
     const session = await getClientSession();
+    const locale = useLocale();
+    const t = useTranslations('API');
     const res = await fetch(apiAddress + apiEndpoints.ACCOUNT.ADD.endpoint, {
       method: apiEndpoints.ACCOUNT.ADD.method,
       body: JSON.stringify(account),
       headers: {
         'content-type': 'application/json',
-        // @ts-ignore
         Authorization: `Bearer ${session}`,
+        'Accept-Language': locale,
       },
     });
     if (!res.ok) {
@@ -61,7 +66,7 @@ export const saveAccount = async (account: Partial<IAccount>) => {
         error: true,
         statusCode: res.status,
         statusText: res.statusText,
-        message: 'Something wrong happened',
+        message: t('error'),
         data: null,
       };
       return result;
@@ -71,7 +76,7 @@ export const saveAccount = async (account: Partial<IAccount>) => {
       error: false,
       statusCode: res.status,
       statusText: res.statusText,
-      message: 'Account successfully saved',
+      message: t('saved', { entity: 'Account' }),
       data: data,
     };
     return result;
@@ -81,13 +86,15 @@ export const saveAccount = async (account: Partial<IAccount>) => {
 };
 export const removeAccount = async (id: string) => {
   try {
+    const t = useTranslations('API');
+    const locale = useLocale();
     const session = await getClientSession();
     const res = await fetch(apiAddress + apiEndpoints.ACCOUNT.REMOVE.endpoint + `/${id}`, {
       method: apiEndpoints.ACCOUNT.REMOVE.method,
       headers: {
         'content-type': 'application/json',
-        // @ts-ignore
         Authorization: `Bearer ${session}`,
+        'Accept-Language': locale,
       },
     });
     if (!res.ok) {
@@ -95,7 +102,7 @@ export const removeAccount = async (id: string) => {
         error: true,
         statusCode: res.status,
         statusText: res.statusText,
-        message: 'Something wrong happened',
+        message: t('error'),
         data: null,
       };
       return result;
@@ -105,7 +112,7 @@ export const removeAccount = async (id: string) => {
       error: false,
       statusCode: res.status,
       statusText: res.statusText,
-      message: 'Account successfully removed',
+      message: t('removed'),
       data: data,
     };
     return result;

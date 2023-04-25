@@ -207,5 +207,10 @@
       "requiredField": "Required field",
       "zero": "Value must be greater than zero"
     }
+  },
+  "API": {
+    "error": "Something wrong happened.",
+    "removed": "{entity} successfully removed!",
+    "saved": "{entity} successfully saved!"
   }
 }

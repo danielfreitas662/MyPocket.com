@@ -10,6 +10,7 @@ using MyPocket.Application.DTO;
 using System.Linq;
 using MyPocket.Infra.Data.Context;
 using System;
+using Microsoft.Extensions.Localization;
 
 namespace MyPocket.Tests.API;
 
@@ -17,6 +18,7 @@ public class CategoryControllerTests
 {
   private Mock<IApplicationService> applicationServiceMock = new Mock<IApplicationService>();
   private Mock<ICategoryService> categoryServiceMock = new Mock<ICategoryService>();
+  private Mock<IStringLocalizer<CategoryController>> localizerMock = new Mock<IStringLocalizer<CategoryController>>();
   private UserData userIdentity;
   public CategoryControllerTests()
   {
@@ -33,7 +35,7 @@ public class CategoryControllerTests
   {
     var categoriesMock = CategoryFixtures.GetCategories();
     var contextMock = new MockHttpContext(userIdentity);
-    CategoryController sut = new CategoryController(applicationServiceMock.Object);
+    CategoryController sut = new CategoryController(applicationServiceMock.Object, localizerMock.Object);
     sut.ControllerContext.HttpContext = contextMock.context;
     categoryServiceMock.Setup(x => x.GetAll(userIdentity.UserId)).Returns(categoriesMock);
     applicationServiceMock.Setup(x => x.Category).Returns(categoryServiceMock.Object);
@@ -47,7 +49,7 @@ public class CategoryControllerTests
   {
     var categoriesMock = CategoryFixtures.GetCategories();
     var contextMock = new MockHttpContext(userIdentity);
-    CategoryController sut = new CategoryController(applicationServiceMock.Object);
+    CategoryController sut = new CategoryController(applicationServiceMock.Object, localizerMock.Object);
     sut.ControllerContext.HttpContext = contextMock.context;
     categoryServiceMock.Setup(x => x.GetAll(userIdentity.UserId)).Returns(new List<CategoryDTO>());
     applicationServiceMock.Setup(x => x.Category).Returns(categoryServiceMock.Object);
@@ -61,7 +63,7 @@ public class CategoryControllerTests
   {
     var categoriesMock = CategoryFixtures.GetCategories();
     var contextMock = new MockHttpContext(userIdentity);
-    CategoryController sut = new CategoryController(applicationServiceMock.Object);
+    CategoryController sut = new CategoryController(applicationServiceMock.Object, localizerMock.Object);
     sut.ControllerContext.HttpContext = contextMock.context;
     categoryServiceMock.Setup(x => x.GetByIdAsync(userIdentity.UserId, categoriesMock[0].Id)).ReturnsAsync(() => categoriesMock[0]);
     categoryServiceMock.Setup(x => x.UpdateAsync(It.IsAny<UserData>(), It.IsAny<CategoryDTO>(), It.IsAny<CategoryDTO>())).ReturnsAsync(() => categoriesMock[0]);
@@ -77,10 +79,11 @@ public class CategoryControllerTests
   {
     var categoriesMock = CategoryFixtures.GetCategories();
     var contextMock = new MockHttpContext();
-    CategoryController sut = new CategoryController(applicationServiceMock.Object);
+    CategoryController sut = new CategoryController(applicationServiceMock.Object, localizerMock.Object);
     sut.ControllerContext.HttpContext = contextMock.context;
     categoryServiceMock.Setup(x => x.GetByIdAsync(userIdentity.UserId, It.IsAny<string>())).ReturnsAsync(() => null);
     applicationServiceMock.Setup(x => x.Category).Returns(categoryServiceMock.Object);
+    localizerMock.Setup(x => x["Category Id: {0} not found"]).Returns(new LocalizedString($"Category Id: {categoriesMock[0].Id} not found", $"Category Id: {categoriesMock[0].Id} not found"));
 
     var result = await sut.AddOrUpdate(categoriesMock[0]);
     var objectResult = Assert.IsAssignableFrom<NotFoundObjectResult>(result);
@@ -96,7 +99,7 @@ public class CategoryControllerTests
       Id = null
     };
     var contextMock = new MockHttpContext(userIdentity);
-    CategoryController sut = new CategoryController(applicationServiceMock.Object);
+    CategoryController sut = new CategoryController(applicationServiceMock.Object, localizerMock.Object);
     sut.ControllerContext.HttpContext = contextMock.context;
     categoryServiceMock.Setup(x => x.AddAsync(It.IsAny<UserData>(), It.IsAny<CategoryDTO>())).ReturnsAsync(() =>
     {
@@ -116,7 +119,7 @@ public class CategoryControllerTests
   {
     var categoryMock = CategoryFixtures.GetCategories()[0];
     var contextMock = new MockHttpContext(userIdentity);
-    CategoryController sut = new CategoryController(applicationServiceMock.Object);
+    CategoryController sut = new CategoryController(applicationServiceMock.Object, localizerMock.Object);
     sut.ControllerContext.HttpContext = contextMock.context;
     categoryServiceMock.Setup(x => x.GetByIdAsync(It.IsAny<string>(), categoryMock.Id)).ReturnsAsync(() => categoryMock);
     categoryServiceMock.Setup(x => x.RemoveAsync(It.IsAny<UserData>(), categoryMock));
@@ -131,10 +134,11 @@ public class CategoryControllerTests
   {
     var categoryMock = CategoryFixtures.GetCategories()[0];
     var contextMock = new MockHttpContext(userIdentity);
-    CategoryController sut = new CategoryController(applicationServiceMock.Object);
+    CategoryController sut = new CategoryController(applicationServiceMock.Object, localizerMock.Object);
     sut.ControllerContext.HttpContext = contextMock.context;
     categoryServiceMock.Setup(x => x.GetByIdAsync(It.IsAny<string>(), categoryMock.Id)).ReturnsAsync(() => null);
     applicationServiceMock.Setup(x => x.Category).Returns(categoryServiceMock.Object);
+    localizerMock.Setup(x => x["Category Id: {0} not found"]).Returns(new LocalizedString($"Category Id: {categoryMock.Id} not found", $"Category Id: {categoryMock.Id} not found"));
 
     var result = await sut.Remove(categoryMock.Id);
     var objectResult = Assert.IsAssignableFrom<NotFoundObjectResult>(result);
