@@ -9,6 +9,7 @@ import styles from './table.module.scss';
 import { FaArrowDown, FaArrowUp, FaFilter } from 'react-icons/fa';
 import DatePicker from '../inputComponents/datePicker/datePicker';
 import moment from 'moment';
+import { useTranslations } from 'next-intl';
 
 function TableHeader() {
   const { columns, onChange, setCurrentSorter, currentSorter, currentPagination, filter, setFilter } =
@@ -111,6 +112,7 @@ const FilterBox = ({ filterType, column, dataIndex, setColumn }: FilterProps) =>
     onChange && onChange({ ...filter, [dataIndex]: null }, currentSorter, currentPagination);
     setColumn(null);
   };
+  const t = useTranslations('Table');
   return (
     <div
       ref={filterboxRef}
@@ -127,7 +129,7 @@ const FilterBox = ({ filterType, column, dataIndex, setColumn }: FilterProps) =>
               setFilter({ ...filter, [dataIndex]: e.target.value });
               setInternalValue(e.target.value);
             }}
-            placeholder="Search..."
+            placeholder={t('filter.search')}
           />
         )}
         {filterType === 'date' && (
@@ -140,7 +142,7 @@ const FilterBox = ({ filterType, column, dataIndex, setColumn }: FilterProps) =>
               });
               setInternalValue(e.target.value);
             }}
-            placeholder="Search..."
+            placeholder={t('filter.search')}
           />
         )}
       </div>
@@ -152,13 +154,13 @@ const FilterBox = ({ filterType, column, dataIndex, setColumn }: FilterProps) =>
             setFilter({ ...filter, [dataIndex]: null });
           }}
         >
-          Cancel
+          {t('filter.cancel')}
         </Button>
         <Button theme="secondary" onClick={() => handleClear()}>
-          Clear
+          {t('filter.clear')}
         </Button>
         <Button theme="primary" onClick={() => handleConfirm()}>
-          Filter
+          {t('filter.filter')}
         </Button>
       </div>
     </div>

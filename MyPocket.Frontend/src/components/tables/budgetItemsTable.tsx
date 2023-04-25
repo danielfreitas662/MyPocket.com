@@ -9,6 +9,7 @@ import { FaEdit, FaPlus, FaSave, FaTrash } from 'react-icons/fa';
 import PopConfirm from '../popconfirm/popConfirm';
 import { currencyFormat } from '@/utils/formatters';
 import CurrencyInput from '../inputComponents/currencyInput/currencyInput';
+import { useLocale, useTranslations } from 'next-intl';
 
 interface BudgetItemsTableProps {
   items: IBudgetItem[];
@@ -18,6 +19,8 @@ function BudgetItemsTable({ items }: BudgetItemsTableProps) {
   const [itemEdit, setitemEdit] = useState<string | null>(null);
   const [valueEdit, setValueEdit] = useState(0);
   const router = useRouter();
+  const locale = useLocale();
+  const t = useTranslations('Budgets');
   const handleRemoveItem = (id: string) => {
     setLoading(true);
     removeBudgetItem(id).then((res) => {
@@ -66,7 +69,7 @@ function BudgetItemsTable({ items }: BudgetItemsTableProps) {
                 }}
               />
               <FaSave style={{ cursor: 'pointer' }} onClick={() => handleUpdateItem(row)} />
-              <PopConfirm title="Are you sure?" onConfirm={() => handleRemoveItem(v)}>
+              <PopConfirm title={t('confirm.title')} onConfirm={() => handleRemoveItem(v)}>
                 <FaTrash style={{ cursor: 'pointer' }} />
               </PopConfirm>
             </>
@@ -75,19 +78,19 @@ function BudgetItemsTable({ items }: BudgetItemsTableProps) {
       ),
     },
     {
-      title: 'Category',
+      title: t('fields.category'),
       dataIndex: 'category',
       sorter: (a, b) => a.category?.localeCompare(b.category as string, 'en', { sensitivity: 'base' }) || 0,
     },
     {
-      title: 'Amount',
+      title: t('fields.amount'),
       sorter: (a, b) => Number(a.amount) - Number(b.amount),
       dataIndex: 'amount',
       width: 100,
       align: 'right',
       render: (v, row) =>
         itemEdit !== row.id ? (
-          currencyFormat(v, 'pt-BR')
+          currencyFormat(v, locale)
         ) : (
           <CurrencyInput value={valueEdit} onChange={(e) => setValueEdit(e.target.value)} />
         ),
@@ -110,7 +113,7 @@ function BudgetItemsTable({ items }: BudgetItemsTableProps) {
             <Table.Summary.Cell align="right">
               {currencyFormat(
                 data.reduce((a, b) => a + b.amount, 0),
-                'pt-BR'
+                locale
               )}
             </Table.Summary.Cell>
           </Table.Summary.Row>

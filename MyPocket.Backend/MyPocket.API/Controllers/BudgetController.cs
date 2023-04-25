@@ -4,6 +4,7 @@ using MyPocket.Application.Interfaces;
 using MyPocket.Infra.Data.Context;
 using MyPocket.Application.DTO;
 using MyPocket.Domain.Models;
+using Microsoft.Extensions.Localization;
 
 namespace MyPocket.API.Controllers
 {
@@ -13,9 +14,11 @@ namespace MyPocket.API.Controllers
   public class BudgetController : ControllerBase
   {
     protected readonly IApplicationService _application;
-    public BudgetController(IApplicationService application)
+    private readonly IStringLocalizer<BudgetController> _localizer;
+    public BudgetController(IApplicationService application, IStringLocalizer<BudgetController> localizer)
     {
       _application = application;
+      _localizer = localizer;
     }
     [HttpGet]
     public ActionResult GetAll()
@@ -31,7 +34,7 @@ namespace MyPocket.API.Controllers
     {
       var user = HttpContext.User.Identity!.GetUserData();
       var budget = await _application.Budget.GetByIdAsync(user.UserId, Id);
-      if (budget == null) return NotFound($"Budget Id: {Id} not found");
+      if (budget == null) NotFound(string.Format(_localizer["Budget Id: {0} not found"].Value, Id));
       return Ok(budget);
     }
     [HttpGet("Month/{month}")]
@@ -58,7 +61,7 @@ namespace MyPocket.API.Controllers
       else
       {
         var findBudget = await _application.Budget.GetByIdAsync(user.UserId, budget.Id);
-        if (findBudget == null) return NotFound($"Budget Id: {budget.Id} not found");
+        if (findBudget == null) return NotFound(string.Format(_localizer["Budget Id: {0} not found"].Value, budget.Id));
         var updatedBudget = await _application.Budget.UpdateAsync(user, findBudget, budget);
         return Ok(new AddOrUpdateResult<BudgetDTO>
         {
@@ -74,7 +77,7 @@ namespace MyPocket.API.Controllers
       {
         var user = HttpContext.User.Identity!.GetUserData();
         var budget = await _application.Budget.GetByIdAsync(user.UserId, Id);
-        if (budget == null) return NotFound($"Budget Id: {Id} not found");
+        if (budget == null) return NotFound(string.Format(_localizer["Budget Id: {0} not found"].Value, Id));
         await _application.Budget.RemoveAsync(user, budget);
         return Ok(Id);
       }
@@ -135,17 +138,17 @@ namespace MyPocket.API.Controllers
         var items = _application.Budget.GetItems(item.BudgetId, user.UserId);
         if (items.Any(c => c.CategoryId == item.CategoryId))
         {
-          return BadRequest("Item already included");
+          return BadRequest(_localizer["Item already included"].Value);
         }
         var category = await _application.Category.GetByIdAsync(user.UserId, item.CategoryId);
         if (category == null)
         {
-          return NotFound("Invalid category");
+          return NotFound(_localizer["Invalid category"].Value);
         }
         var budget = await _application.Budget.GetByIdAsync(user.UserId, item.BudgetId);
         if (budget == null)
         {
-          return NotFound("Invalid budget");
+          return NotFound(_localizer["Invalid budget"].Value);
         }
         var newitem = await _application.Budget.AddItemAsync(item, user.UserId);
         return Ok(newitem);
@@ -162,11 +165,11 @@ namespace MyPocket.API.Controllers
       {
         var user = HttpContext.User.Identity!.GetUserData();
         var itemFound = await _application.Budget.GetItemAsync(item.Id, user.UserId);
-        if (itemFound == null) return NotFound("Item not found");
+        if (itemFound == null) return NotFound(_localizer["Item not found"].Value);
         var category = await _application.Category.GetByIdAsync(user.UserId, item.CategoryId);
-        if (category == null) return NotFound("Invalid category");
+        if (category == null) return NotFound(_localizer["Invalid category"].Value);
         var budget = await _application.Budget.GetByIdAsync(user.UserId, item.BudgetId);
-        if (budget == null) return NotFound("Invalid budget");
+        if (budget == null) return NotFound(_localizer["Invalid budget"].Value);
         var updatedItem = await _application.Budget.UpdateItemAsync(item, user.UserId);
         return Ok(updatedItem);
       }
@@ -182,7 +185,7 @@ namespace MyPocket.API.Controllers
       {
         var user = HttpContext.User.Identity!.GetUserData();
         var item = await _application.Budget.GetItemAsync(id, user.UserId);
-        if (item == null) return NotFound("Item not found");
+        if (item == null) return NotFound(_localizer["Item not found"].Value);
         var result = await _application.Budget.RemoveItemAsync(id, user.UserId);
         return Ok(result);
       }

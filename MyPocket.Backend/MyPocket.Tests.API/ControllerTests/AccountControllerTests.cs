@@ -10,6 +10,7 @@ using MyPocket.Application.DTO;
 using System.Linq;
 using MyPocket.Infra.Data.Context;
 using System;
+using Microsoft.Extensions.Localization;
 
 namespace MyPocket.Tests.API;
 
@@ -17,6 +18,7 @@ public class AccountControllerTests
 {
   private Mock<IApplicationService> applicationServiceMock = new Mock<IApplicationService>();
   private Mock<IAccountService> accountServiceMock = new Mock<IAccountService>();
+  private Mock<IStringLocalizer<AccountController>> localizerMock = new Mock<IStringLocalizer<AccountController>>();
   private UserData userIdentity;
   public AccountControllerTests()
   {
@@ -33,7 +35,7 @@ public class AccountControllerTests
   {
     var accountsMock = AccountFixtures.GetAccounts();
     var contextMock = new MockHttpContext(userIdentity);
-    AccountController sut = new AccountController(applicationServiceMock.Object);
+    AccountController sut = new AccountController(applicationServiceMock.Object, localizerMock.Object);
     sut.ControllerContext.HttpContext = contextMock.context;
     accountServiceMock.Setup(x => x.GetAll(userIdentity.UserId)).Returns(accountsMock);
     applicationServiceMock.Setup(x => x.Account).Returns(accountServiceMock.Object);
@@ -47,7 +49,7 @@ public class AccountControllerTests
   {
     var accountsMock = AccountFixtures.GetAccounts();
     var contextMock = new MockHttpContext(userIdentity);
-    AccountController sut = new AccountController(applicationServiceMock.Object);
+    AccountController sut = new AccountController(applicationServiceMock.Object, localizerMock.Object);
     sut.ControllerContext.HttpContext = contextMock.context;
     accountServiceMock.Setup(x => x.GetAll(userIdentity.UserId)).Returns(new List<AccountDTO>());
     applicationServiceMock.Setup(x => x.Account).Returns(accountServiceMock.Object);
@@ -61,7 +63,7 @@ public class AccountControllerTests
   {
     var accountsMock = AccountFixtures.GetAccounts();
     var contextMock = new MockHttpContext(userIdentity);
-    AccountController sut = new AccountController(applicationServiceMock.Object);
+    AccountController sut = new AccountController(applicationServiceMock.Object, localizerMock.Object);
     sut.ControllerContext.HttpContext = contextMock.context;
     accountServiceMock.Setup(x => x.GetByIdAsync(userIdentity.UserId, accountsMock[0].Id)).ReturnsAsync(() => accountsMock[0]);
     accountServiceMock.Setup(x => x.UpdateAsync(It.IsAny<UserData>(), It.IsAny<AccountDTO>(), It.IsAny<AccountDTO>())).ReturnsAsync(() => accountsMock[0]);
@@ -77,10 +79,11 @@ public class AccountControllerTests
   {
     var accountsMock = AccountFixtures.GetAccounts();
     var contextMock = new MockHttpContext();
-    AccountController sut = new AccountController(applicationServiceMock.Object);
+    AccountController sut = new AccountController(applicationServiceMock.Object, localizerMock.Object);
     sut.ControllerContext.HttpContext = contextMock.context;
     accountServiceMock.Setup(x => x.GetByIdAsync(userIdentity.UserId, It.IsAny<string>())).ReturnsAsync(() => null);
     applicationServiceMock.Setup(x => x.Account).Returns(accountServiceMock.Object);
+    localizerMock.Setup(x => x["Account Id: {0} not found"]).Returns(new LocalizedString($"Account Id: {accountsMock[0].Id} not found", $"Account Id: {accountsMock[0].Id} not found"));
 
     var result = await sut.AddOrUpdate(accountsMock[0]);
     var objectResult = Assert.IsAssignableFrom<NotFoundObjectResult>(result);
@@ -96,7 +99,7 @@ public class AccountControllerTests
       Id = null
     };
     var contextMock = new MockHttpContext(userIdentity);
-    AccountController sut = new AccountController(applicationServiceMock.Object);
+    AccountController sut = new AccountController(applicationServiceMock.Object, localizerMock.Object);
     sut.ControllerContext.HttpContext = contextMock.context;
     accountServiceMock.Setup(x => x.AddAsync(It.IsAny<UserData>(), It.IsAny<AccountDTO>())).ReturnsAsync(() =>
     {
@@ -116,7 +119,7 @@ public class AccountControllerTests
   {
     var accountMock = AccountFixtures.GetAccounts()[0];
     var contextMock = new MockHttpContext(userIdentity);
-    AccountController sut = new AccountController(applicationServiceMock.Object);
+    AccountController sut = new AccountController(applicationServiceMock.Object, localizerMock.Object);
     sut.ControllerContext.HttpContext = contextMock.context;
     accountServiceMock.Setup(x => x.GetByIdAsync(It.IsAny<string>(), accountMock.Id)).ReturnsAsync(() => accountMock);
     accountServiceMock.Setup(x => x.RemoveAsync(It.IsAny<UserData>(), accountMock));
@@ -131,10 +134,11 @@ public class AccountControllerTests
   {
     var accountMock = AccountFixtures.GetAccounts()[0];
     var contextMock = new MockHttpContext(userIdentity);
-    AccountController sut = new AccountController(applicationServiceMock.Object);
+    AccountController sut = new AccountController(applicationServiceMock.Object, localizerMock.Object);
     sut.ControllerContext.HttpContext = contextMock.context;
     accountServiceMock.Setup(x => x.GetByIdAsync(It.IsAny<string>(), accountMock.Id)).ReturnsAsync(() => null);
     applicationServiceMock.Setup(x => x.Account).Returns(accountServiceMock.Object);
+    localizerMock.Setup(x => x["Account Id: {0} not found"]).Returns(new LocalizedString($"Account Id: {accountMock.Id} not found", $"Account Id: {accountMock.Id} not found"));
 
     var result = await sut.Remove(accountMock.Id);
     var objectResult = Assert.IsAssignableFrom<NotFoundObjectResult>(result);

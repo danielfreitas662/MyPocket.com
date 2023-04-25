@@ -4,6 +4,7 @@ using MyPocket.Application.Interfaces;
 using MyPocket.Infra.Data.Context;
 using MyPocket.Application.DTO;
 using MyPocket.Domain.Models;
+using Microsoft.Extensions.Localization;
 
 namespace MyPocket.API.Controllers
 {
@@ -13,9 +14,11 @@ namespace MyPocket.API.Controllers
   public class CategoryController : ControllerBase
   {
     protected readonly IApplicationService _application;
-    public CategoryController(IApplicationService application)
+    private readonly IStringLocalizer<CategoryController> _localizer;
+    public CategoryController(IApplicationService application, IStringLocalizer<CategoryController> localizer)
     {
       _application = application;
+      _localizer = localizer;
     }
     [HttpGet]
     public ActionResult GetAll()
@@ -29,7 +32,7 @@ namespace MyPocket.API.Controllers
     {
       var user = HttpContext.User.Identity!.GetUserData();
       var category = await _application.Category.GetByIdAsync(user.UserId, Id);
-      if (category == null) return NotFound($"Category Id: {Id} not found");
+      if (category == null) return NotFound(string.Format(_localizer["Category Id: {0} not found"].Value, Id));
       return Ok(category);
     }
     [HttpPost]
@@ -48,7 +51,7 @@ namespace MyPocket.API.Controllers
       else
       {
         var findCategory = await _application.Category.GetByIdAsync(user.UserId, category.Id);
-        if (findCategory == null) return NotFound($"Category Id: {category.Id} not found");
+        if (findCategory == null) return NotFound(string.Format(_localizer["Category Id: {0} not found"].Value, category.Id));
         var updatedCategory = await _application.Category.UpdateAsync(user, findCategory, category);
         return Ok(new AddOrUpdateResult<CategoryDTO>
         {
@@ -63,7 +66,7 @@ namespace MyPocket.API.Controllers
     {
       var user = HttpContext.User.Identity!.GetUserData();
       var category = await _application.Category.GetByIdAsync(user.UserId, Id);
-      if (category == null) return NotFound($"Category Id: {Id} not found");
+      if (category == null) return NotFound(string.Format(_localizer["Category Id: {0} not found"].Value, Id));
       await _application.Category.RemoveAsync(user, category);
       return Ok(Id);
     }

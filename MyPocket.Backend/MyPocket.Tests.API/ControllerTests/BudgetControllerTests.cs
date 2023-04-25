@@ -10,6 +10,7 @@ using MyPocket.Application.DTO;
 using System.Linq;
 using MyPocket.Infra.Data.Context;
 using System;
+using Microsoft.Extensions.Localization;
 
 namespace MyPocket.Tests.API;
 
@@ -17,6 +18,7 @@ public class BudgetControllerTests
 {
   private Mock<IApplicationService> applicationServiceMock = new Mock<IApplicationService>();
   private Mock<IBudgetService> budgetServiceMock = new Mock<IBudgetService>();
+  private Mock<IStringLocalizer<BudgetController>> localizerMock = new Mock<IStringLocalizer<BudgetController>>();
   private UserData userIdentity;
   public BudgetControllerTests()
   {
@@ -33,7 +35,7 @@ public class BudgetControllerTests
   {
     var budgetsMock = BudgetFixtures.GetBudgets();
     var contextMock = new MockHttpContext(userIdentity);
-    BudgetController sut = new BudgetController(applicationServiceMock.Object);
+    BudgetController sut = new BudgetController(applicationServiceMock.Object, localizerMock.Object);
     sut.ControllerContext.HttpContext = contextMock.context;
     budgetServiceMock.Setup(x => x.GetAll(userIdentity.UserId)).Returns(budgetsMock);
     applicationServiceMock.Setup(x => x.Budget).Returns(budgetServiceMock.Object);
@@ -47,7 +49,7 @@ public class BudgetControllerTests
   {
     var budgetsMock = BudgetFixtures.GetBudgets();
     var contextMock = new MockHttpContext(userIdentity);
-    BudgetController sut = new BudgetController(applicationServiceMock.Object);
+    BudgetController sut = new BudgetController(applicationServiceMock.Object, localizerMock.Object);
     sut.ControllerContext.HttpContext = contextMock.context;
     budgetServiceMock.Setup(x => x.GetAll(userIdentity.UserId)).Returns(new List<BudgetDTO>());
     applicationServiceMock.Setup(x => x.Budget).Returns(budgetServiceMock.Object);
@@ -61,7 +63,7 @@ public class BudgetControllerTests
   {
     var budgetsMock = BudgetFixtures.GetBudgets();
     var contextMock = new MockHttpContext(userIdentity);
-    BudgetController sut = new BudgetController(applicationServiceMock.Object);
+    BudgetController sut = new BudgetController(applicationServiceMock.Object, localizerMock.Object);
     sut.ControllerContext.HttpContext = contextMock.context;
     budgetServiceMock.Setup(x => x.GetByIdAsync(userIdentity.UserId, budgetsMock[0].Id)).ReturnsAsync(() => budgetsMock[0]);
     budgetServiceMock.Setup(x => x.UpdateAsync(It.IsAny<UserData>(), It.IsAny<BudgetDTO>(), It.IsAny<BudgetDTO>())).ReturnsAsync(() => budgetsMock[0]);
@@ -77,10 +79,11 @@ public class BudgetControllerTests
   {
     var budgetsMock = BudgetFixtures.GetBudgets();
     var contextMock = new MockHttpContext();
-    BudgetController sut = new BudgetController(applicationServiceMock.Object);
+    BudgetController sut = new BudgetController(applicationServiceMock.Object, localizerMock.Object);
     sut.ControllerContext.HttpContext = contextMock.context;
     budgetServiceMock.Setup(x => x.GetByIdAsync(userIdentity.UserId, It.IsAny<string>())).ReturnsAsync(() => null);
     applicationServiceMock.Setup(x => x.Budget).Returns(budgetServiceMock.Object);
+    localizerMock.Setup(x => x["Budget Id: {0} not found"]).Returns(new LocalizedString($"Budget Id: {budgetsMock[0].Id} not found", $"Budget Id: {budgetsMock[0].Id} not found"));
 
     var result = await sut.AddOrUpdate(budgetsMock[0]);
     var objectResult = Assert.IsAssignableFrom<NotFoundObjectResult>(result);
@@ -97,7 +100,7 @@ public class BudgetControllerTests
       Id = null
     };
     var contextMock = new MockHttpContext(userIdentity);
-    BudgetController sut = new BudgetController(applicationServiceMock.Object);
+    BudgetController sut = new BudgetController(applicationServiceMock.Object, localizerMock.Object);
     sut.ControllerContext.HttpContext = contextMock.context;
     budgetServiceMock.Setup(x => x.AddAsync(It.IsAny<UserData>(), It.IsAny<BudgetDTO>())).ReturnsAsync(() =>
     {
@@ -117,7 +120,7 @@ public class BudgetControllerTests
   {
     var budgetMock = BudgetFixtures.GetBudgets()[0];
     var contextMock = new MockHttpContext(userIdentity);
-    BudgetController sut = new BudgetController(applicationServiceMock.Object);
+    BudgetController sut = new BudgetController(applicationServiceMock.Object, localizerMock.Object);
     sut.ControllerContext.HttpContext = contextMock.context;
     budgetServiceMock.Setup(x => x.GetByIdAsync(It.IsAny<string>(), budgetMock.Id)).ReturnsAsync(() => budgetMock);
     budgetServiceMock.Setup(x => x.RemoveAsync(It.IsAny<UserData>(), budgetMock));
@@ -132,10 +135,11 @@ public class BudgetControllerTests
   {
     var budgetMock = BudgetFixtures.GetBudgets()[0];
     var contextMock = new MockHttpContext(userIdentity);
-    BudgetController sut = new BudgetController(applicationServiceMock.Object);
+    BudgetController sut = new BudgetController(applicationServiceMock.Object, localizerMock.Object);
     sut.ControllerContext.HttpContext = contextMock.context;
     budgetServiceMock.Setup(x => x.GetByIdAsync(It.IsAny<string>(), budgetMock.Id)).ReturnsAsync(() => null);
     applicationServiceMock.Setup(x => x.Budget).Returns(budgetServiceMock.Object);
+    localizerMock.Setup(x => x["Budget Id: {0} not found"]).Returns(new LocalizedString($"Budget Id: {budgetMock.Id} not found", $"Budget Id: {budgetMock.Id} not found"));
 
     var result = await sut.Remove(budgetMock.Id);
     var objectResult = Assert.IsAssignableFrom<NotFoundObjectResult>(result);

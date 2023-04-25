@@ -1,0 +1,214 @@
+{
+  "Home": {
+    "about": "Sobre",
+    "contact": "Contato",
+    "signup": "Criar conta",
+    "signupfree": "Crie uma conta grátis",
+    "section1": {
+      "title": "Gerenciar suas finanças é mais fácil do que imagina!",
+      "description": "Bem vindo ao MyPocket - o aplicativo web que faz o gerenciamento de finanças ser muito fácil! Com nossos dashboards em tempo real e ferramentas para criação de orçamentos, você pode ter o controle das suas finanças e alcançar seus objetivos financeiros."
+    },
+    "section2": {
+      "item1": {
+        "title": "Dashboards em tempo real",
+        "description": "Acompanhe suas receitas e despesasc com um dashboard super amigável. Veja para onde seu dinheiro está indo facilmente e tome decisões rápidas sobre os seus gastos."
+      },
+      "item2": {
+        "title": "Orçamentos mensais",
+        "description": "Configure orçamentos para cada categoria de despesa e acompanhe o progresso do mês. Nosso aplicativo lhe ajudará a não gastar mais do que sua meta."
+      },
+      "item3": {
+        "title": "Importe arquivos OFX",
+        "description": "MyPocket pode importar facilmente arquivos OFX gerados pelos bancos, tornando-se fácil manter toda sua informação financeira em apenas um lugar."
+      }
+    },
+    "section3": {
+      "title": "Por que nos escolher?",
+      "item1": {
+        "title": "Fácil de Usar",
+        "description": "Nosso aplicativo foi desenhado para ser intuitivo e amigável, você pode começar agora!"
+      },
+      "item2": {
+        "title": "Seguro",
+        "description": "Sua informação fianaceira é importante para nós, por isso utilizamos as medidas de segurança mais atuais para manter seus dados seguros."
+      },
+      "item3": {
+        "title": "Personalizável",
+        "description": "MyPocket pode ser personalizado para atender sua situação financeira particular. Se você é um estudante, dono de um pequeno negócio ou aposentado, nosso aplicativo possue ferramentas adequadas para gerenciar seu dinheiro."
+      }
+    }
+  },
+  "About": {
+    "title": "Sobre nós",
+    "description": "Bem-vindo ao MyPocket, um aplicativo da web fácil de usar projetado para ajudá-lo a gerenciar suas finanças de maneira conveniente e eficiente. Nossa missão é capacitar as pessoas a assumir o controle de suas finanças, fornecendo uma plataforma simples e intuitiva para gerenciar suas receitas, despesas e economias. Entendemos que gerenciar finanças pode ser trabalhoso e demorado, por isso criamos uma ferramenta que simplifica o processo e ajuda você a atingir seus objetivos financeiros. No MyPocket, valorizamos a transparência, segurança e privacidade do usuário. Nossa plataforma é construída com os mais recentes protocolos de segurança para garantir que seus dados estejam seguros e protegidos. Nunca vendemos seus dados a terceiros e estamos comprometidos em proteger sua privacidade em todos os momentos. Nossa equipe é formada por profissionais experientes e apaixonados por criar soluções inovadoras que melhorem a vida das pessoas. Estamos trabalhando constantemente para melhorar a plataforma, adicionando novos recursos e funcionalidades para tornar sua experiência ainda melhor. Acreditamos que todos merecem ter controle sobre suas finanças, independentemente de sua origem ou situação financeira. É por isso que oferecemos um plano básico gratuito com recursos essenciais, bem como planos premium acessíveis com funcionalidades avançadas. Obrigado por escolher o MyPocket como sua ferramenta de gestão financeira. Estamos empenhados em ajudá-lo a alcançar o sucesso financeiro e esperamos apoiá-lo em sua jornada."
+  },
+  "Login": {
+    "title": "Entrar",
+    "password": "Senha",
+    "requiredField": "Campo obrigatório",
+    "incorrectFormat": "Formato de e-mail incorreto",
+    "buttons": {
+      "login": "Entrar",
+      "register": "Registrar",
+      "forgot": "Esqueci minha senha"
+    }
+  },
+  "Navbar": {
+    "dashboard": "Dashboard",
+    "transactions": "Lançamentos",
+    "budgets": "Orçamentos",
+    "accounts": "Contas",
+    "categories": "Categorias",
+    "logout": "Sair",
+    "hello": "Olá, {name}!",
+    "about": "Sobre",
+    "contact": "Contato",
+    "signup": "Registrar-se",
+    "login": "Entrar"
+  },
+  "Signup": {
+    "title": "Criar conta grátis",
+    "firstName": "Nome",
+    "lastName": "Sobrenome",
+    "password": "Senha",
+    "passwordConfirm": "Confirmar Senha",
+    "signup": "Registrar-se",
+    "noMatch": "Senhas estão diferentes",
+    "requiredField": "Campo obrigatório",
+    "minLength": "Senha deve ter pelo menos 8 caractéres",
+    "incorrectFormat": "Formato de e-mail incorreto"
+  },
+  "Contact": {
+    "title": "Contato",
+    "firstName": "Nome",
+    "lastName": "Sobrenome",
+    "message": "Menssagem",
+    "send": "Enviar",
+    "requiredField": "Campo obrigatório"
+  },
+  "Profile": {
+    "title": "Perfil",
+    "firstName": "Nome",
+    "lastName": "Sobrenome",
+    "changePassword": "Modificar Senha",
+    "currentPassword": "Senha Atual",
+    "newPassword": "Nova Senha",
+    "confirmPassword": "Confirmar Senha",
+    "button": "Modificar Senha",
+    "requiredField": "Campo obrigatório",
+    "noMatch": "Senhas estão diferentes"
+  },
+  "Dashboard": {
+    "chart1": {
+      "title": "Receitas",
+      "amount": "Valor"
+    },
+    "chart2": {
+      "title": "Despesas",
+      "amount": "Valor"
+    },
+    "chart3": {
+      "title": "Despesas por Categoria"
+    },
+    "chart4": {
+      "title": "Receitas por Categoria"
+    },
+    "chart5": {
+      "title": "Resultado Mensal",
+      "income": "Receita",
+      "expenses": "Despesas",
+      "result": "Resultado"
+    },
+    "chart6": {
+      "title": "Despesas por Categoria",
+      "expenses": "Despesas",
+      "budget": "Orçamento"
+    }
+  },
+  "Table": {
+    "filter": {
+      "search": "Buscar...",
+      "cancel": "Cancelar",
+      "clear": "Limpar",
+      "filter": "Filtrar"
+    },
+    "pagination": {
+      "perPage": "{value} por página",
+      "entries": "Mostrando {amount} de {total} itens"
+    },
+    "empty": "Sem dados"
+  },
+  "PopConfirm": {
+    "ok": "Ok",
+    "cancel": "Cancelar"
+  },
+  "Transactions": {
+    "title": "Lançamentos",
+    "newTransaction": "Novo Lançamento",
+    "successRemove": "Lançamento removido com sucesso!",
+    "confirm": {
+      "title": "Está certo disso?"
+    },
+    "save": "Salvar",
+    "fields": {
+      "date": "Data",
+      "description": "Descrição",
+      "amount": "Valor",
+      "category": "Categoria",
+      "account": "Conta",
+      "requiredField": "Campo obrigatório"
+    }
+  },
+  "Categories": {
+    "title": "Categorias",
+    "newCategory": "Nova Categoria",
+    "successRemove": "Categoria removida com sucesso!",
+    "confirm": {
+      "title": "Está certo disso?"
+    },
+    "save": "Salvar",
+    "fields": {
+      "name": "Nome",
+      "type": "Tipo",
+      "income": "Receitas",
+      "expenses": "Despesas",
+      "requiredField": "Campo obrigatório"
+    }
+  },
+  "Accounts": {
+    "title": "Contas",
+    "newAccount": "Nova Conta",
+    "successRemove": "Conta removida com sucesso!",
+    "confirm": {
+      "title": "Está certo disso?"
+    },
+    "save": "Salvar",
+    "fields": {
+      "name": "Nome",
+      "requiredField": "Campo obrigatório"
+    }
+  },
+  "Budgets": {
+    "title": "Orçamentos",
+    "newBudget": "Novo Orçamento",
+    "successRemove": "Orçamento removido com sucesso!",
+    "confirm": {
+      "title": "Está certo disso?"
+    },
+    "save": "Salvar",
+    "addBudgetItem": "Item",
+    "fields": {
+      "month": "Mês",
+      "amount": "Valor",
+      "category": "Categoria",
+      "actual": "Realizado",
+      "requiredField": "Campo obrigatório",
+      "zero": "Valor não pode ser zero"
+    }
+  },
+  "API": {
+    "error": "Algo de errado aconteceu.",
+    "removed": "{entity} removido com sucesso!",
+    "saved": "{entity} salva com sucesso!"
+  }
+}

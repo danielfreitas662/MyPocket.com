@@ -10,6 +10,7 @@ using MyPocket.Application.DTO;
 using System.Linq;
 using MyPocket.Infra.Data.Context;
 using System;
+using Microsoft.Extensions.Localization;
 
 namespace MyPocket.Tests.API;
 
@@ -17,6 +18,7 @@ public class TransactionControllerTests
 {
   private Mock<IApplicationService> applicationServiceMock = new Mock<IApplicationService>();
   private Mock<ITransactionService> transactionServiceMock = new Mock<ITransactionService>();
+  private Mock<IStringLocalizer<TransactionController>> localizerMock = new Mock<IStringLocalizer<TransactionController>>();
   private UserData userIdentity;
   public TransactionControllerTests()
   {
@@ -33,7 +35,7 @@ public class TransactionControllerTests
   {
     var transactionsMock = TransactionFixtures.GetTransactions();
     var contextMock = new MockHttpContext(userIdentity);
-    TransactionController sut = new TransactionController(applicationServiceMock.Object);
+    TransactionController sut = new TransactionController(applicationServiceMock.Object, localizerMock.Object);
     sut.ControllerContext.HttpContext = contextMock.context;
     transactionServiceMock.Setup(x => x.GetAll(userIdentity.UserId)).Returns(transactionsMock);
     applicationServiceMock.Setup(x => x.Transaction).Returns(transactionServiceMock.Object);
@@ -47,7 +49,7 @@ public class TransactionControllerTests
   {
     var transactionsMock = TransactionFixtures.GetTransactions();
     var contextMock = new MockHttpContext(userIdentity);
-    TransactionController sut = new TransactionController(applicationServiceMock.Object);
+    TransactionController sut = new TransactionController(applicationServiceMock.Object, localizerMock.Object);
     sut.ControllerContext.HttpContext = contextMock.context;
     transactionServiceMock.Setup(x => x.GetAll(userIdentity.UserId)).Returns(new List<TransactionDTO>());
     applicationServiceMock.Setup(x => x.Transaction).Returns(transactionServiceMock.Object);
@@ -61,7 +63,7 @@ public class TransactionControllerTests
   {
     var transactionsMock = TransactionFixtures.GetTransactions();
     var contextMock = new MockHttpContext(userIdentity);
-    TransactionController sut = new TransactionController(applicationServiceMock.Object);
+    TransactionController sut = new TransactionController(applicationServiceMock.Object, localizerMock.Object);
     sut.ControllerContext.HttpContext = contextMock.context;
     transactionServiceMock.Setup(x => x.GetByIdAsync(userIdentity.UserId, transactionsMock[0].Id)).ReturnsAsync(() => transactionsMock[0]);
     transactionServiceMock.Setup(x => x.UpdateAsync(It.IsAny<UserData>(), It.IsAny<TransactionDTO>(), It.IsAny<TransactionDTO>())).ReturnsAsync(() => transactionsMock[0]);
@@ -77,10 +79,11 @@ public class TransactionControllerTests
   {
     var transactionsMock = TransactionFixtures.GetTransactions();
     var contextMock = new MockHttpContext();
-    TransactionController sut = new TransactionController(applicationServiceMock.Object);
+    TransactionController sut = new TransactionController(applicationServiceMock.Object, localizerMock.Object);
     sut.ControllerContext.HttpContext = contextMock.context;
     transactionServiceMock.Setup(x => x.GetByIdAsync(userIdentity.UserId, It.IsAny<string>())).ReturnsAsync(() => null);
     applicationServiceMock.Setup(x => x.Transaction).Returns(transactionServiceMock.Object);
+    localizerMock.Setup(x => x["Transaction Id: {0} not found"]).Returns(new LocalizedString($"Transaction Id: {transactionsMock[0].Id} not found", $"Transaction Id: {transactionsMock[0].Id} not found"));
 
     var result = await sut.AddOrUpdate(transactionsMock[0]);
     var objectResult = Assert.IsAssignableFrom<NotFoundObjectResult>(result);
@@ -101,7 +104,7 @@ public class TransactionControllerTests
       Id = null
     };
     var contextMock = new MockHttpContext(userIdentity);
-    TransactionController sut = new TransactionController(applicationServiceMock.Object);
+    TransactionController sut = new TransactionController(applicationServiceMock.Object, localizerMock.Object);
     sut.ControllerContext.HttpContext = contextMock.context;
     transactionServiceMock.Setup(x => x.AddAsync(It.IsAny<UserData>(), It.IsAny<TransactionDTO>())).ReturnsAsync(() =>
     {
@@ -121,7 +124,7 @@ public class TransactionControllerTests
   {
     var transactionMock = TransactionFixtures.GetTransactions()[0];
     var contextMock = new MockHttpContext(userIdentity);
-    TransactionController sut = new TransactionController(applicationServiceMock.Object);
+    TransactionController sut = new TransactionController(applicationServiceMock.Object, localizerMock.Object);
     sut.ControllerContext.HttpContext = contextMock.context;
     transactionServiceMock.Setup(x => x.GetByIdAsync(It.IsAny<string>(), transactionMock.Id)).ReturnsAsync(() => transactionMock);
     transactionServiceMock.Setup(x => x.RemoveAsync(It.IsAny<UserData>(), transactionMock));
@@ -136,10 +139,11 @@ public class TransactionControllerTests
   {
     var transactionMock = TransactionFixtures.GetTransactions()[0];
     var contextMock = new MockHttpContext(userIdentity);
-    TransactionController sut = new TransactionController(applicationServiceMock.Object);
+    TransactionController sut = new TransactionController(applicationServiceMock.Object, localizerMock.Object);
     sut.ControllerContext.HttpContext = contextMock.context;
     transactionServiceMock.Setup(x => x.GetByIdAsync(It.IsAny<string>(), transactionMock.Id)).ReturnsAsync(() => null);
     applicationServiceMock.Setup(x => x.Transaction).Returns(transactionServiceMock.Object);
+    localizerMock.Setup(x => x["Transaction Id: {0} not found"]).Returns(new LocalizedString($"Transaction Id: {transactionMock.Id} not found", $"Transaction Id: {transactionMock.Id} not found"));
 
     var result = await sut.Remove(transactionMock.Id);
     var objectResult = Assert.IsAssignableFrom<NotFoundObjectResult>(result);

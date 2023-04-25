@@ -6,49 +6,53 @@ import styles from './navbar.module.scss';
 import { AiOutlineMenu } from 'react-icons/ai';
 import clsx from 'clsx';
 import { useUser } from '../contexts/userContext';
+import { IUser } from '@/types/user';
+import { useLocale, useTranslations } from 'next-intl';
 
-function Navbar() {
-  const { user, loading, logout } = useUser();
+function Navbar({ user }: { user: IUser | null }) {
+  const locale = useLocale();
+  const t = useTranslations('Navbar');
+  const { loading, logout } = useUser();
   const [visible, setVisible] = useState(false);
   const ref = useRef<any>();
   const PrivateNav = () => (
     <nav className={clsx({ [styles.links]: true, [styles.visible]: visible })}>
-      <Link className={styles.link} href={`/private/dashboard/${moment().format('YYYY-MM-DD')}`}>
-        Dashboard
+      <Link className={styles.link} href={`${locale}/private/dashboard/${moment().format('YYYY-MM-DD')}`}>
+        {t('dashboard')}
       </Link>
-      <Link className={styles.link} href="/private/transaction">
-        Transactions
+      <Link className={styles.link} href={`${locale}/private/transaction`} locale="en-US">
+        {t('transactions')}
       </Link>
-      <Link className={styles.link} href="/private/budget">
-        Budgets
+      <Link className={styles.link} href={`${locale}/private/budget`}>
+        {t('budgets')}
       </Link>
-      <Link className={styles.link} href="/private/account">
-        Accounts
+      <Link className={styles.link} href={`${locale}/private/account`}>
+        {t('accounts')}
       </Link>
-      <Link className={styles.link} href="/private/category">
-        Categories
+      <Link className={styles.link} href={`${locale}/private/category`}>
+        {t('categories')}
       </Link>
       <Link href="#" onClick={() => logout()} className={styles.link}>
-        Logout
+        {t('logout')}
       </Link>
-      <Link className={styles.link} href="/private/profile">
-        Hello, {user?.firstName}!
+      <Link className={styles.link} href={`${locale}/private/profile`}>
+        {t('hello', { name: user?.firstName })}
       </Link>
     </nav>
   );
   const PublicNav = () => (
     <nav className={clsx({ [styles.links]: true, [styles.visible]: visible })}>
       <Link className={styles.link} href="/about">
-        About
+        {t('about')}
       </Link>
       <Link className={styles.link} href="/contact">
-        Contact
+        {t('contact')}
       </Link>
       <Link className={styles.link} href="/signup">
-        Signup
+        {t('signup')}
       </Link>
       <Link className={styles.link} href="/login">
-        Login
+        {t('login')}
       </Link>
     </nav>
   );

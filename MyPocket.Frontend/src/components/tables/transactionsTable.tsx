@@ -12,6 +12,7 @@ import { FilterResult, PageSearchParams } from '@/types/pagination';
 import { useRouter } from 'next/navigation';
 import { ColumnType } from '../table/tableTypes';
 import { objectToQueryString } from '@/utils/queryString';
+import { useLocale, useTranslations } from 'next-intl';
 
 interface TransactionsTableProps {
   searchParams: PageSearchParams & ITransaction;
@@ -19,14 +20,16 @@ interface TransactionsTableProps {
 }
 function TransactionsTable(props: TransactionsTableProps) {
   const [loading, setLoading] = useState(false);
+  const locale = useLocale();
   const router = useRouter();
+  const t = useTranslations('Transactions');
   const handleRemove = (id: string) => {
     setLoading(true);
     removeTransaction(id)
       .then(() => {
         setLoading(false);
         router.refresh();
-        toast.success('Transaction successfully removed!');
+        toast.success(t('successRemove'));
       })
       .catch((res) => {
         setLoading(false);
@@ -42,44 +45,47 @@ function TransactionsTable(props: TransactionsTableProps) {
       align: 'center',
       render: (v: string) => (
         <div style={{ display: 'flex', gap: '5px 5px' }}>
-          <Link href={`/private/transaction/${v}`}>
+          <Link href={`${locale}/private/transaction/${v}`}>
             <FaEdit />
           </Link>
-          <PopConfirm title="Are you sure?" onConfirm={() => handleRemove(v)}>
+          <PopConfirm title={t('confirm.title')} onConfirm={() => handleRemove(v)}>
             <FaTrash style={{ cursor: 'pointer' }} />
           </PopConfirm>
         </div>
       ),
     },
     {
-      title: 'Date',
+      title: t('fields.date'),
       dataIndex: 'date',
       filter: {
         filterType: 'date',
         filterValue: props.searchParams.date,
       },
+      sorter: true,
       render: (v: string) => moment(v).format('DD/MM/YYYY'),
     },
     {
-      title: 'Description',
+      title: t('fields.description'),
       dataIndex: 'description',
       filter: {
         filterType: 'string',
         filterValue: props.searchParams.description,
       },
+      sorter: true,
     },
     {
-      title: 'Amount',
+      title: t('fields.amount'),
       dataIndex: 'amount',
       align: 'right',
-      render: (v: number) => currencyFormat(v, 'pt-BR'),
+      render: (v: number) => currencyFormat(v, locale),
       filter: {
         filterType: 'string',
         filterValue: props.searchParams.amount,
       },
+      sorter: true,
     },
     {
-      title: 'Category',
+      title: t('fields.category'),
       dataIndex: 'category',
       sorter: true,
       filter: {
@@ -88,7 +94,7 @@ function TransactionsTable(props: TransactionsTableProps) {
       },
     },
     {
-      title: 'Account',
+      title: t('fields.account'),
       dataIndex: 'account',
       sorter: true,
       filter: {
@@ -108,7 +114,7 @@ function TransactionsTable(props: TransactionsTableProps) {
         sorter={{ field: props.searchParams.field, order: props.searchParams.order }}
         onChange={(filter, sorter, pagination) => {
           const query = objectToQueryString({ ...filter, ...sorter, ...pagination });
-          router.push(`/private/transaction?${query}`);
+          router.push(`${locale}/private/transaction?${query}`);
         }}
         pagination={{
           total: props.data.total,

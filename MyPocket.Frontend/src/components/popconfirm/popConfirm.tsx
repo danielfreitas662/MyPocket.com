@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import React, { MouseEvent, ReactNode, useEffect, useRef, useState } from 'react';
 import Button from '../button/button';
 import styles from './popConfirm.module.scss';
+import { useTranslations } from 'next-intl';
 
 interface PopConfirmProps {
   children: ReactNode;
@@ -12,6 +13,7 @@ interface PopConfirmProps {
 function PopConfirm({ children, onConfirm, title }: PopConfirmProps) {
   const [visible, setVisible] = useState(false);
   const [mousePos, setMousePos] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+  const t = useTranslations('PopConfirm');
   const componentRef = useRef<any>();
   const handleChildrenClick = () => {
     setVisible(true);
@@ -51,9 +53,9 @@ function PopConfirm({ children, onConfirm, title }: PopConfirmProps) {
         <hr />
         <div className={styles.menu}>
           <Button theme="secondary" onClick={handleCancelClick}>
-            Cancel
+            {t('cancel')}
           </Button>
-          <Button onClick={(e) => handleConfirm(e)}>Ok</Button>
+          <Button onClick={(e) => handleConfirm(e)}>{t('ok')}</Button>
         </div>
       </div>
       <div onClick={handleChildrenClick}>{children}</div>

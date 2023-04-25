@@ -12,6 +12,7 @@ import { IBudget } from '@/types/budget';
 import { removeBudget } from '@/services/api/budget';
 import { currencyFormat } from '@/utils/formatters';
 import moment from 'moment';
+import { useLocale, useTranslations } from 'next-intl';
 interface BudgetsTableProps {
   searchParams: PageSearchParams & IBudget;
   data: FilterResult<IBudget>;
@@ -20,13 +21,15 @@ interface BudgetsTableProps {
 function BudgetsTable({ searchParams, data }: BudgetsTableProps) {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const t = useTranslations('Budgets');
+  const locale = useLocale();
   const handleRemove = (id: string) => {
     setLoading(true);
     removeBudget(id)
       .then((res) => {
         setLoading(false);
         router.refresh();
-        toast.success('Budget successfully removed!');
+        toast.success(t('successRemove'));
       })
       .catch((res) => {
         setLoading(false);
@@ -51,7 +54,7 @@ function BudgetsTable({ searchParams, data }: BudgetsTableProps) {
       ),
     },
     {
-      title: 'Month',
+      title: t('fields.month'),
       dataIndex: 'month',
       sorter: true,
       filter: {
@@ -61,24 +64,24 @@ function BudgetsTable({ searchParams, data }: BudgetsTableProps) {
       render: (v) => moment(v).format('MMM-YYYY'),
     },
     {
-      title: 'Amount',
+      title: t('fields.amount'),
       dataIndex: 'amount',
       sorter: true,
       filter: {
         filterType: 'string',
         filterValue: searchParams.amount,
       },
-      render: (v) => currencyFormat(v, 'pt-BR'),
+      render: (v) => currencyFormat(v, locale),
     },
     {
-      title: 'Actual',
+      title: t('fields.actual'),
       dataIndex: 'actual',
       sorter: true,
       filter: {
         filterType: 'string',
         filterValue: searchParams.actual,
       },
-      render: (v) => currencyFormat(v, 'pt-BR'),
+      render: (v) => currencyFormat(v, locale),
     },
   ];
   return (

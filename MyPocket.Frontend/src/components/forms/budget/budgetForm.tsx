@@ -13,6 +13,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import { ICategory } from '@/types/category';
 import BudgetItemsTable from '@/components/tables/budgetItemsTable';
 import BudgetItemForm from './budgetItemForm';
+import { useTranslations } from 'next-intl';
 
 interface BudgetFormProps {
   initialData?: Partial<IBudget>;
@@ -23,6 +24,7 @@ function BudgetForm({ initialData, categories = [] }: BudgetFormProps) {
     (moment(initialData?.month).isValid() && moment(initialData?.month).format('MMM-YYYY')) || null
   );
   const router = useRouter();
+  const t = useTranslations('Budgets');
   const updateBudget = async (newMonth: moment.Moment) => {
     const { data } = await getBudgetByMonth(newMonth.utc().format());
     if (!data) {
@@ -39,9 +41,9 @@ function BudgetForm({ initialData, categories = [] }: BudgetFormProps) {
       <ToastContainer />
       <Row justifyContent="center" gutter={[10, 10]} wrap>
         <Col flex="1 1 300px">
-          <FormItem label="Month">
+          <FormItem label={t('fields.month')}>
             <MonthPicker
-              placeholder="Month..."
+              placeholder={t('fields.month')}
               value={(month && moment(month, 'MMM-YYYY')) || null}
               onChange={(e) => {
                 e.target.value ? setMonth(e.target.value?.format('MMM-YYYY')) : setMonth(null);
