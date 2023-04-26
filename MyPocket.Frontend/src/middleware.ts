@@ -3,12 +3,17 @@ import { getUser } from './services/api/user';
 import Negotiator from 'negotiator';
 import { match as matchLocale } from '@formatjs/intl-localematcher';
 import { defaultLocale, locales } from '../i18n';
-import { useLocale } from 'next-intl';
+import createMiddleware from 'next-intl/middleware';
 
-/* export const middleware = createMiddleware({
-  locales: ['en', 'pt', 'pt-BR'],
-  defaultLocale: 'en',
-}); */
+const localeCookieName = process.env.NEXT_PUBLIC_LOCALE_COOKIE_NAME || 'locale';
+const responseIntl = createMiddleware({
+  // A list of all locales that are supported
+  locales: locales,
+
+  // If this locale is matched, pathnames work without a prefix (e.g. `/about`)
+  defaultLocale: defaultLocale,
+  localeDetection: true,
+});
 
 const redirectedPathName = (locale: string, pathName: string) => {
   if (!pathName) return '/';
@@ -35,18 +40,24 @@ const validateLocale = (locale: string | null) => {
 export async function middleware(request: NextRequest) {
   //handle locale
   const pathname = request.nextUrl.pathname;
-  let cookieLocale: string | null = request.cookies.get('NEXT_LOCALE')?.value || null;
+  const search = request.nextUrl.search;
+
+  let cookieLocale: string | null = request.cookies.get(localeCookieName)?.value || null;
+  if (!cookieLocale) {
+    const response = responseIntl(request);
+    return response;
+  }
   const pathMissingLocale = locales.every((locale) => !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`);
   if (!validateLocale(cookieLocale)) {
     cookieLocale = null;
   }
   if (pathMissingLocale) {
     if (cookieLocale) {
-      const response = NextResponse.redirect(new URL(`/${cookieLocale}${pathname}`, request.nextUrl));
+      const response = NextResponse.redirect(new URL(`/${cookieLocale}${pathname}${search}`, request.nextUrl));
       return response;
     } else {
-      const response = NextResponse.redirect(new URL(`/${defaultLocale}${pathname}`, request.nextUrl));
-      response.cookies.set('NEXT_LOCALE', defaultLocale);
+      const response = NextResponse.redirect(new URL(`/${defaultLocale}${pathname}${search}`, request.nextUrl));
+      response.cookies.set(localeCookieName, defaultLocale);
       return response;
     }
   } else {
@@ -59,17 +70,16 @@ export async function middleware(request: NextRequest) {
     if (pathLocale) {
       if (pathLocale !== cookieLocale) {
         const response = NextResponse.rewrite(new URL(redirectedPathName(pathLocale, pathname), request.nextUrl));
-        response.cookies.set('NEXT_LOCALE', pathLocale);
+        response.cookies.set(localeCookieName, pathLocale);
         return response;
       }
     }
   }
   //handle bock private router for non authenticated users
   const locale = getLocale(request) || defaultLocale;
-  if (request.nextUrl.pathname.toLocaleLowerCase().startsWith(`/${locale}/private`)) {
+  if (pathname.toLowerCase().startsWith(`/${locale}/private`)) {
     const session = request.cookies.get('session')?.value;
-    const user = await getUser(session);
-
+    const user = await getUser(session, locale);
     if (!user) {
       return NextResponse.redirect(
         new URL(`/${locale}/login?returnUrl=${request.nextUrl.pathname + request.nextUrl.search}`, request.nextUrl)
@@ -79,5 +89,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!api|_next|.*\\..*).*)'],
+  matcher: ['/((?!_next|.*\\..*).*)'],
 };

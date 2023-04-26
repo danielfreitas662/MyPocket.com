@@ -1,17 +1,19 @@
 import { Skeleton } from '@/components';
 import BudgetForm from '@/components/forms/budget/budgetForm';
 import { getBudgetById } from '@/services/api/budget';
-import { getCategories } from '@/services/category';
+import { getAllCategories } from '@/services/api/category';
 import { cookies } from 'next/headers';
+import { notFound } from 'next/navigation';
 import React, { Suspense } from 'react';
 
-async function Category({ params }: { params: { id: string } }) {
+async function Category({ params }: { params: { id: string; lang: string } }) {
   const session = cookies().get('session')?.value;
-  const result = await getBudgetById(params?.id, session);
-  const { data } = await getCategories(session);
+  const result = await getBudgetById(params?.id, session, params.lang);
+  const { data } = await getAllCategories(session, params.lang);
+  if (!result.data) return notFound();
   return (
     <Suspense fallback={<Skeleton rows={10} />}>
-      {!result.data ? <div>Not found</div> : <BudgetForm initialData={result.data} categories={data} />}
+      <BudgetForm initialData={result.data} categories={data} />
     </Suspense>
   );
 }

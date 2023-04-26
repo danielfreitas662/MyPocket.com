@@ -5,15 +5,17 @@ import { signup } from '@/services/api/auth';
 import { ApiRequest } from '@/types/apirequest';
 import { SignInModel } from '@/types/user';
 import { GetPattern } from '@/utils/patterns';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { Locale } from '../../../i18n';
 
 function SignupForm() {
   const [result, setResult] = useState<ApiRequest<string>>();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const locale = useLocale();
   const t = useTranslations('Signup');
   const {
     handleSubmit,
@@ -22,7 +24,7 @@ function SignupForm() {
   } = useForm<SignInModel>();
   const submitForm = (data: SignInModel) => {
     setLoading(true);
-    signup(data)
+    signup(data, locale as Locale)
       .then((res) => {
         setResult(res);
         setLoading(false);

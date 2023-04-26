@@ -51,7 +51,7 @@ namespace MyPocket.API.Controllers
       else
       {
         var findTransaction = await _application.Transaction.GetByIdAsync(user.UserId, transaction.Id);
-        if (findTransaction == null) return NotFound(string.Format(_localizer["Transaction Id: {0} not found"].Value, findTransaction.Id));
+        if (findTransaction == null) return NotFound(string.Format(_localizer["Transaction Id: {0} not found"].Value, transaction.Id));
         var updatedTransaction = await _application.Transaction.UpdateAsync(user, findTransaction, transaction);
         return Ok(new AddOrUpdateResult<TransactionDTO>
         {

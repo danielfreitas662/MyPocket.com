@@ -1,8 +1,8 @@
 import { ChangePasswordModel, IUser, LoginModel, LoginResult } from '@/types/user';
-import { getClientSession } from '../clientSession';
 import apiEndpoints from '../apiEndpoints';
 import { ApiRequest } from '@/types/apirequest';
 import { setCookie } from '@/utils/cookies';
+import { getHeaders } from '../utils';
 
 const apiAddress: string = process.env.NEXT_PUBLIC_API_ADDRESS as string;
 export const authenticate = async (values: LoginModel) => {
@@ -10,9 +10,7 @@ export const authenticate = async (values: LoginModel) => {
     const res = await fetch(process.env.NEXT_PUBLIC_API_ADDRESS + apiEndpoints.USER.AUTHENTICATE.endpoint, {
       method: apiEndpoints.USER.AUTHENTICATE.method,
       body: JSON.stringify(values),
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: getHeaders(),
     });
     const data: LoginResult = await res.json();
     if (data?.token) {
@@ -29,16 +27,19 @@ export const authenticate = async (values: LoginModel) => {
     return result;
   }
 };
-export const getUser = async (session?: string) => {
+/**
+ * Pass session and locale parameters for server side function. If not passed, it will only be possible to use client side
+ * @param token session token
+ * @param locale desired locale
+ * @returns user data if valid token
+ */
+export const getUser = async (token?: string, locale?: string) => {
   try {
-    const token = session || (await getClientSession());
     const res = await fetch(process.env.NEXT_PUBLIC_API_ADDRESS + apiEndpoints.USER.GET_USER.endpoint, {
       method: apiEndpoints.USER.GET_USER.method,
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
+      headers: getHeaders(token, locale),
     });
+
     if (res.ok) {
       const data: IUser = await res.json();
       return data;
@@ -48,18 +49,14 @@ export const getUser = async (session?: string) => {
     return null;
   }
 };
+
 export const changePassword = async (values: ChangePasswordModel) => {
   try {
-    const session = await getClientSession();
     const newLocal = apiAddress + apiEndpoints.USER.CHANGE_PASSWORD.endpoint;
     const res = await fetch(newLocal, {
       method: apiEndpoints.USER.CHANGE_PASSWORD.method,
       body: JSON.stringify(values),
-      headers: {
-        'content-type': 'application/json',
-        // @ts-ignore
-        Authorization: `Bearer ${session?.token}`,
-      },
+      headers: getHeaders(),
     });
     if (!res.ok) {
       const text = await res.text();

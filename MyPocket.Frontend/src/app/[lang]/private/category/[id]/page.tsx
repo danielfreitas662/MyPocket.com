@@ -1,15 +1,17 @@
 import { Skeleton } from '@/components';
 import CategoryForm from '@/components/forms/categoryForm';
-import { getCategoryById } from '@/services/category';
+import { getCategoryById } from '@/services/api/category';
 import { cookies } from 'next/headers';
+import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
 
-async function Category({ params }: { params: { id: string } }) {
+async function Category({ params }: { params: { id: string; lang: string } }) {
   const session = cookies().get('session')?.value;
-  const result = await getCategoryById(params?.id, session);
+  const result = await getCategoryById(params?.id, session, params.lang);
+  if (!result.data) return notFound();
   return (
     <Suspense fallback={<Skeleton rows={10} />}>
-      {!result.data ? <div>Not found</div> : <CategoryForm initialData={result.data} />}
+      <CategoryForm initialData={result.data} />
     </Suspense>
   );
 }

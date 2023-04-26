@@ -1,22 +1,23 @@
 import { ApiRequest } from '@/types/apirequest';
 import { IBudget, IBudgetItem } from '@/types/budget';
 import apiEndpoints from '../apiEndpoints';
-import { getClientSession } from '../clientSession';
 import { Filter, FilterResult } from '@/types/pagination';
 import { AddOrUpdateResult } from '@/types/api';
+import { getHeaders } from '../utils';
+import { getCookie } from '@/utils/cookies';
+import { APITranslations } from '../../../i18n';
 const apiAddress: string = process.env.NEXT_PUBLIC_API_ADDRESS as string;
+const localeCookieName: string = process.env.NEXT_PUBLIC_LOCALE_COOKIE_NAME as string;
 
-export const getBudgets = async (filters: Filter<IBudget>, session: string | undefined) => {
+/**
+ * Server side function
+ */
+export const getBudgets = async (filters: Filter<IBudget>, token: string | undefined, locale: string) => {
   try {
-    const token = session || (await getClientSession());
     const res = await fetch(apiAddress + apiEndpoints.BUDGET.FILTER.endpoint, {
       method: apiEndpoints.BUDGET.FILTER.method,
       cache: 'no-store',
-      headers: {
-        // @ts-ignore
-        Authorization: `Bearer ${token}`,
-        'content-type': 'application/json',
-      },
+      headers: getHeaders(token, locale),
       body: JSON.stringify(filters),
     });
     if (!res.ok) {
@@ -46,16 +47,15 @@ export const getBudgets = async (filters: Filter<IBudget>, session: string | und
     throw new Error(JSON.stringify(error));
   }
 };
-export const getBudgetById = async (id: string, session: string | undefined) => {
+/**
+ * Server side function
+ */
+export const getBudgetById = async (id: string, token: string | undefined, locale: string) => {
   try {
-    const token = session || (await getClientSession());
     const res = await fetch(apiAddress + apiEndpoints.BUDGET.GET_BY_ID.endpoint + `/${id}`, {
       method: apiEndpoints.BUDGET.GET_BY_ID.method,
       cache: 'no-cache',
-      headers: {
-        'content-type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
+      headers: getHeaders(token, locale),
     });
     if (!res.ok) {
       const result: ApiRequest<IBudget | null> = {
@@ -87,16 +87,12 @@ export const getBudgetById = async (id: string, session: string | undefined) => 
     return result;
   }
 };
-export const getBudgetByMonth = async (month: string, session?: string | undefined) => {
+export const getBudgetByMonth = async (month: string) => {
   try {
-    const token = session || (await getClientSession());
     const res = await fetch(apiAddress + apiEndpoints.BUDGET.GET_BY_MONTH.endpoint + `/${month}`, {
       method: apiEndpoints.BUDGET.GET_BY_MONTH.method,
       cache: 'no-cache',
-      headers: {
-        'content-type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
+      headers: getHeaders(),
     });
     if (!res.ok) {
       const result: ApiRequest<IBudget | null> = {
@@ -130,21 +126,19 @@ export const getBudgetByMonth = async (month: string, session?: string | undefin
 };
 export const saveBudget = async (budget: Partial<IBudget>) => {
   try {
-    const session = await getClientSession();
+    const locale = getCookie(localeCookieName);
+    const t = await APITranslations(locale, 'API');
     const res = await fetch(apiAddress + apiEndpoints.BUDGET.ADD.endpoint, {
       method: apiEndpoints.BUDGET.ADD.method,
       body: JSON.stringify(budget),
-      headers: {
-        'content-type': 'application/json',
-        Authorization: `Bearer ${session}`,
-      },
+      headers: getHeaders(),
     });
     if (!res.ok) {
       const result: ApiRequest<AddOrUpdateResult<IBudget> | null> = {
         error: true,
         statusCode: res.status,
         statusText: res.statusText,
-        message: 'Something wrong happened',
+        message: t('error'),
         data: null,
       };
       return result;
@@ -154,7 +148,7 @@ export const saveBudget = async (budget: Partial<IBudget>) => {
       error: false,
       statusCode: res.status,
       statusText: res.statusText,
-      message: 'Budget successfully saved',
+      message: t('saved', { entity: t('budget') }),
       data: data,
     };
     return result;
@@ -162,23 +156,20 @@ export const saveBudget = async (budget: Partial<IBudget>) => {
     throw new Error(JSON.stringify(error));
   }
 };
-export const removeBudgetItem = async (id: string, session?: string | undefined) => {
+export const removeBudgetItem = async (id: string) => {
+  const locale = getCookie(localeCookieName);
+  const t = await APITranslations(locale, 'API');
   try {
-    const token = session || (await getClientSession());
     const res = await fetch(apiAddress + apiEndpoints.BUDGET.REMOVE_ITEM.endpoint + `/${id}`, {
       method: apiEndpoints.BUDGET.REMOVE_ITEM.method,
-      headers: {
-        'content-type': 'application/json',
-        // @ts-ignore
-        Authorization: `Bearer ${token}`,
-      },
+      headers: getHeaders(),
     });
     if (!res.ok) {
       const result: ApiRequest<string | null> = {
         error: true,
         statusCode: res.status,
         statusText: res.statusText,
-        message: 'Something wrong happened',
+        message: t('error', { entity: t('budget') }),
         data: null,
       };
       return result;
@@ -188,7 +179,7 @@ export const removeBudgetItem = async (id: string, session?: string | undefined)
       error: false,
       statusCode: res.status,
       statusText: res.statusText,
-      message: 'Budget successfully removed',
+      message: t('removed', { entity: t('budget') }),
       data: data,
     };
     return result;
@@ -196,24 +187,21 @@ export const removeBudgetItem = async (id: string, session?: string | undefined)
     throw new Error(JSON.stringify(error));
   }
 };
-export const updateBudgetItem = async (values: IBudgetItem, session?: string | undefined) => {
+export const updateBudgetItem = async (values: IBudgetItem) => {
   try {
-    const token = session || (await getClientSession());
+    const locale = getCookie(localeCookieName);
+    const t = await APITranslations(locale, 'API');
     const res = await fetch(apiAddress + apiEndpoints.BUDGET.UPDATE_ITEM.endpoint, {
       method: apiEndpoints.BUDGET.UPDATE_ITEM.method,
       body: JSON.stringify(values),
-      headers: {
-        'content-type': 'application/json',
-        // @ts-ignore
-        Authorization: `Bearer ${token}`,
-      },
+      headers: getHeaders(),
     });
     if (!res.ok) {
       const result: ApiRequest<IBudgetItem | null> = {
         error: true,
         statusCode: res.status,
         statusText: res.statusText,
-        message: 'Something wrong happened',
+        message: t('error'),
         data: null,
       };
       return result;
@@ -223,7 +211,7 @@ export const updateBudgetItem = async (values: IBudgetItem, session?: string | u
       error: false,
       statusCode: res.status,
       statusText: res.statusText,
-      message: 'Budget successfully updated',
+      message: t('saved', { entity: t('budget') }),
       data: data,
     };
     return result;
@@ -233,14 +221,12 @@ export const updateBudgetItem = async (values: IBudgetItem, session?: string | u
 };
 export const addBudgetItem = async (item: Partial<IBudgetItem>) => {
   try {
-    const session = await getClientSession();
+    const locale = getCookie(localeCookieName);
+    const t = await APITranslations(locale, 'API');
     const res = await fetch(apiAddress + apiEndpoints.BUDGET.ADD_ITEM.endpoint, {
       method: apiEndpoints.BUDGET.ADD_ITEM.method,
       body: JSON.stringify(item),
-      headers: {
-        'content-type': 'application/json',
-        Authorization: `Bearer ${session}`,
-      },
+      headers: getHeaders(),
     });
     const data: string = await res.text();
     if (!res.ok) {
@@ -258,7 +244,7 @@ export const addBudgetItem = async (item: Partial<IBudgetItem>) => {
       error: false,
       statusCode: res.status,
       statusText: res.statusText,
-      message: 'Budget successfully saved',
+      message: t('saved', { entity: t('budget') }),
       data: data,
     };
     return result;
@@ -268,21 +254,18 @@ export const addBudgetItem = async (item: Partial<IBudgetItem>) => {
 };
 export const removeBudget = async (id: string) => {
   try {
-    const session = await getClientSession();
+    const locale = getCookie(localeCookieName);
+    const t = await APITranslations(locale, 'API');
     const res = await fetch(apiAddress + apiEndpoints.BUDGET.REMOVE.endpoint + `/${id}`, {
       method: apiEndpoints.BUDGET.REMOVE.method,
-      headers: {
-        'content-type': 'application/json',
-        // @ts-ignore
-        Authorization: `Bearer ${session}`,
-      },
+      headers: getHeaders(),
     });
     if (!res.ok) {
       const result: ApiRequest<string | null> = {
         error: true,
         statusCode: res.status,
         statusText: res.statusText,
-        message: 'Something wrong happened',
+        message: t('error'),
         data: null,
       };
       return result;
@@ -292,7 +275,7 @@ export const removeBudget = async (id: string) => {
       error: false,
       statusCode: res.status,
       statusText: res.statusText,
-      message: 'Budget successfully removed',
+      message: t('removed', { entity: t('budget') }),
       data: data,
     };
     return result;

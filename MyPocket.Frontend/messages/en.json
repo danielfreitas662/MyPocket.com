@@ -209,6 +209,10 @@
     }
   },
   "API": {
+    "account": "Account",
+    "budget": "Budget",
+    "category": "Category",
+    "transaction": "Transaction",
     "error": "Something wrong happened.",
     "removed": "{entity} successfully removed!",
     "saved": "{entity} successfully saved!"

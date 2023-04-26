@@ -22,7 +22,8 @@ async function Transaction({ searchParams, params }: PageProps) {
       pagination: { current: searchParams.current, pageSize: searchParams.pageSize },
       sorter: { field: searchParams.field, order: searchParams.order },
     },
-    session
+    session,
+    params.lang
   );
   return <TransactionsTable searchParams={searchParams} data={data} />;
 }
