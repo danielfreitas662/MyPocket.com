@@ -1,6 +1,5 @@
 import { Skeleton } from '@/components';
 import BudgetForm from '@/components/forms/budget/budgetForm';
-import CategoryForm from '@/components/forms/categoryForm';
 import { Suspense } from 'react';
 
 function Budget() {

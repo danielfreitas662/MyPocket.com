@@ -32,7 +32,7 @@ export async function POST(request: Request) {
         .setExpirationTime('30d')
         .setSubject(data)
         .sign(secret);
-      setCookie(response, 'session', token, { path: '/', maxAge: 2592000 });
+      setCookie(response, 'sessions', token, { path: '/', maxAge: 2592000 });
     }
     return response;
   } catch (error) {

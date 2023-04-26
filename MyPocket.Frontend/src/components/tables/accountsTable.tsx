@@ -57,6 +57,7 @@ function AccountsTable({ searchParams, data }: AccountsTableProps) {
         filterType: 'string',
         filterValue: searchParams.name,
       },
+      sorter: true,
     },
   ];
   return (

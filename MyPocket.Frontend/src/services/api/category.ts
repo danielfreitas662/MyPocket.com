@@ -1,20 +1,63 @@
 import { ApiRequest } from '@/types/apirequest';
 import { ICategory } from '@/types/category';
 import apiEndpoints from '../apiEndpoints';
-import { getClientSession } from '../clientSession';
 import { Filter, FilterResult } from '@/types/pagination';
+import { getHeaders } from '../utils';
+import { getCookie } from '@/utils/cookies';
+import { APITranslations } from '../../../i18n';
 const apiAddress: string = process.env.NEXT_PUBLIC_API_ADDRESS as string;
-export const getCategories = async (filters: Filter<ICategory>, session?: string | undefined) => {
+const localeCookieName: string = process.env.NEXT_PUBLIC_LOCALE_COOKIE_NAME as string;
+
+/**
+ * Server side function
+ */
+export const getAllCategories = async (token: string | undefined, locale: string) => {
   try {
-    const token = session || (await getClientSession());
+    const res = await fetch(apiAddress + apiEndpoints.CATEGORY.GET.endpoint, {
+      method: apiEndpoints.CATEGORY.GET.method,
+      cache: 'no-store',
+      headers: getHeaders(token, locale),
+    });
+    if (!res.ok) {
+      //const text = await res.text();
+      const result: ApiRequest<ICategory[]> = {
+        error: true,
+        statusCode: res.status,
+        statusText: res.statusText,
+        message: '',
+        data: [],
+      };
+      return result;
+    }
+    const data: ICategory[] = await res.json();
+    const result: ApiRequest<ICategory[]> = {
+      error: false,
+      statusCode: res.status,
+      statusText: res.statusText,
+      message: '',
+      data: data,
+    };
+    return result;
+  } catch (error: any) {
+    const result: ApiRequest<ICategory[]> = {
+      error: true,
+      statusCode: 0,
+      statusText: '',
+      message: '',
+      data: [],
+    };
+    return result;
+  }
+};
+/**
+ * Server side function
+ */
+export const getCategories = async (filters: Filter<ICategory>, token: string | undefined, locale: string) => {
+  try {
     const res = await fetch(apiAddress + apiEndpoints.CATEGORY.FILTER.endpoint, {
       method: apiEndpoints.CATEGORY.FILTER.method,
       cache: 'no-store',
-      headers: {
-        // @ts-ignore
-        Authorization: `Bearer ${token}`,
-        'content-type': 'application/json',
-      },
+      headers: getHeaders(token, locale),
       body: JSON.stringify(filters),
     });
     if (!res.ok) {
@@ -44,24 +87,22 @@ export const getCategories = async (filters: Filter<ICategory>, session?: string
     throw new Error(JSON.stringify(error));
   }
 };
-export const saveCategory = async (category: Partial<ICategory>) => {
+/**
+ * Server side function
+ */
+export const getCategoryById = async (id: string, token: string | undefined, locale: string) => {
   try {
-    const session = await getClientSession();
-    const res = await fetch(apiAddress + apiEndpoints.CATEGORY.ADD.endpoint, {
-      method: apiEndpoints.CATEGORY.ADD.method,
-      body: JSON.stringify(category),
-      headers: {
-        'content-type': 'application/json',
-        // @ts-ignore
-        Authorization: `Bearer ${session}`,
-      },
+    const res = await fetch(apiAddress + apiEndpoints.CATEGORY.GET_BY_ID.endpoint + `/${id}`, {
+      method: apiEndpoints.CATEGORY.GET_BY_ID.method,
+      headers: getHeaders(token, locale),
     });
     if (!res.ok) {
+      //const text = await res.text();
       const result: ApiRequest<ICategory | null> = {
         error: true,
         statusCode: res.status,
         statusText: res.statusText,
-        message: 'Something wrong happened',
+        message: '',
         data: null,
       };
       return result;
@@ -71,7 +112,47 @@ export const saveCategory = async (category: Partial<ICategory>) => {
       error: false,
       statusCode: res.status,
       statusText: res.statusText,
-      message: 'Category successfully saved',
+      message: '',
+      data: data,
+    };
+    return result;
+  } catch (error: any) {
+    const result: ApiRequest<ICategory | null> = {
+      error: true,
+      statusCode: 0,
+      statusText: '',
+      message: '',
+      data: null,
+    };
+    return result;
+  }
+};
+
+export const saveCategory = async (category: Partial<ICategory>) => {
+  try {
+    const locale = getCookie(localeCookieName);
+    const t = await APITranslations(locale, 'API');
+    const res = await fetch(apiAddress + apiEndpoints.CATEGORY.ADD.endpoint, {
+      method: apiEndpoints.CATEGORY.ADD.method,
+      body: JSON.stringify(category),
+      headers: getHeaders(),
+    });
+    if (!res.ok) {
+      const result: ApiRequest<ICategory | null> = {
+        error: true,
+        statusCode: res.status,
+        statusText: res.statusText,
+        message: t('error'),
+        data: null,
+      };
+      return result;
+    }
+    const data: ICategory = await res.json();
+    const result: ApiRequest<ICategory | null> = {
+      error: false,
+      statusCode: res.status,
+      statusText: res.statusText,
+      message: t('saved', { entity: t('category') }),
       data: data,
     };
     return result;
@@ -81,21 +162,18 @@ export const saveCategory = async (category: Partial<ICategory>) => {
 };
 export const removeCategory = async (id: string) => {
   try {
-    const session = await getClientSession();
+    const locale = getCookie(localeCookieName);
+    const t = await APITranslations(locale, 'API');
     const res = await fetch(apiAddress + apiEndpoints.CATEGORY.REMOVE.endpoint + `/${id}`, {
       method: apiEndpoints.CATEGORY.REMOVE.method,
-      headers: {
-        'content-type': 'application/json',
-        // @ts-ignore
-        Authorization: `Bearer ${session?.token}`,
-      },
+      headers: getHeaders(),
     });
     if (!res.ok) {
       const result: ApiRequest<string | null> = {
         error: true,
         statusCode: res.status,
         statusText: res.statusText,
-        message: 'Something wrong happened',
+        message: t('error'),
         data: null,
       };
       return result;
@@ -105,7 +183,7 @@ export const removeCategory = async (id: string) => {
       error: false,
       statusCode: res.status,
       statusText: res.statusText,
-      message: 'Category successfully removed',
+      message: t('removed', { entity: t('category') }),
       data: data,
     };
     return result;

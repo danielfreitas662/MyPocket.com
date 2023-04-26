@@ -7,10 +7,11 @@ import 'react-toastify/dist/ReactToastify.css';
 import { UserProvider } from '@/components/contexts/userContext';
 import React from 'react';
 import { NextIntlClientProvider, useLocale } from 'next-intl';
-import { notFound } from 'next/navigation';
 import { getUser } from '@/services/api/user';
 import { cookies } from 'next/headers';
 import LocaleSwitcher from '@/components/navbar/localeSwitcher';
+import Template from './template';
+import { defaultLocale } from '../../../i18n';
 
 export const metadata = {
   title: 'My Pocket',
@@ -26,9 +27,9 @@ export default async function RootLayout({
   children: React.ReactNode;
   params: { lang: string };
 }) {
-  const currentLocale = params.lang;
+  const currentLocale = params.lang || defaultLocale;
   const session = cookies().get('session')?.value;
-  const user = await getUser(session);
+  const user = await getUser(session, currentLocale);
   const messages = (await import(`../../../messages/${currentLocale}.json`)).default;
   return (
     <html lang={currentLocale}>
@@ -43,7 +44,9 @@ export default async function RootLayout({
                   </Link>
                 </div>
                 <LocaleSwitcher currentLocale={currentLocale} />
-                <Navbar user={user} />
+                <Template>
+                  <Navbar user={user} />
+                </Template>
               </header>
               <div className="content">{children}</div>
               <Footer />

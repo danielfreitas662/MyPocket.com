@@ -1,15 +1,14 @@
 import { ApiRequest } from '@/types/apirequest';
-import { SignInModel, SignInResult } from '@/types/user';
+import { SignInModel } from '@/types/user';
 import apiEndpoints from '../apiEndpoints';
+import { getHeaders } from '../utils';
 const apiAddress: string = process.env.NEXT_PUBLIC_API_ADDRESS as string;
 export const signup = async (user: SignInModel) => {
   try {
     const res = await fetch(apiAddress + apiEndpoints.USER.SIGNUP.endpoint, {
       method: apiEndpoints.USER.SIGNUP.method,
       body: JSON.stringify(user),
-      headers: {
-        'content-type': 'application/json',
-      },
+      headers: getHeaders(),
     });
     if (!res.ok) {
       const data: string = await res.text();

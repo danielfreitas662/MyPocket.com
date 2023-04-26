@@ -9,8 +9,11 @@ import { Skeleton } from '@/components';
 
 interface PageProps {
   searchParams: PageSearchParams & ICategory;
+  params: {
+    lang: string;
+  };
 }
-async function Category({ searchParams }: PageProps) {
+async function Category({ searchParams, params }: PageProps) {
   const session = cookies().get('session')?.value;
   const { data } = await getCategories(
     {
@@ -20,7 +23,8 @@ async function Category({ searchParams }: PageProps) {
       pagination: { current: searchParams.current, pageSize: searchParams.pageSize },
       sorter: { field: searchParams.field, order: searchParams.order },
     },
-    session
+    session,
+    params.lang
   );
   return (
     <div className={styles.body}>
