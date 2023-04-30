@@ -2,6 +2,7 @@
 import { authenticate, getUser } from '@/services/api/user';
 import { IUser, LoginModel, LoginResult } from '@/types/user';
 import { setCookie } from '@/utils/cookies';
+import moment from 'moment';
 import { useRouter } from 'next/navigation';
 import React, { ReactNode, useEffect, useState } from 'react';
 
@@ -33,9 +34,10 @@ export function UserProvider({ children }: { children: ReactNode }) {
         setResult(res);
         if (res?.success) {
           setUser(res.user);
+          router.refresh();
           if (returnUrl) {
-            router.replace(returnUrl);
-          } else router.replace('/');
+            router.push(returnUrl);
+          } else router.push('/private/dashboard/' + moment().format('YYYY-MM-DD'));
         }
       })
       .catch((res) => {
