@@ -6,11 +6,10 @@ import { Navbar } from '@/components';
 import 'react-toastify/dist/ReactToastify.css';
 import { UserProvider } from '@/components/contexts/userContext';
 import React from 'react';
-import { NextIntlClientProvider, useLocale } from 'next-intl';
+import { NextIntlClientProvider } from 'next-intl';
 import { getUser } from '@/services/api/user';
 import { cookies } from 'next/headers';
 import LocaleSwitcher from '@/components/navbar/localeSwitcher';
-import Template from './template';
 import { defaultLocale } from '../../../i18n';
 
 export const metadata = {
@@ -44,9 +43,7 @@ export default async function RootLayout({
                   </Link>
                 </div>
                 <LocaleSwitcher currentLocale={currentLocale} />
-                <Template>
-                  <Navbar user={user} />
-                </Template>
+                <Navbar user={user} />
               </header>
               <div className="content">{children}</div>
               <Footer />

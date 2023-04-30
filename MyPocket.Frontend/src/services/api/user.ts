@@ -38,6 +38,7 @@ export const getUser = async (token?: string, locale?: string) => {
     const res = await fetch(process.env.NEXT_PUBLIC_API_ADDRESS + apiEndpoints.USER.GET_USER.endpoint, {
       method: apiEndpoints.USER.GET_USER.method,
       headers: getHeaders(token, locale),
+      next: { revalidate: 10 },
     });
 
     if (res.ok) {
